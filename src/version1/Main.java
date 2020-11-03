@@ -5,6 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
+/**
+ * 
+ * @author Mario Hermida
+ *
+ */
 
 public class Main {
 
@@ -19,13 +27,45 @@ public class Main {
 		main.readFile(file);
 		main.writeFile(file);*/
 		
-		main.binaryToHexadecimal("11010");
-		main.hexadecimalToBinary("1a");
-
+//		main.binaryToHexadecimal("11010");
+//		main.hexadecimalToBinary("aaaa");
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Write a message to be hashed: ");
+		String message = sc.nextLine();
+		sc.close();
+		System.out.println("The input message is: '" + message + "'");
+		System.out.println("The text converted to binary is: '" + main.textToBinary(message) + "'");
+		
+		//SHA-1
+		//The goal is to achieve a 160 message digest from a l-length message where 0<l<2^64
+		SHA_1 sha1 = new SHA_1(main.textToBinary(message));
+		
 	}
 	
+	/**
+	 * It converts every character to 7-bit sequences (US_ASCII),
+	 * then it is zero padded so that it is a 8-bit string
+	 * 
+	 * @param message Whole text to be converted
+	 * @return The binary 8-bit string
+	 */
+	private String textToBinary(String message) {
+		String binary = "";
+		byte[] byteArray = message.getBytes(StandardCharsets.US_ASCII);
+		for (byte b : byteArray) { 
+			binary += "0" + Integer.toBinaryString(b);
+		}
+		return binary;
+	}
+
+	/**
+	 * 
+	 * @param binary Binary string to be converted
+	 * @return Hexadecimal value from binary string
+	 */
 	private String binaryToHexadecimal(String binary) {
-		String hexValue = "", substring;
+		String hexadecimal = "", substring;
 		//Adapting binary number for being multiple of 4 bits
 		while (binary.length()%4!=0) {
 			binary = "0" + binary;
@@ -37,25 +77,29 @@ public class Main {
 			substring += binary.charAt(i+1);
 			substring += binary.charAt(i+2);
 			substring += binary.charAt(i+3);
-			hexValue += Integer.toHexString(Integer.parseInt(substring, 2));
+			hexadecimal += Integer.toHexString(Integer.parseInt(substring, 2));
 		}
-		System.out.println(hexValue);
-		return hexValue;
+		System.out.println(hexadecimal);
+		return hexadecimal;
 	}
 	
-	private String hexadecimalToBinary(String hexadecimalString) {		
-		String binValue = "", hexDigit;
-		for (int i = 0; i < hexadecimalString.length(); i++) {
-			hexDigit = String.valueOf(hexadecimalString.charAt(i));
-			String binary4BitNumber = Integer.toBinaryString((Integer.parseInt(hexDigit, 16)));
+	/**
+	 * 
+	 * @param hexadecimal Hexadecimal value to be converted
+	 * @return Binary value from hexadecimal value
+	 */
+	private String hexadecimalToBinary(String hexadecimal) {		
+		String binary = "", hexDigit;
+		for (int i = 0; i < hexadecimal.length(); i++) {
+			hexDigit = String.valueOf(hexadecimal.charAt(i));
+			binary += Integer.toBinaryString((Integer.parseInt(hexDigit, 16)));
 			//Appending zeroes for having multiple of 4 bits number
-			while(binary4BitNumber.length() < 4) {				
-				binary4BitNumber = "0" + binary4BitNumber;
+			while(binary.length()%4 != 0) {				
+				binary = "0" + binary;
 			}
-			binValue += binary4BitNumber;
 		}
-		System.out.println(binValue);
-		return binValue;
+		System.out.println(binary);
+		return binary;
 	}
 
 	private void readFile(File file) {
