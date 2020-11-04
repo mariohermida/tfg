@@ -1,4 +1,4 @@
-package version1;
+package shs;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,57 +6,37 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 /**
  * 
  * @author Mario Hermida
  *
  */
+public class DataTreatment {
 
-public class Main {
-
-	public static void main(String[] args) {
-
-		System.out.println("Starting program...\n");
-
-		Main main = new Main();
-
-		/*File file = new File("C:\\Users\\Mario Hermida\\git\\tfg\\txt\\words.txt");
-
-		main.readFile(file);
-		main.writeFile(file);*/
-		
-//		main.binaryToHexadecimal("11010");
-//		main.hexadecimalToBinary("aaaa");
-		
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Write a message to be hashed: ");
-		String message = sc.nextLine();
-		sc.close();
-		System.out.println("The input message is: '" + message + "'");
-		System.out.println("The text converted to binary is: '" + main.textToBinary(message) + "'");
-		
-		//SHA-1
-		//The goal is to achieve a 160 message digest from a l-length message where 0<l<2^64
-		SHA_1 sha1 = new SHA_1(main.textToBinary(message));
-		
+	/*File file = new File("C:\\Users\\Mario Hermida\\git\\tfg\\txt\\words.txt");*/
+	String originalMessage;
+	String binaryMessage;
+	
+	public DataTreatment(String message) {
+		originalMessage = message;
+		binaryMessage = "";
+		textToBinary();
+		System.out.println("The binary sequence is: " + binaryMessage);
 	}
 	
 	/**
-	 * It converts every character to 7-bit sequences (US_ASCII),
-	 * then it is zero padded so that it is a 8-bit string
+	 * It converts every character (byte) to a 7-bit sequence (US_ASCII),
+	 * then it is zero padded so that it is a 8-bit string.
 	 * 
 	 * @param message Whole text to be converted
 	 * @return The binary 8-bit string
 	 */
-	private String textToBinary(String message) {
-		String binary = "";
-		byte[] byteArray = message.getBytes(StandardCharsets.US_ASCII);
+	private void textToBinary() {
+		byte[] byteArray = originalMessage.getBytes(StandardCharsets.US_ASCII);
 		for (byte b : byteArray) { 
-			binary += "0" + Integer.toBinaryString(b);
+			binaryMessage += "0" + Integer.toBinaryString(b);
 		}
-		return binary;
 	}
 
 	/**
@@ -101,7 +81,7 @@ public class Main {
 		System.out.println(binary);
 		return binary;
 	}
-
+	
 	private void readFile(File file) {
 		FileReader fr;
 		BufferedReader br;
