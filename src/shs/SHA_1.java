@@ -1,5 +1,7 @@
 package shs;
 
+import java.util.ArrayList;
+
 /**
  * 
  * @author Mario Hermida
@@ -11,6 +13,7 @@ public class SHA_1 extends HashFunction {
 	private String[] initialHashValues = {"67452301", "efcdab89", "98badcfe", "10325476", "c3d2e1f0"};*/
 	private String binaryMessage;
 	private String binaryMessagePadded;
+	private ArrayList<String> words;
 	
 	public SHA_1(String binaryMessage) {
 		this.binaryMessage = binaryMessage;
@@ -19,6 +22,10 @@ public class SHA_1 extends HashFunction {
 		maximumMessageSize = 64; 
 		blockSize = 512;
 		binaryMessagePadded = padMessage(binaryMessage);
+		words = parseMessage(binaryMessagePadded);
+		for (String a : words) {
+			System.out.println(a);
+		}
 	}
 	
 }
