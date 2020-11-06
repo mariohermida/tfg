@@ -30,12 +30,17 @@ public class DataTreatment {
 	 * then it is zero padded so that it is a 8-bit string.
 	 * 
 	 * @param message Whole text to be converted
-	 * @return The binary 8-bit string
+	 * @return The binary string multiple of 8 bits
 	 */
 	private void textToBinary() {
 		byte[] byteArray = originalMessage.getBytes(StandardCharsets.US_ASCII);
-		for (byte b : byteArray) { 
-			binaryMessage += "0" + Integer.toBinaryString(b);
+		String binaryCharacter;
+		for (byte b : byteArray) {
+			binaryCharacter = Integer.toBinaryString(b);
+			while(binaryCharacter.length() < 8) {
+				binaryCharacter = "0" + binaryCharacter;
+			}
+			binaryMessage += binaryCharacter;
 		}
 	}
 

@@ -25,7 +25,12 @@ public class Main {
 		System.out.println("The input message is: '" + message + "'");
 		DataTreatment data = new DataTreatment(message);
 		
-		new SHA_1(data.binaryMessage);
+		//new SHA_1(data.binaryMessage);
+		//new SHA_256(data.binaryMessage);
+		
+		HashFunction h = new HashFunction();
+		System.out.println(h.ROTL("111111000000000000000000000000000", 13));
+		System.out.println(h.ROTR(h.ROTL("111111000000000000000000000000000", 13), 13));
 	}
 
 }
