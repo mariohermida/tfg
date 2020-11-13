@@ -15,6 +15,8 @@ public class HashFunction {
 	int blockSize;
 	int maximumMessageSize;
 	
+	//THINK OF HOW TO DEAL WITH MESSAGES LARGER THAN maximumMessageSize (SPLITTING INTO BLOCKS) 
+	
 	/**
 	 * The idea is to have a message with length multiple of 512/1024 (block size)
 	 * The messagePadded is built this way: original binary message + 1 + as many 0s
@@ -55,7 +57,7 @@ public class HashFunction {
 			words.add(binarySequence.substring(i, i+wordSize));
 		}
 		return words;
-	}	
+	}
 	
 	/**
 	 * When a left circular rotation takes place, the idea is that the

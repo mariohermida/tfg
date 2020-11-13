@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Mario Hermida
  *
  */
-public class SHA_1 extends HashFunction {
+public class SHA_224 extends HashFunction{
 
 	private String[] constants = {"5a827999", "6ed9eba1", "8f1bbcdc", "ca62c1d6"};
 	private String[] initialHashValues = {"67452301", "efcdab89", "98badcfe", "10325476", "c3d2e1f0"};
@@ -15,10 +15,10 @@ public class SHA_1 extends HashFunction {
 	//private String binaryMessagePadded;
 	private ArrayList<String> words;
 	
-	public SHA_1(String binaryMessage) {
+	public SHA_224(String binaryMessage) {
 		//this.binaryMessage = binaryMessage;
-		System.out.println("\tSHA-1 ALGORITHM");
-		messageDigest = 160;
+		System.out.println("\tSHA-224 ALGORITHM");
+		messageDigest = 224;
 		wordSize = 32;
 		maximumMessageSize = 64; 
 		blockSize = 512;
