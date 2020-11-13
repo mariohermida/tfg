@@ -18,9 +18,6 @@ public class DataTreatment {
 	String originalMessage;
 	String binaryMessage;
 	
-	//REVIEW ACCES MODIFIERS POLICIES BOTH IN FUNCTIONS AND ATTRIBUTES
-	//MAYBE INDICATE WITHIN THE CONSTRUCTOR THE TYPE OF DATA (TEXT, BINARY, HEXADECIMAL)
-	
 	public DataTreatment(String message) {
 		originalMessage = message;
 		binaryMessage = "";
