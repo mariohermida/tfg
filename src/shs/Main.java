@@ -24,6 +24,7 @@ public class Main {
 		sc.close();
 		System.out.println("The input message is: '" + message + "'");
 		DataTreatment data = new DataTreatment(message);
+		//maybe indicate within the constructor the type of data (text, binary, hexadecimal)
 		
 		//new SHA_1(data.binaryMessage);
 		//new SHA_256(data.binaryMessage);
@@ -31,6 +32,14 @@ public class Main {
 		HashFunction h = new HashFunction();
 		System.out.println(h.ROTL("111111000000000000000000000000000", 13));
 		System.out.println(h.ROTR(h.ROTL("111111000000000000000000000000000", 13), 13));
+		
+		String a = "da02ce3a89ecac3b";
+		String b = "ee92b50606b62b0b";
+		DataTreatment dat = new DataTreatment("");
+		String bina = dat.hexadecimalToBinary(a);
+		String binb = dat.hexadecimalToBinary(b);
+		dat.binaryToHexadecimal(bina);
+		dat.binaryToHexadecimal(binb);
 	}
 
 }

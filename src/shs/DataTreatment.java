@@ -49,7 +49,7 @@ public class DataTreatment {
 	 * @param binary Binary string to be converted
 	 * @return Hexadecimal value from binary string
 	 */
-	private String binaryToHexadecimal(String binary) {
+	public String binaryToHexadecimal(String binary) {
 		String hexadecimal = "", substring;
 		//Adapting binary number for being multiple of 4 bits
 		while (binary.length()%4!=0) {
@@ -73,18 +73,19 @@ public class DataTreatment {
 	 * @param hexadecimal Hexadecimal value to be converted
 	 * @return Binary value from hexadecimal value
 	 */
-	private String hexadecimalToBinary(String hexadecimal) {		
-		String binary = "", hexDigit;
+	public String hexadecimalToBinary(String hexadecimal) {		
+		String binary = "", binaryResult = "", hexDigit;
 		for (int i = 0; i < hexadecimal.length(); i++) {
 			hexDigit = String.valueOf(hexadecimal.charAt(i));
-			binary += Integer.toBinaryString((Integer.parseInt(hexDigit, 16)));
+			binary = Integer.toBinaryString((Integer.parseInt(hexDigit, 16)));
 			//Appending zeroes for having multiple of 4 bits number
 			while(binary.length()%4 != 0) {				
 				binary = "0" + binary;
 			}
+			binaryResult += binary;
 		}
-		System.out.println(binary);
-		return binary;
+		System.out.println(binaryResult);
+		return binaryResult;
 	}
 	
 	private void readFile(File file) {
