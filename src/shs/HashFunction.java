@@ -58,26 +58,98 @@ public class HashFunction {
 		return words;
 	}
 
+	/**
+	 * Ch function
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return (x AND y) XOR (~x AND z)
+	 */
 	public String Ch(String x, String y, String z) {
-
-		return "";
+		String result1, result2, finalResult = "";
+		BigInteger bx = new BigInteger(x, 2);
+		BigInteger by = new BigInteger(y, 2);
+		BigInteger bz = new BigInteger(z, 2);
+		result1 = bx.and(by).toString(2);
+		result2 = bz.andNot(bx).toString(2);
+		//Keeping original length
+		while (result1.length() < x.length()) {
+			result1 = "0" + result1;
+		}
+		while (result2.length() < x.length()) {
+			result2 = "0" + result2;
+		}
+		for (int i = 0; i < x.length(); i++) {
+			finalResult += (result1.charAt(i) ^ result2.charAt(i));
+		}
+		System.out.println("x:\t" + x);
+		System.out.println("y:\t" + y);
+		System.out.println("z:\t" + z);
+		System.out.println("Res:\t" + finalResult);
+		return finalResult;
 	}
 
+	/**
+	 * Parity function
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return x XOR y XOR z
+	 */
 	public String Parity(String x, String y, String z) {
-		String result = "";
+		String result = "", finalResult = "";
 		for (int i = 0; i < x.length(); i++) {
 			result += (x.charAt(i) ^ y.charAt(i));
 		}
-		//Same operation must be computed but this time with result and with the string z
-		System.out.println(x);
-		System.out.println(y);
-		System.out.println(result);
-		return result;
+		for (int i = 0; i < x.length(); i++) {
+			finalResult += (result.charAt(i) ^ z.charAt(i));
+		}
+		System.out.println("x:\t" + x);
+		System.out.println("y:\t" + y);
+		System.out.println("z:\t" + z);
+		System.out.println("Res:\t" + finalResult);
+		return finalResult;
 	}
-	
-	public String Maj(String x, String y, String z) {
 
-		return "";
+	/**
+	 * Maj function
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return (x AND y) XOR (x AND z) XOR (y AND z)
+	 */
+	public String Maj(String x, String y, String z) {
+		String result1, result2, result3, result4 = "", finalResult = "";
+		BigInteger bx = new BigInteger(x, 2);
+		BigInteger by = new BigInteger(y, 2);
+		BigInteger bz = new BigInteger(z, 2);
+		result1 = bx.and(by).toString(2);
+		result2 = bx.and(bz).toString(2);
+		result3 = by.and(bz).toString(2);
+		//Keeping original length
+		while (result1.length() < x.length()) {
+			result1 = "0" + result1;
+		}
+		while (result2.length() < x.length()) {
+			result2 = "0" + result2;
+		}
+		while (result3.length() < x.length()) {
+			result3 = "0" + result3;
+		}
+		for (int i = 0; i < x.length(); i++) {
+			result4 += (result1.charAt(i) ^ result2.charAt(i));
+		}
+		for (int i = 0; i < x.length(); i++) {
+			finalResult += (result4.charAt(i) ^ result3.charAt(i));
+		}
+		System.out.println("x:\t" + x);
+		System.out.println("y:\t" + y);
+		System.out.println("z:\t" + z);
+		System.out.println("Res:\t" + finalResult);
+		return finalResult;
 	}
 
 	/**

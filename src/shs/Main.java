@@ -1,5 +1,6 @@
 package shs;
 
+import java.math.BigInteger;
 import java.util.Scanner;
 
 /**
@@ -41,8 +42,12 @@ public class Main {
 		System.out.println("The input message is: '" + message + "'");
 		DataTreatment data = new DataTreatment(message);
 		
+		
 		SHA_1 h = new SHA_1(data.binaryMessage);
-		h.Parity("1010", "0101", "1100");
+		String x = "01110", y = "11001", z = "01011";
+		h.Ch(x, y, z);
+		h.Parity(x, y, z);
+		h.Maj(x, y, z);
 		
 		/* Testing different aspects within different algorithms
 		new SHA_1(data.binaryMessage);
