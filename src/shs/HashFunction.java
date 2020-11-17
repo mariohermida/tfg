@@ -198,7 +198,7 @@ public class HashFunction {
 		BigInteger b2 = new BigInteger(leftShiftOperation(sequence, sequence.length() - n), 2);
 		result = b1.or(b2).toString(2);
 		while (result.length() < sequence.length()) {
-			result = result + "0";
+			result = "0" + result;
 		}
 		return result;
 	}

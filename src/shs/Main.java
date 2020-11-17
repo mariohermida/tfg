@@ -42,7 +42,6 @@ public class Main {
 		System.out.println("The input message is: '" + message + "'");
 		DataTreatment data = new DataTreatment(message);
 		
-		
 		SHA_1 h = new SHA_1(data.binaryMessage);
 		h.upperSigma256_0("1110100010110001010010100101010");
 		/* Testing functions over binary strings
