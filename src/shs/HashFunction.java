@@ -151,6 +151,19 @@ public class HashFunction {
 		System.out.println("Res:\t" + finalResult);
 		return finalResult;
 	}
+	
+	public String upperSigma256_0(String word) {
+		String result = "", finalResult = "";
+		String rotation1 = ROTR(word, 2), rotation2 = ROTR(word, 13), rotation3 = ROTR(word, 22);
+		for (int i = 0; i < word.length(); i++) {
+			result += rotation1.charAt(i) ^ rotation2.charAt(i);
+		}
+		for (int i = 0; i < word.length(); i++) {
+			finalResult += result.charAt(i) ^ rotation3.charAt(i);
+		}
+		System.out.println("Res:\t" + finalResult);
+		return finalResult;
+	}
 
 	/**
 	 * When a left circular rotation takes place, the idea is that the bits that are
@@ -209,7 +222,7 @@ public class HashFunction {
 	 * @param n        Number of zeroes padded
 	 * @return left-shift binary sequence
 	 */
-	private String leftShiftOperation(String sequence, int n) {
+	public String leftShiftOperation(String sequence, int n) {
 		int start = n;
 		while (n != 0) {
 			sequence = sequence + "0";
@@ -226,7 +239,7 @@ public class HashFunction {
 	 * @param n        Number of zeroes padded
 	 * @return right-shift binary sequence
 	 */
-	private String rightShiftOperation(String sequence, int n) {
+	public String rightShiftOperation(String sequence, int n) {
 		int end = n;
 		while (n != 0) {
 			sequence = "0" + sequence;

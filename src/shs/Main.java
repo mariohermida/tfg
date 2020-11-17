@@ -44,10 +44,13 @@ public class Main {
 		
 		
 		SHA_1 h = new SHA_1(data.binaryMessage);
+		h.upperSigma256_0("1110100010110001010010100101010");
+		/* Testing functions over binary strings
 		String x = "01110", y = "11001", z = "01011";
 		h.Ch(x, y, z);
 		h.Parity(x, y, z);
-		h.Maj(x, y, z);
+		h.Maj(x, y, z);*/
+		
 		
 		/* Testing different aspects within different algorithms
 		new SHA_1(data.binaryMessage);
