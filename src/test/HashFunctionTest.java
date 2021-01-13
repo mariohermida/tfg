@@ -10,6 +10,7 @@ class HashFunctionTest {
 	
 	@Test
 	void testRightShiftOperation() {
+		assertEquals("111010", h.rightShiftOperation("111010",0));
 		assertEquals("011101", h.rightShiftOperation("111010",1));
 		assertEquals("000001", h.rightShiftOperation("111010",5));
 		assertEquals("000000", h.rightShiftOperation("111010",15));
@@ -23,6 +24,7 @@ class HashFunctionTest {
 	
 	@Test
 	void testSHR() {
+		assertEquals("111010", h.SHR("111010",0));
 		assertEquals("011101", h.SHR("111010",1));
 		assertEquals("000001", h.SHR("111010",5));
 		assertEquals("000000", h.SHR("111010",15));
@@ -36,6 +38,7 @@ class HashFunctionTest {
 	
 	@Test
 	void testLeftShiftOperation() {
+		assertEquals("111010", h.leftShiftOperation("111010",0));
 		assertEquals("110110", h.leftShiftOperation("111011",1));
 		assertEquals("100000", h.leftShiftOperation("111011",5));
 		assertEquals("000000", h.leftShiftOperation("111011",15));
@@ -49,6 +52,7 @@ class HashFunctionTest {
 	
 	@Test
 	void testROTR() {
+		assertEquals("111010", h.ROTR("111010",0));
 		assertEquals("011101", h.ROTR("111010",1));
 		assertEquals("110101", h.ROTR("111010",5));
 		//32 bits
@@ -61,6 +65,7 @@ class HashFunctionTest {
 	
 	@Test
 	void testROTL() {
+		assertEquals("111010", h.ROTL("111010",0));
 		assertEquals("110111", h.ROTL("111011",1));
 		assertEquals("111101", h.ROTL("111011",5));
 		//32 bits
@@ -70,5 +75,11 @@ class HashFunctionTest {
 		assertEquals("1001010010010010101010011101001010101010101101001100101001010010", h.ROTL("0101001010010100100100101010100111010010101010101011010011001010",8));
 		assertEquals("0101001010010100101001001001010101001110100101010101010110100110", h.ROTL("0101001010010100100100101010100111010010101010101011010011001010",59));
 	}
+	
+	@Test
+	void testROTLROTR() {
+		assertEquals(h.ROTR("0101001010010100100100101010100111010010101010101011010011001010", 56), h.ROTL("0101001010010100100100101010100111010010101010101011010011001010",8));
+		assertEquals(h.ROTR("0101010100001010011110101010101010101010010110011010101111101010", 5), h.ROTL("0101010100001010011110101010101010101010010110011010101111101010",59));
+	}	
 
 }

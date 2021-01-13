@@ -14,16 +14,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class DataTreatment {
 
-	/*File file = new File("C:\\Users\\Mario Hermida\\git\\tfg\\txt\\words.txt");*/
-	String originalMessage;
-	String binaryMessage;
-	
-	public DataTreatment(String message) {
-		originalMessage = message;
-		binaryMessage = "";
-		textToBinary();
-		System.out.println("The binary sequence is: " + binaryMessage);
-	}
+	/*File file = new File("C:\\Users\\Mario Hermida\\git\\tfg\\txt\\words.txt");*/	
 	
 	/**
 	 * It converts every character (byte) to a 7-bit sequence (US_ASCII),
@@ -32,9 +23,9 @@ public class DataTreatment {
 	 * @param message Whole text to be converted
 	 * @return The binary string multiple of 8 bits
 	 */
-	private void textToBinary() {
-		byte[] byteArray = originalMessage.getBytes(StandardCharsets.US_ASCII);
-		String binaryCharacter;
+	public String textToBinary(String text) {
+		byte[] byteArray = text.getBytes(StandardCharsets.US_ASCII);
+		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {
 			binaryCharacter = Integer.toBinaryString(b);
 			while(binaryCharacter.length() < 8) {
@@ -42,6 +33,7 @@ public class DataTreatment {
 			}
 			binaryMessage += binaryCharacter;
 		}
+		return binaryMessage;
 	}
 
 	/**
@@ -64,7 +56,6 @@ public class DataTreatment {
 			substring += binary.charAt(i+3);
 			hexadecimal += Integer.toHexString(Integer.parseInt(substring, 2));
 		}
-		System.out.println(hexadecimal);
 		return hexadecimal;
 	}
 	
@@ -84,7 +75,6 @@ public class DataTreatment {
 			}
 			binaryResult += binary;
 		}
-		System.out.println(binaryResult);
 		return binaryResult;
 	}
 	

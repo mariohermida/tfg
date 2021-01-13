@@ -73,7 +73,7 @@ public class HashFunction {
 		BigInteger bz = new BigInteger(z, 2);
 		result1 = bx.and(by).toString(2);
 		result2 = bz.andNot(bx).toString(2);
-		//Keeping original length
+		// Keeping original length
 		while (result1.length() < x.length()) {
 			result1 = "0" + result1;
 		}
@@ -129,7 +129,7 @@ public class HashFunction {
 		result1 = bx.and(by).toString(2);
 		result2 = bx.and(bz).toString(2);
 		result3 = by.and(bz).toString(2);
-		//Keeping original length
+		// Keeping original length
 		while (result1.length() < x.length()) {
 			result1 = "0" + result1;
 		}
@@ -151,7 +151,7 @@ public class HashFunction {
 		System.out.println("Res:\t" + finalResult);
 		return finalResult;
 	}
-	
+
 	public String upperSigma256_0(String word) {
 		String result = "", finalResult = "";
 		String rotation1 = ROTR(word, 2), rotation2 = ROTR(word, 13), rotation3 = ROTR(word, 22);
@@ -224,7 +224,7 @@ public class HashFunction {
 	 */
 	public String leftShiftOperation(String sequence, int n) {
 		int start = n;
-		while (n != 0) {
+		while (n > 0) { // if n is negative it is treated as if it was zero
 			sequence = sequence + "0";
 			n--;
 		}
@@ -241,7 +241,7 @@ public class HashFunction {
 	 */
 	public String rightShiftOperation(String sequence, int n) {
 		int end = n;
-		while (n != 0) {
+		while (n > 0) { // if n is negative it is treated as if it was zero
 			sequence = "0" + sequence;
 			n--;
 		}
