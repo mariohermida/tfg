@@ -23,6 +23,13 @@ class HashFunctionTest {
 	}
 	
 	@Test
+	public void testRightShiftOperationException() {
+		assertThrows(NumberFormatException.class, () -> {
+			h.rightShiftOperation("111010",-9);
+		  });
+	}
+	
+	@Test
 	void testSHR() {
 		assertEquals("111010", h.SHR("111010",0));
 		assertEquals("011101", h.SHR("111010",1));
@@ -34,6 +41,13 @@ class HashFunctionTest {
 		//64 bits
 		assertEquals("0000000001010010100101001001001010101001110100101010101010110100", h.SHR("0101001010010100100100101010100111010010101010101011010011001010",8));
 		assertEquals("0000000000000000000000000000000000000000000000000000000000001010", h.SHR("0101001010010100100100101010100111010010101010101011010011001010",59));
+	}
+	
+	@Test
+	public void testSHRException() {
+		assertThrows(NumberFormatException.class, () -> {
+			h.SHR("11",-999);
+		  });
 	}
 	
 	@Test
@@ -51,6 +65,13 @@ class HashFunctionTest {
 	}
 	
 	@Test
+	public void testLeftShiftOperationException() {
+		assertThrows(NumberFormatException.class, () -> {
+			h.leftShiftOperation("111010",-1);
+		  });
+	}
+	
+	@Test
 	void testROTR() {
 		assertEquals("111010", h.ROTR("111010",0));
 		assertEquals("011101", h.ROTR("111010",1));
@@ -64,6 +85,13 @@ class HashFunctionTest {
 	}
 	
 	@Test
+	public void testROTRException() {
+		assertThrows(NumberFormatException.class, () -> {
+			h.ROTR("1110",-19);
+		  });
+	}
+	
+	@Test
 	void testROTL() {
 		assertEquals("111010", h.ROTL("111010",0));
 		assertEquals("110111", h.ROTL("111011",1));
@@ -74,6 +102,13 @@ class HashFunctionTest {
 		//64 bits 
 		assertEquals("1001010010010010101010011101001010101010101101001100101001010010", h.ROTL("0101001010010100100100101010100111010010101010101011010011001010",8));
 		assertEquals("0101001010010100101001001001010101001110100101010101010110100110", h.ROTL("0101001010010100100100101010100111010010101010101011010011001010",59));
+	}
+	
+	@Test
+	public void testROTLException() {
+		assertThrows(NumberFormatException.class, () -> {
+			h.ROTL("111010",-5);
+		  });
 	}
 	
 	@Test

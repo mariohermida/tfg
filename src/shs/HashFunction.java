@@ -152,6 +152,11 @@ public class HashFunction {
 		return finalResult;
 	}
 
+	/**
+	 * 
+	 * @param word
+	 * @return
+	 */
 	public String upperSigma256_0(String word) {
 		String result = "", finalResult = "";
 		String rotation1 = ROTR(word, 2), rotation2 = ROTR(word, 13), rotation3 = ROTR(word, 22);
@@ -224,6 +229,9 @@ public class HashFunction {
 	 */
 	public String leftShiftOperation(String sequence, int n) {
 		int start = n;
+		if (n < 0) {
+			throw new NumberFormatException("Cannot shift bits a negative number of times.");
+		}
 		while (n > 0) { // if n is negative it is treated as if it was zero
 			sequence = sequence + "0";
 			n--;
@@ -238,9 +246,13 @@ public class HashFunction {
 	 * @param sequence Binary sequence to be modified
 	 * @param n        Number of zeroes padded
 	 * @return right-shift binary sequence
+	 * @throws Exception
 	 */
 	public String rightShiftOperation(String sequence, int n) {
 		int end = n;
+		if (n < 0) {
+			throw new NumberFormatException("Cannot shift bits a negative number of times.");
+		}
 		while (n > 0) { // if n is negative it is treated as if it was zero
 			sequence = "0" + sequence;
 			n--;

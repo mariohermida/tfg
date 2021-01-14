@@ -40,6 +40,10 @@ public class Main {
 		sc.close();
 		System.out.println("The input message is: '" + message + "'");
 
+		
+		//Testing code
+		/*HashFunction h = new HashFunction();
+		h.leftShiftOperation("11001", -3);*/
 	}
 
 }
