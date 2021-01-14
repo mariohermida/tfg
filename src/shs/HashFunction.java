@@ -83,10 +83,6 @@ public class HashFunction {
 		for (int i = 0; i < x.length(); i++) {
 			finalResult += (result1.charAt(i) ^ result2.charAt(i));
 		}
-		System.out.println("x:\t" + x);
-		System.out.println("y:\t" + y);
-		System.out.println("z:\t" + z);
-		System.out.println("Res:\t" + finalResult);
 		return finalResult;
 	}
 
@@ -106,10 +102,6 @@ public class HashFunction {
 		for (int i = 0; i < x.length(); i++) {
 			finalResult += (result.charAt(i) ^ z.charAt(i));
 		}
-		System.out.println("x:\t" + x);
-		System.out.println("y:\t" + y);
-		System.out.println("z:\t" + z);
-		System.out.println("Res:\t" + finalResult);
 		return finalResult;
 	}
 
@@ -145,28 +137,91 @@ public class HashFunction {
 		for (int i = 0; i < x.length(); i++) {
 			finalResult += (result4.charAt(i) ^ result3.charAt(i));
 		}
-		System.out.println("x:\t" + x);
-		System.out.println("y:\t" + y);
-		System.out.println("z:\t" + z);
-		System.out.println("Res:\t" + finalResult);
 		return finalResult;
 	}
 
 	/**
+	 * It identifies the different sigma operations according to the following
+	 * parameters: wordLength, upperOrLower and zeroOrOne
 	 * 
-	 * @param word
-	 * @return
+	 * @param word         The binary word to be changed
+	 * @param wordLength   Word length (32 or 64) (bits)
+	 * @param upperOrLower Represents the kind of sigma operation (upper or lower)
+	 * @param zeroOrOne    Represents the kind of sigma operation (0 or 1)
+	 * @return The binary word modified according to the right sigma function
 	 */
-	public String upperSigma256_0(String word) {
+	public String sigmaFunctionSplitter(String word, int wordLength, String upperOrLower, int zeroOrOne) {
+		switch (wordLength) {
+		case 32:
+			switch (upperOrLower) {
+			case "upper":
+				switch (zeroOrOne) {
+				case 0:
+					return sigmaFunctionOperation(word, 2, 13, 22, false);
+				case 1:
+					return sigmaFunctionOperation(word, 6, 11, 25, false);
+				}
+				break;
+			case "lower":
+				switch (zeroOrOne) {
+				case 0:
+					return sigmaFunctionOperation(word, 7, 18, 3, true);
+				case 1:
+					return sigmaFunctionOperation(word, 17, 19, 10, true);
+				}
+				break;
+			}
+			break;
+		case 64:
+			switch (upperOrLower) {
+			case "upper":
+				switch (zeroOrOne) {
+				case 0:
+					return sigmaFunctionOperation(word, 28, 34, 39, false);
+				case 1:
+					return sigmaFunctionOperation(word, 14, 18, 41, false);
+				}
+				break;
+			case "lower":
+				switch (zeroOrOne) {
+				case 0:
+					return sigmaFunctionOperation(word, 1, 8, 7, true);
+				case 1:
+					return sigmaFunctionOperation(word, 19, 61, 6, true);
+				}
+				break;
+			}
+			break;
+		}
+		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
+	}
+
+	/**
+	 * Performs the sigma operation taking into account the different values
+	 * explicited within the parameters
+	 * 
+	 * @param word       Binary word to be changed
+	 * @param parameter1 Number of rotations
+	 * @param parameter2 Number of rotations
+	 * @param parameter3 Number of rotations
+	 * @param SHR        Represents if SHR is used instead of ROTR
+	 * @return ROTR(parameter1)(word) XOR ROTR(parameter2)(word) XOR
+	 *         (ROTR(parameter3)(word) | SHR(parameter3)(word))
+	 */
+	private String sigmaFunctionOperation(String word, int parameter1, int parameter2, int parameter3, boolean SHR) {
 		String result = "", finalResult = "";
-		String rotation1 = ROTR(word, 2), rotation2 = ROTR(word, 13), rotation3 = ROTR(word, 22);
+		String rotation1 = ROTR(word, parameter1), rotation2 = ROTR(word, parameter2), rotation3;
+		if (SHR) {
+			rotation3 = SHR(word, parameter3);
+		} else {
+			rotation3 = ROTR(word, parameter3);
+		}
 		for (int i = 0; i < word.length(); i++) {
 			result += rotation1.charAt(i) ^ rotation2.charAt(i);
 		}
 		for (int i = 0; i < word.length(); i++) {
 			finalResult += result.charAt(i) ^ rotation3.charAt(i);
 		}
-		System.out.println("Res:\t" + finalResult);
 		return finalResult;
 	}
 
@@ -230,7 +285,7 @@ public class HashFunction {
 	public String leftShiftOperation(String sequence, int n) {
 		int start = n;
 		if (n < 0) {
-			throw new NumberFormatException("Cannot shift bits a negative number of times.");
+			throw new NumberFormatException("Cannot left shift bits a negative number of times.");
 		}
 		while (n > 0) { // if n is negative it is treated as if it was zero
 			sequence = sequence + "0";
@@ -251,7 +306,7 @@ public class HashFunction {
 	public String rightShiftOperation(String sequence, int n) {
 		int end = n;
 		if (n < 0) {
-			throw new NumberFormatException("Cannot shift bits a negative number of times.");
+			throw new NumberFormatException("Cannot right shift bits a negative number of times.");
 		}
 		while (n > 0) { // if n is negative it is treated as if it was zero
 			sequence = "0" + sequence;
