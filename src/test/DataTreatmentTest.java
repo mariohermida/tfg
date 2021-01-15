@@ -7,7 +7,7 @@ import shs.DataTreatment;
 public class DataTreatmentTest {
 
 	private DataTreatment d = new DataTreatment();
-
+	
 	@Test
 	void testTextToBinary() {
 		assertEquals(

@@ -161,7 +161,6 @@ public class HashFunction {
 				case 1:
 					return sigmaFunctionOperation(word, 6, 11, 25, false);
 				}
-				break;
 			case "lower":
 				switch (zeroOrOne) {
 				case 0:
@@ -169,9 +168,7 @@ public class HashFunction {
 				case 1:
 					return sigmaFunctionOperation(word, 17, 19, 10, true);
 				}
-				break;
 			}
-			break;
 		case 64:
 			switch (upperOrLower) {
 			case "upper":
@@ -181,7 +178,6 @@ public class HashFunction {
 				case 1:
 					return sigmaFunctionOperation(word, 14, 18, 41, false);
 				}
-				break;
 			case "lower":
 				switch (zeroOrOne) {
 				case 0:
@@ -189,9 +185,7 @@ public class HashFunction {
 				case 1:
 					return sigmaFunctionOperation(word, 19, 61, 6, true);
 				}
-				break;
 			}
-			break;
 		}
 		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
 	}
