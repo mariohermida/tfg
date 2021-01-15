@@ -29,4 +29,8 @@ public class SHA_1 extends HashFunction {
 		}
 	}
 	
+	public String[] getValues() {
+		return initialHashValues;
+	}
+	
 }
