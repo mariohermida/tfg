@@ -24,6 +24,9 @@ public class DataTreatment {
 	 * @return The binary string multiple of 8 bits
 	 */
 	public String textToBinary(String text) {
+		if (text == "") {
+			return "00000000";
+		}
 		byte[] byteArray = text.getBytes(StandardCharsets.US_ASCII);
 		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {

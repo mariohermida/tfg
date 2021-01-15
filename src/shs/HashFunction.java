@@ -10,6 +10,8 @@ import java.util.ArrayList;
  */
 public class HashFunction {
 
+	String binaryMessage;
+	String binaryMessagePadded;
 	int messageDigest;
 	int wordSize;
 	int blockSize;
@@ -23,9 +25,9 @@ public class HashFunction {
 	 * 
 	 * @return The message padded with determined number of zeroes
 	 */
-	public String padMessage(String originalMessage) {
-		String messagePadded = originalMessage, messageBinaryLength = "";
-		// the previous 1
+	public String padMessage() {
+		String messagePadded = binaryMessage, messageBinaryLength = "";
+		// the leading 1
 		if (messagePadded.length() < blockSize - maximumMessageSize) {
 			messagePadded += "1";
 		}
@@ -34,7 +36,7 @@ public class HashFunction {
 			messagePadded += "0";
 		}
 		// binary length representation of the original message (64/128 bits)
-		messageBinaryLength = Integer.toBinaryString(originalMessage.length());
+		messageBinaryLength = Integer.toBinaryString(binaryMessage.length());
 		while (messageBinaryLength.length() < maximumMessageSize) {
 			messageBinaryLength = "0" + messageBinaryLength;
 		}
