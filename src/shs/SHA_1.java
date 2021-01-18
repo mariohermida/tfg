@@ -16,15 +16,17 @@ public class SHA_1 extends HashFunction {
 	public SHA_1(String binaryMessage) {
 		System.out.println("\tSHA-1 ALGORITHM");
 		this.binaryMessage = binaryMessage;
+		//check whether the length is valid or not (if it exceeds 2^64)
 		messageDigest = 160;
 		wordSize = 32;
 		maximumMessageSize = 64;
 		blockSize = 512;
+		blockList = new ArrayList<>();
 		binaryMessagePadded = padMessage();
-		words = parseMessage(binaryMessagePadded);
+		/*words = parseMessage(binaryMessagePadded);
 		for (String a : words) {
 			System.out.println(a);
-		}
+		}*/
 	}
 	
 	public String[] getValues() {

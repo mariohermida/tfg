@@ -51,9 +51,9 @@ public class Main {
 		System.out.println("The input message is: '" + message + "'");
 		
 		//Testing
-		DataTreatment d = new DataTreatment();
-		//System.out.println(d.textToBinary("a"));
-		zeroGenerator(448);
+		/*DataTreatment d = new DataTreatment();
+		System.out.println(d.textToBinary("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829"));
+		zeroGenerator(54);*/
 		
 	}
 	

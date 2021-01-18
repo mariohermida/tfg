@@ -12,13 +12,14 @@ public class HashFunction {
 
 	String binaryMessage;
 	String binaryMessagePadded;
+	ArrayList<String> blockList;
 	int messageDigest;
 	int wordSize;
 	int blockSize;
 	int maximumMessageSize;
 
 	/**
-	 * The idea is to have a message with length multiple of 512/1024 (block size)
+	 * The idea is to have a message whose length is multiple of 512/1024 (block size)
 	 * The messagePadded is built this way: original binary message + 1 + as many 0s
 	 * as needed + length of the original message in binary (reserving 64/128 bits
 	 * here)
@@ -26,22 +27,46 @@ public class HashFunction {
 	 * @return The message padded with determined number of zeroes
 	 */
 	public String padMessage() {
-		String messagePadded = binaryMessage, messageBinaryLength = "";
-		// the leading 1
-		if (messagePadded.length() < blockSize - maximumMessageSize) {
+		String messagePadded = binaryMessage, binaryMessageLength = "";
+		int numberOfBlocks = 0, auxLength = binaryMessage.length();
+		boolean paddingInTwoBlocks = false;
+		while (auxLength > 0) {
+			if (auxLength == blockSize-maximumMessageSize) {
+				numberOfBlocks+=2;
+				paddingInTwoBlocks = true;
+			} else {
+				numberOfBlocks++;
+			}
+			auxLength -= blockSize;
+		}
+		System.out.println("Number of blocks needed: " + numberOfBlocks);
+		if (paddingInTwoBlocks) {
+			int zeroes = blockSize*(numberOfBlocks-1) - binaryMessage.length();
 			messagePadded += "1";
+			// As many zeroes as we need
+			for (int i = 0; i < zeroes; i++) {
+				messagePadded += "0";
+			}
+			while (messagePadded.length() < blockSize*numberOfBlocks - maximumMessageSize) {
+				messagePadded += "0";
+			}
+		} else {
+			messagePadded += "1";
+			// As many zeroes as we need
+			while (messagePadded.length() < blockSize*numberOfBlocks - maximumMessageSize) {
+				messagePadded += "0";
+			}
 		}
-		// as many zeroes as we need
-		while (messagePadded.length() < blockSize - maximumMessageSize) {
-			messagePadded += "0";
+		// Binary length representation of the original message (64/128 bits)
+		binaryMessageLength = Integer.toBinaryString(binaryMessage.length());
+		while (binaryMessageLength.length() < maximumMessageSize) {
+			binaryMessageLength = "0" + binaryMessageLength;
 		}
-		// binary length representation of the original message (64/128 bits)
-		messageBinaryLength = Integer.toBinaryString(binaryMessage.length());
-		while (messageBinaryLength.length() < maximumMessageSize) {
-			messageBinaryLength = "0" + messageBinaryLength;
-		}
-		messagePadded = messagePadded + messageBinaryLength;
-		System.out.println("Message padded: " + "\t" + messagePadded);
+		messagePadded = messagePadded + binaryMessageLength;
+		// Divide into blocks
+		/*for (int i = 0; i < messagePadded.length(); i+=blockSize) {
+			blockList.add(messagePadded.substring(i, i+blockSize));
+		}*/
 		return messagePadded;
 	}
 
@@ -306,7 +331,7 @@ public class HashFunction {
 		if (n < 0) {
 			throw new NumberFormatException("Cannot left shift bits a negative number of times.");
 		}
-		while (n > 0) { // if n is negative it is treated as if it was zero
+		while (n > 0) { // If n is negative it is treated as if it was zero
 			sequence = sequence + "0";
 			n--;
 		}
@@ -327,7 +352,7 @@ public class HashFunction {
 		if (n < 0) {
 			throw new NumberFormatException("Cannot right shift bits a negative number of times.");
 		}
-		while (n > 0) { // if n is negative it is treated as if it was zero
+		while (n > 0) { // If n is negative it is treated as if it was zero
 			sequence = "0" + sequence;
 			n--;
 		}
