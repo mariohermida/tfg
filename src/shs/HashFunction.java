@@ -13,6 +13,7 @@ public class HashFunction {
 	String binaryMessage;
 	String binaryMessagePadded;
 	ArrayList<String> blockList;
+	ArrayList<ArrayList<String>> words;
 	int messageDigest;
 	int wordSize;
 	int blockSize;
@@ -64,9 +65,9 @@ public class HashFunction {
 		}
 		messagePadded = messagePadded + binaryMessageLength;
 		// Divide into blocks
-		/*for (int i = 0; i < messagePadded.length(); i+=blockSize) {
+		for (int i = 0; i < messagePadded.length(); i+=blockSize) {
 			blockList.add(messagePadded.substring(i, i+blockSize));
-		}*/
+		}
 		return messagePadded;
 	}
 
@@ -77,12 +78,16 @@ public class HashFunction {
 	 * @param binarySequence 512/1024 bits long padded sequence to be parsed
 	 * @return A list composed of the 16 binary words
 	 */
-	public ArrayList<String> parseMessage(String binarySequence) {
-		ArrayList<String> words = new ArrayList<>();
-		for (int i = 0; i < binarySequence.length(); i += wordSize) {
-			words.add(binarySequence.substring(i, i + wordSize));
+	public void parseMessage() {
+		words = new ArrayList<>();
+		ArrayList<String> temp = null;
+		for (int i = 0; i < blockList.size(); i ++) {
+			temp = new ArrayList<>();
+			for (int j = 0; j < blockList.get(i).length(); j += wordSize) {
+				temp.add(blockList.get(i).substring(j, j+wordSize));
+			}
+			words.add(temp);
 		}
-		return words;
 	}
 
 	/**

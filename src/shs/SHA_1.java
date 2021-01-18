@@ -11,7 +11,6 @@ public class SHA_1 extends HashFunction {
 
 	private String[] constants = {"5a827999", "6ed9eba1", "8f1bbcdc", "ca62c1d6"};
 	private String[] initialHashValues = {"67452301", "efcdab89", "98badcfe", "10325476", "c3d2e1f0"};
-	private ArrayList<String> words;
 	
 	public SHA_1(String binaryMessage) {
 		System.out.println("\tSHA-1 ALGORITHM");
@@ -23,10 +22,14 @@ public class SHA_1 extends HashFunction {
 		blockSize = 512;
 		blockList = new ArrayList<>();
 		binaryMessagePadded = padMessage();
-		/*words = parseMessage(binaryMessagePadded);
-		for (String a : words) {
-			System.out.println(a);
-		}*/
+		parseMessage();
+		for (int i = 0; i < words.size(); i++) {
+			System.out.println("Block number: " + (i+1));
+			for (int j = 0; j < words.get(i).size(); j++) {
+				System.out.println(words.get(i).get(j));
+			}
+			System.out.println();
+		}
 	}
 	
 	public String[] getValues() {
