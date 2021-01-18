@@ -27,6 +27,7 @@ public class Main {
 	 * WHAT HAPPENS IF THE MESSAGE IS LARGER THAN 448 BITS (1 BLOCK)? 
 	 * THERE HAVE TO BE ALWAYS PADDING, EVEN IF THE LENGTH IS THE DESIRED
 	 * CHECK MESSAGE LENGTH BEFORE PADDING
+	 * CHANGE TESTS: ONLY ONE ASSERTEQUALS PER METHOD
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -45,12 +46,14 @@ public class Main {
 		System.out.println("Write a message to be hashed: ");
 		// String message = sc.nextLine();
 		// sc.close();
-		String message = "¡Hola a todos, amigos!";
+		//String message = "¡Hola a todos, amigos!";
+		String message = "0";
 		System.out.println("The input message is: '" + message + "'");
 		
 		//Testing
 		DataTreatment d = new DataTreatment();
-		System.out.println(d.textToBinary("abc"));
+		//System.out.println(d.textToBinary("a"));
+		zeroGenerator(448);
 		
 	}
 	

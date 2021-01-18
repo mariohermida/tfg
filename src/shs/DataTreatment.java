@@ -14,24 +14,26 @@ import java.nio.charset.StandardCharsets;
  */
 public class DataTreatment {
 
-	/*File file = new File("C:\\Users\\Mario Hermida\\git\\tfg\\txt\\words.txt");*/	
-	
+	/*
+	 * File file = new File("C:\\Users\\Mario Hermida\\git\\tfg\\txt\\words.txt");
+	 */
+
 	/**
-	 * It converts every character (byte) to a 7-bit sequence (US_ASCII),
-	 * then it is zero padded so that it is a 8-bit string.
+	 * It converts every character (byte) to a 7-bit sequence (US_ASCII), then it is
+	 * zero padded so that it is a 8-bit string.
 	 * 
 	 * @param message Whole text to be converted
 	 * @return The binary string multiple of 8 bits
 	 */
 	public String textToBinary(String text) {
-		if (text == "") {
+		if (text == "") { // Still not sure about this
 			return "00000000";
 		}
 		byte[] byteArray = text.getBytes(StandardCharsets.US_ASCII);
 		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {
 			binaryCharacter = Integer.toBinaryString(b);
-			while(binaryCharacter.length() < 8) {
+			while (binaryCharacter.length() < 8) {
 				binaryCharacter = "0" + binaryCharacter;
 			}
 			binaryMessage += binaryCharacter;
@@ -46,41 +48,41 @@ public class DataTreatment {
 	 */
 	public String binaryToHexadecimal(String binary) {
 		String hexadecimal = "", substring;
-		//Adapting binary number for being multiple of 4 bits
-		while (binary.length()%4!=0) {
+		// Adapting binary number for being multiple of 4 bits
+		while (binary.length() % 4 != 0) {
 			binary = "0" + binary;
 		}
-		//Splitting into 4-bit blocks and converting into hexadecimal
-		for (int i = 0; i < binary.length(); i+=4) {
+		// Splitting into 4-bit blocks and converting into hexadecimal
+		for (int i = 0; i < binary.length(); i += 4) {
 			substring = "";
 			substring += binary.charAt(i);
-			substring += binary.charAt(i+1);
-			substring += binary.charAt(i+2);
-			substring += binary.charAt(i+3);
+			substring += binary.charAt(i + 1);
+			substring += binary.charAt(i + 2);
+			substring += binary.charAt(i + 3);
 			hexadecimal += Integer.toHexString(Integer.parseInt(substring, 2));
 		}
 		return hexadecimal;
 	}
-	
+
 	/**
 	 * 
 	 * @param hexadecimal Hexadecimal value to be converted
 	 * @return Binary value from hexadecimal value
 	 */
-	public String hexadecimalToBinary(String hexadecimal) {		
+	public String hexadecimalToBinary(String hexadecimal) {
 		String binary = "", binaryResult = "", hexDigit;
 		for (int i = 0; i < hexadecimal.length(); i++) {
 			hexDigit = String.valueOf(hexadecimal.charAt(i));
 			binary = Integer.toBinaryString((Integer.parseInt(hexDigit, 16)));
-			//Appending zeroes for having multiple of 4 bits number
-			while(binary.length()%4 != 0) {				
+			// Appending zeroes for having multiple of 4 bits number
+			while (binary.length() % 4 != 0) {
 				binary = "0" + binary;
 			}
 			binaryResult += binary;
 		}
 		return binaryResult;
 	}
-	
+
 	private void readFile(File file) {
 		FileReader fr;
 		BufferedReader br;
@@ -102,20 +104,20 @@ public class DataTreatment {
 
 	private void writeFile(File file) {
 		FileWriter fw;
-		
+
 		try {
 			fw = new FileWriter(file);
-			
+
 			if (file.createNewFile()) {
 				System.out.println("File created: " + file.getName());
 			} else {
 				System.out.println("File already exists.");
 			}
-			
+
 			fw.write("I am writing to a file");
 			fw.close();
 			System.out.println("Writing to a file successfully done!");
-			
+
 		} catch (IOException e) {
 			System.out.println("An error occurred.");
 			e.printStackTrace();

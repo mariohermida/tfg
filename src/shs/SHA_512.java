@@ -42,7 +42,7 @@ public class SHA_512 extends HashFunction{
 		maximumMessageSize = 128; 
 		blockSize = 1024;
 		//binaryMessagePadded = padMessage(binaryMessage);
-		words = parseMessage(padMessage(binaryMessage));
+		words = parseMessage(padMessage());
 		for (String a : words) {
 			System.out.println(a);
 		}

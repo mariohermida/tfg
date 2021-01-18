@@ -20,7 +20,7 @@ public class HashFunction {
 	/**
 	 * The idea is to have a message with length multiple of 512/1024 (block size)
 	 * The messagePadded is built this way: original binary message + 1 + as many 0s
-	 * as we need + length of the original message in binary (reserving 64/128 bits
+	 * as needed + length of the original message in binary (reserving 64/128 bits
 	 * here)
 	 * 
 	 * @return The message padded with determined number of zeroes

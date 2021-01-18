@@ -30,7 +30,7 @@ public class SHA_256 extends HashFunction{
 		maximumMessageSize = 64; 
 		blockSize = 512;
 		//binaryMessagePadded = padMessage(binaryMessage);
-		words = parseMessage(padMessage(binaryMessage));
+		words = parseMessage(padMessage());
 		for (String a : words) {
 			System.out.println(a);
 		}
