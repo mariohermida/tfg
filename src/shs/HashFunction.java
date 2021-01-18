@@ -61,6 +61,29 @@ public class HashFunction {
 	}
 
 	/**
+	 * f function, used at the time of computing only SHA-1 algorithm. Depending on
+	 * the value of index it redirects the input to the right function
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param index	Variable in charge of selecting the right logical function
+	 * @return 32-bit word resulted from the convenient logical function
+	 */
+	public String f(String x, String y, String z, int index) {
+		if (index >= 0 && index <= 19) {
+			return Ch(x, y, z);
+		} else if (index >= 20 && index <= 39) {
+			return Parity(x, y, z);
+		} else if (index >= 40 && index <= 59) {
+			return Maj(x, y, z);
+		} else if (index >= 60 && index <= 79) {
+			return Parity(x, y, z);
+		}
+		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
+	}
+
+	/**
 	 * Ch function
 	 * 
 	 * @param x
