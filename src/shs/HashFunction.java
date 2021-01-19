@@ -12,65 +12,78 @@ public class HashFunction {
 
 	protected String binaryMessage; // Original binary message
 	protected String binaryMessagePadded; // Binary message whose length is 512/1024 bits
-	protected ArrayList<String> blocks; // 
+	protected ArrayList<String> blocks; //
 	protected ArrayList<ArrayList<String>> words; // Contains all the words for every block
 	protected int messageDigestLength; // Number of bits resulted from hash function
 	protected int wordSize;
 	protected int blockSize;
-	protected int maximumMessageSize; //Maximum length allowed for a message to be hashed
+	protected int maximumMessageLength; // Maximum amount of bits for representing message length
 
 	/**
 	 * The idea is to have a message whose length is multiple of 512/1024 (block
-	 * size) The messagePadded is built this way: original binary message + 1 + as
-	 * many 0s as needed + length of the original message in binary (reserving
-	 * 64/128 bits here)
+	 * size) The binaryMessagePadded is built this way: original binary message + 1
+	 * + as many 0s as needed + length of the original message in binary (reserving
+	 * 64/128 (maximumMessageSize) bits here)
 	 * 
 	 * @return The message padded with determined number of zeroes
 	 */
 	public void padMessage() {
 		binaryMessagePadded = binaryMessage;
-		String binaryMessageLength = "";
-		int numberOfBlocks = 0, auxLength = binaryMessage.length();
-		boolean paddingInTwoBlocks = false;
-		while (auxLength > 0) {
-			if (auxLength == blockSize - maximumMessageSize) {
-				numberOfBlocks += 2;
-				paddingInTwoBlocks = true;
-			} else {
-				numberOfBlocks++;
-			}
+		int numberOfBlocks = 1, auxLength = binaryMessage.length();
+		boolean isPaddingInTwoBlocks = false;
+
+		// Message size management
+		if (binaryMessage.length() > Math.pow(2, maximumMessageLength)) {
+			throw new IllegalArgumentException("Input message exceeds maximum length allowed");
+		}
+
+		// Determine how many blocks are going to be needed
+		while (auxLength > blockSize) {
+			numberOfBlocks++;
 			auxLength -= blockSize;
 		}
-		System.out.println("Number of blocks needed: " + numberOfBlocks);
-		if (paddingInTwoBlocks) {
-			int zeroes = blockSize * (numberOfBlocks - 1) - binaryMessage.length();
-			binaryMessagePadded += "1";
-			// As many zeroes as we need
-			for (int i = 0; i < zeroes; i++) {
-				binaryMessagePadded += "0";
-			}
-			while (binaryMessagePadded.length() < blockSize * numberOfBlocks - maximumMessageSize) {
-				binaryMessagePadded += "0";
-			}
-		} else {
-			binaryMessagePadded += "1";
-			// As many zeroes as we need
-			while (binaryMessagePadded.length() < blockSize * numberOfBlocks - maximumMessageSize) {
-				binaryMessagePadded += "0";
-			}
+		if (auxLength >= blockSize - maximumMessageLength) {
+			numberOfBlocks++;
+			isPaddingInTwoBlocks = true;
 		}
-		
+		System.out.println("Number of blocks: " + numberOfBlocks);
+
+		// Deal with padding
+		int bitsToAdd = (blockSize - maximumMessageLength) - auxLength;
+		if (isPaddingInTwoBlocks) {
+			bitsToAdd += maximumMessageLength; // Add bits for padding the second last block
+			bitsToAdd += blockSize - maximumMessageLength; // Add bits for wholly padding the last block
+		}
+		binaryMessagePadded = addPadding(binaryMessagePadded, bitsToAdd);
+
 		// Binary length representation of the original message (64/128 bits)
-		binaryMessageLength = Integer.toBinaryString(binaryMessage.length());
-		while (binaryMessageLength.length() < maximumMessageSize) {
+		String binaryMessageLength = Integer.toBinaryString(binaryMessage.length());
+		while (binaryMessageLength.length() < maximumMessageLength) {
 			binaryMessageLength = "0" + binaryMessageLength;
 		}
 		binaryMessagePadded = binaryMessagePadded + binaryMessageLength;
-		
+
 		// Division into blocks
 		for (int i = 0; i < binaryMessagePadded.length();) {
 			blocks.add(binaryMessagePadded.substring(i, i += blockSize));
 		}
+	}
+
+	/**
+	 * It fills the message with a 1 and as 0s as needed
+	 * 
+	 * @param message
+	 * @param numberOfBitsToAdd
+	 * @return Message with convenient padding added
+	 */
+	private String addPadding(String message, int numberOfBitsToAdd) {
+		message += "1";
+		numberOfBitsToAdd--;
+		while (numberOfBitsToAdd > 0) {
+			message += "0";
+			numberOfBitsToAdd--;
+		}
+		return message;
 	}
 
 	/**

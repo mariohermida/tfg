@@ -19,14 +19,13 @@ public class Main {
 	 * MAYBE INDICATE WITHIN THE CONSTRUCTOR THE TYPE OF DATA (TEXT, BINARY,
 	 * HEXADECIMAL) IN DATA TREATMENT CLASS FUNCTIONALITY CAN BE DEVELOPED IN
 	 * HASHFUNCTION CLASS WHEREAS ALL THE PARAMETERS ARE EXPLICITED IN EACH
-	 * ALGORITHM CLASS
-	 * THINK OF CHANGING HASHFUNCTION CLASS TO ABSTRACT
-	 * THINK OF DECLARING ALL THE VARIABLES IN THE SUPERCLASS (HASHFUNCTION)
-	 * CONSIDER PASSING THE TEXT AS IT IS (CHANGING TO BINARY IN THE SHA_* CONSTRUCTOR)
-	 * WHAT HAPPENS IF THE MESSAGE IS LARGER THAN 448 BITS (1 BLOCK)? 
-	 * THERE HAVE TO BE ALWAYS PADDING, EVEN IF THE LENGTH IS THE DESIRED
-	 * CHECK MESSAGE LENGTH BEFORE PADDING
-	 * CHANGE TESTS: ONLY ONE ASSERTEQUALS PER METHOD
+	 * ALGORITHM CLASS THINK OF CHANGING HASHFUNCTION CLASS TO ABSTRACT THINK OF
+	 * DECLARING ALL THE VARIABLES IN THE SUPERCLASS (HASHFUNCTION) CONSIDER PASSING
+	 * THE TEXT AS IT IS (CHANGING TO BINARY IN THE SHA_* CONSTRUCTOR) WHAT HAPPENS
+	 * IF THE MESSAGE IS LARGER THAN 448 BITS (1 BLOCK)? THERE HAVE TO BE ALWAYS
+	 * PADDING, EVEN IF THE LENGTH IS THE DESIRED CHECK MESSAGE LENGTH BEFORE
+	 * PADDING CHANGE TESTS: ONLY ONE ASSERTEQUALS PER METHOD IN PAD MESSAGE
+	 * FUNCTION VARIABLE NUMBER OF BLOCKS CAN BE DELETED (IT IS NOT USED)
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -47,16 +46,15 @@ public class Main {
 		sc.close();
 		String message = "¡Hola a todos, amigos!";
 		System.out.println("The input message is: '" + message + "'");
-		
-		//Testing
+
+		// Testing
 		DataTreatment d = new DataTreatment();
-		System.out.println(d.textToBinary("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A"));
-		//zeroGenerator(54);
-		
-		/*SHA_1 sh = new SHA_1(d.textToBinary("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A"));
-		sh.getBinaryMessagePadded();*/
+		System.out.println(d.textToBinary(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A"));
+		zeroGenerator(54);
+
 	}
-	
+
 	private void zeroGenerator(int number) {
 		for (int i = 0; i < number; i++) {
 			System.out.print("0");
