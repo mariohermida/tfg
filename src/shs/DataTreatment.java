@@ -69,7 +69,7 @@ public class DataTreatment {
 		for (int i = 0; i < hexadecimal.length(); i++) {
 			hexDigit = String.valueOf(hexadecimal.charAt(i));
 			binary = Integer.toBinaryString((Integer.parseInt(hexDigit, 16)));
-			// Appending zeroes for having multiple of 4 bits number
+			// Appending zeroes for having numbers multiple of 4 bits
 			while (binary.length() % 4 != 0) {
 				binary = "0" + binary;
 			}

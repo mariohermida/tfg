@@ -49,9 +49,8 @@ public class Main {
 
 		// Testing
 		DataTreatment d = new DataTreatment();
-		System.out.println(d.textToBinary(
-				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A"));
-		zeroGenerator(54);
+		System.out.println(d.textToBinary(""));
+		zeroGenerator(116);
 
 	}
 
