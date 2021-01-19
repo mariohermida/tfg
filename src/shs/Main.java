@@ -1,6 +1,5 @@
 package shs;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -44,17 +43,18 @@ public class Main {
 		System.out.println("Starting program...\n");
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Write a message to be hashed: ");
-		// String message = sc.nextLine();
-		// sc.close();
-		//String message = "¡Hola a todos, amigos!";
-		String message = "0";
+//		 String message = sc.nextLine();
+		sc.close();
+		String message = "¡Hola a todos, amigos!";
 		System.out.println("The input message is: '" + message + "'");
 		
 		//Testing
-		/*DataTreatment d = new DataTreatment();
-		System.out.println(d.textToBinary("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829"));
-		zeroGenerator(54);*/
+		DataTreatment d = new DataTreatment();
+		System.out.println(d.textToBinary("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A"));
+		//zeroGenerator(54);
 		
+		/*SHA_1 sh = new SHA_1(d.textToBinary("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A"));
+		sh.getBinaryMessagePadded();*/
 	}
 	
 	private void zeroGenerator(int number) {

@@ -10,30 +10,31 @@ import java.util.ArrayList;
  */
 public class HashFunction {
 
-	String binaryMessage;
-	String binaryMessagePadded;
-	ArrayList<String> blockList;
-	ArrayList<ArrayList<String>> words;
-	int messageDigest;
-	int wordSize;
-	int blockSize;
-	int maximumMessageSize;
+	protected String binaryMessage; // Original binary message
+	protected String binaryMessagePadded; // Binary message whose length is 512/1024 bits
+	protected ArrayList<String> blocks; // 
+	protected ArrayList<ArrayList<String>> words; // Contains all the words for every block
+	protected int messageDigestLength; // Number of bits resulted from hash function
+	protected int wordSize;
+	protected int blockSize;
+	protected int maximumMessageSize; //Maximum length allowed for a message to be hashed
 
 	/**
-	 * The idea is to have a message whose length is multiple of 512/1024 (block size)
-	 * The messagePadded is built this way: original binary message + 1 + as many 0s
-	 * as needed + length of the original message in binary (reserving 64/128 bits
-	 * here)
+	 * The idea is to have a message whose length is multiple of 512/1024 (block
+	 * size) The messagePadded is built this way: original binary message + 1 + as
+	 * many 0s as needed + length of the original message in binary (reserving
+	 * 64/128 bits here)
 	 * 
 	 * @return The message padded with determined number of zeroes
 	 */
-	public String padMessage() {
-		String messagePadded = binaryMessage, binaryMessageLength = "";
+	public void padMessage() {
+		binaryMessagePadded = binaryMessage;
+		String binaryMessageLength = "";
 		int numberOfBlocks = 0, auxLength = binaryMessage.length();
 		boolean paddingInTwoBlocks = false;
 		while (auxLength > 0) {
-			if (auxLength == blockSize-maximumMessageSize) {
-				numberOfBlocks+=2;
+			if (auxLength == blockSize - maximumMessageSize) {
+				numberOfBlocks += 2;
 				paddingInTwoBlocks = true;
 			} else {
 				numberOfBlocks++;
@@ -42,33 +43,34 @@ public class HashFunction {
 		}
 		System.out.println("Number of blocks needed: " + numberOfBlocks);
 		if (paddingInTwoBlocks) {
-			int zeroes = blockSize*(numberOfBlocks-1) - binaryMessage.length();
-			messagePadded += "1";
+			int zeroes = blockSize * (numberOfBlocks - 1) - binaryMessage.length();
+			binaryMessagePadded += "1";
 			// As many zeroes as we need
 			for (int i = 0; i < zeroes; i++) {
-				messagePadded += "0";
+				binaryMessagePadded += "0";
 			}
-			while (messagePadded.length() < blockSize*numberOfBlocks - maximumMessageSize) {
-				messagePadded += "0";
+			while (binaryMessagePadded.length() < blockSize * numberOfBlocks - maximumMessageSize) {
+				binaryMessagePadded += "0";
 			}
 		} else {
-			messagePadded += "1";
+			binaryMessagePadded += "1";
 			// As many zeroes as we need
-			while (messagePadded.length() < blockSize*numberOfBlocks - maximumMessageSize) {
-				messagePadded += "0";
+			while (binaryMessagePadded.length() < blockSize * numberOfBlocks - maximumMessageSize) {
+				binaryMessagePadded += "0";
 			}
 		}
+		
 		// Binary length representation of the original message (64/128 bits)
 		binaryMessageLength = Integer.toBinaryString(binaryMessage.length());
 		while (binaryMessageLength.length() < maximumMessageSize) {
 			binaryMessageLength = "0" + binaryMessageLength;
 		}
-		messagePadded = messagePadded + binaryMessageLength;
-		// Divide into blocks
-		for (int i = 0; i < messagePadded.length(); i+=blockSize) {
-			blockList.add(messagePadded.substring(i, i+blockSize));
+		binaryMessagePadded = binaryMessagePadded + binaryMessageLength;
+		
+		// Division into blocks
+		for (int i = 0; i < binaryMessagePadded.length();) {
+			blocks.add(binaryMessagePadded.substring(i, i += blockSize));
 		}
-		return messagePadded;
 	}
 
 	/**
@@ -79,12 +81,11 @@ public class HashFunction {
 	 * @return A list composed of the 16 binary words
 	 */
 	public void parseMessage() {
-		words = new ArrayList<>();
 		ArrayList<String> temp = null;
-		for (int i = 0; i < blockList.size(); i ++) {
+		for (int i = 0; i < blocks.size(); i++) {
 			temp = new ArrayList<>();
-			for (int j = 0; j < blockList.get(i).length(); j += wordSize) {
-				temp.add(blockList.get(i).substring(j, j+wordSize));
+			for (int j = 0; j < blocks.get(i).length(); j += wordSize) {
+				temp.add(blocks.get(i).substring(j, j + wordSize));
 			}
 			words.add(temp);
 		}
@@ -97,7 +98,7 @@ public class HashFunction {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @param index	Variable in charge of selecting the right logical function
+	 * @param index Variable in charge of selecting the right logical function
 	 * @return 32-bit word resulted from the convenient logical function
 	 */
 	public String f(String x, String y, String z, int index) {
@@ -336,7 +337,7 @@ public class HashFunction {
 		if (n < 0) {
 			throw new NumberFormatException("Cannot left shift bits a negative number of times.");
 		}
-		while (n > 0) { // If n is negative it is treated as if it was zero
+		while (n > 0) {
 			sequence = sequence + "0";
 			n--;
 		}
@@ -357,7 +358,7 @@ public class HashFunction {
 		if (n < 0) {
 			throw new NumberFormatException("Cannot right shift bits a negative number of times.");
 		}
-		while (n > 0) { // If n is negative it is treated as if it was zero
+		while (n > 0) {
 			sequence = "0" + sequence;
 			n--;
 		}
