@@ -8,16 +8,23 @@ import java.util.ArrayList;
  * @author Mario Hermida
  *
  */
-public class HashFunction {
+public abstract class HashFunction {
 
 	protected String binaryMessage; // Original binary message
-	protected String binaryMessagePadded; // Binary message whose length is 512/1024 bits
-	protected ArrayList<String> blocks; //
-	protected ArrayList<ArrayList<String>> words; // Contains all the words for every block
-	protected int messageDigestLength; // Number of bits resulted from hash function
+	protected String binaryMessagePadded; // Binary message (multiple of 512/1024 bits)
+	protected ArrayList<String> blocks; // Binary padded message divided into blocks
+	protected ArrayList<ArrayList<String>> words; // 32/64-bits words extracted from every block
+	protected int messageDigestLength; // Number of bits resulted from hash computation
 	protected int wordSize;
 	protected int blockSize;
 	protected int maximumMessageLength; // Maximum amount of bits for representing message length
+
+	/**
+	 * Computes the final hash according to the algorithm chosen
+	 * 
+	 * @return Hexadecimal hash resulted from the original message
+	 */
+	abstract String computeHash();
 
 	/**
 	 * The idea is to have a message whose length is multiple of 512/1024 (block
@@ -27,26 +34,27 @@ public class HashFunction {
 	 * 
 	 * @return The message padded with determined number of zeroes
 	 */
-	public void padMessage() {
+	protected void padMessage() {
 		binaryMessagePadded = binaryMessage;
-		int numberOfBlocks = 1, auxLength = binaryMessage.length();
+//		int numberOfBlocks = 1;
+		int auxLength = binaryMessage.length();
 		boolean isPaddingInTwoBlocks = false;
 
-		// Message size management
+		// Message length management
 		if (binaryMessage.length() > Math.pow(2, maximumMessageLength)) {
 			throw new IllegalArgumentException("Input message exceeds maximum length allowed");
 		}
 
-		// Determine how many blocks are going to be needed
+		// Detect if there is going to be padding in two blocks
 		while (auxLength > blockSize) {
-			numberOfBlocks++;
+//			numberOfBlocks++;
 			auxLength -= blockSize;
-		}
+		} // auxLength value here is equal or less than blockSize
 		if (auxLength >= blockSize - maximumMessageLength) {
-			numberOfBlocks++;
+//			numberOfBlocks++;
 			isPaddingInTwoBlocks = true;
 		}
-		System.out.println("Number of blocks: " + numberOfBlocks);
+//		System.out.println("Number of blocks: " + numberOfBlocks);
 
 		// Deal with padding
 		int bitsToAdd = (blockSize - maximumMessageLength) - auxLength;
@@ -90,10 +98,9 @@ public class HashFunction {
 	 * The goal here is to have 16 binary words (32/64 bits long) according to the
 	 * word size of the algorithm chosen
 	 * 
-	 * @param binarySequence 512/1024 bits long padded sequence to be parsed
 	 * @return A list composed of the 16 binary words
 	 */
-	public void parseMessage() {
+	protected void parseMessage() {
 		ArrayList<String> temp = null;
 		for (int i = 0; i < blocks.size(); i++) {
 			temp = new ArrayList<>();
@@ -271,7 +278,8 @@ public class HashFunction {
 	 * @return ROTR(parameter1)(word) XOR ROTR(parameter2)(word) XOR
 	 *         (ROTR(parameter3)(word) | SHR(parameter3)(word))
 	 */
-	private String sigmaFunctionOperation(String word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+	private String sigmaFunctionOperation(String word, int parameter1, int parameter2, int parameter3,
+			boolean SHR) {
 		String result = "", finalResult = "";
 		String rotation1 = ROTR(word, parameter1), rotation2 = ROTR(word, parameter2), rotation3;
 		if (SHR) {

@@ -42,6 +42,12 @@ public class SHA_512_224 extends HashFunction {
 		parseMessage();
 		showWords();
 	}
+	
+	@Override
+	String computeHash() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	private void showWords() {
 		for (int i = 0; i < words.size(); i++) {

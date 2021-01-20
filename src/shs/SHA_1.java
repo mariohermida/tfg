@@ -24,6 +24,14 @@ public class SHA_1 extends HashFunction {
 		padMessage();
 		parseMessage();
 		showWords();
+		computeHash();
+	}
+	
+	@Override
+	String computeHash() {
+		System.out.println("I am computing the hash function");
+		System.out.println();
+		return "";
 	}
 
 	private void showWords() {
