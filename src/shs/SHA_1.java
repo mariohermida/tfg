@@ -25,13 +25,24 @@ public class SHA_1 extends HashFunction {
 		parseMessage();
 		showWords();
 		computeHash();
+		showHashValues();
 	}
-	
+
+	private void showHashValues() {
+		for (int i = 0; i < initialHashValues.length; i++) {
+			System.out.println("Value " + (i+1) + ": " + initialHashValues[i]);
+		}
+	}
+
 	@Override
 	String computeHash() {
-		System.out.println("I am computing the hash function");
-		System.out.println();
-		return "";
+		String hash = "";
+		System.out.println("I am computing the hash...");
+
+		initialHashValues[0] = "cuc";
+
+		System.out.println("The hash is: '" + hash + "'");
+		return hash;
 	}
 
 	private void showWords() {

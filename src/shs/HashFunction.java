@@ -24,6 +24,7 @@ public abstract class HashFunction {
 	 * 
 	 * @return Hexadecimal hash resulted from the original message
 	 */
+	// ADDITION IS PERFORMED MODULO 2^wordSize
 	abstract String computeHash();
 
 	/**
