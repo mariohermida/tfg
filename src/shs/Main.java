@@ -1,5 +1,6 @@
 package shs;
 
+import java.math.BigInteger;
 import java.util.Scanner;
 
 /**
@@ -30,6 +31,10 @@ public class Main {
 	 * CHANGE INITIAL HASH VALUES TO HASH VALUES BECAUSE THEY ARE GOING TO BE CHANGED EVERY ITERATION
 	 * CHECK EVERYTHING REGARDING TESTS, IT IS NOT WORTHY HAVING PUBLIC METHODS JUST FOR TESTING (FOR
 	 * EXAMPLE GET BINARY MESSAGE PADDED)
+	 * TRY TO THINK OTHER WAY TO KEEP RECORD OF HASH VALUES BEING BINARY
+	 * CHECK EMPTY STRING FOR SHA_* COMPUTATION
+	 * CHECK VALUES IN THE LIMIT IN ORDER TO SEE IF COMPUTATION FOR SEVERAL BLOCKS WORKS
+	 * IN HASHFUNCTION IT IS POSSIBLE THAT MESSAGEDIGESTSIZE IS NO LONGER USEFUL
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -46,16 +51,12 @@ public class Main {
 		System.out.println("Starting program...\n");
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Write a message to be hashed: ");
-//		 String message = sc.nextLine();
+		String message = sc.nextLine();
 		sc.close();
-		String message = "¡Hola a todos, amigos!";
+//		String message = "Hola a todos, amigos!";
 		System.out.println("The input message is: '" + message + "'");
 
-		// Testing
 		DataTreatment d = new DataTreatment();
-		/*System.out.println(d.textToBinary(""));
-		zeroGenerator(116);*/
-
 		SHA_1 sh = new SHA_1(d.textToBinary(message));
 		System.out.println("The hash value is: '" + sh.computeHash() + "'");
 	}

@@ -1,5 +1,6 @@
 package shs;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -35,42 +36,55 @@ public class SHA_1 extends HashFunction {
 		// Each block is iterated through
 		ArrayList<String> messageSchedule = null;
 		for (int i = 0; i < words.size(); i++) {
-			// Message schedule preparation
+			// Message schedule preparation (80 words)
 			messageSchedule = new ArrayList<>();
-			for (int j = 0; j < 80; j++) {
-				if (j < 16) {
-					messageSchedule.add(words.get(i).get(j));
-				} else {
-					messageSchedule.add(ROTL(XOR(messageSchedule.get(j - 3), messageSchedule.get(j - 8),
-							messageSchedule.get(j - 14), messageSchedule.get(j - 16)), 1));
+			for (int t = 0; t < 80; t++) {
+				if (t < 16) {
+					messageSchedule.add(words.get(i).get(t));
+				} else { // From 16 to 79
+					messageSchedule.add(ROTL(XOR(messageSchedule.get(t - 3), messageSchedule.get(t - 8),
+							messageSchedule.get(t - 14), messageSchedule.get(t - 16)), 1));
 				}
 			}
 
-			//IMPLEMENT ADDITION MODULO 2^32 AND HEXADECIMAL TO BINARY VALUES
-			
 			// Initialize the working variables
-			String a = hashValues[0];
-			String b = hashValues[1];
-			String c = hashValues[2];
-			String d = hashValues[3];
-			String e = hashValues[4];
+			String a = hexadecimalToBinary(hashValues[0]);
+			String b = hexadecimalToBinary(hashValues[1]);
+			String c = hexadecimalToBinary(hashValues[2]);
+			String d = hexadecimalToBinary(hashValues[3]);
+			String e = hexadecimalToBinary(hashValues[4]);
 
-			String t;
-			for (int j = 0; j < 80; j++) {
-				t = ROTL(a, 5) + f(b, c, d, j) + e + CONSTANTS[j] + messageSchedule.get(j);
+			String T;
+			int index;
+			for (int t = 0; t < 80; t++) {
+				if (t < 20) {
+					index = 0;
+				} else if (t < 40) {
+					index = 1;
+				} else if (t < 60) {
+					index = 2;
+				} else {
+					index = 3;
+				}
+				T = addition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS[index]), messageSchedule.get(t));
 				e = d;
 				d = c;
 				c = ROTL(b, 30);
 				b = a;
-				a = t;
+				a = T;
 			}
-			
+
 			// Compute the intermediate hash value
-			hashValues[0] = a + hashValues[0];
-			hashValues[1] = b + hashValues[1];
-			hashValues[2] = c + hashValues[2];
-			hashValues[3] = d + hashValues[3];
-			hashValues[4] = e + hashValues[4];
+			hashValues[0] = addition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0");
+			hashValues[1] = addition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0");
+			hashValues[2] = addition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0");
+			hashValues[3] = addition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0");
+			hashValues[4] = addition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0");
+			
+			// Since hashValues are binary we should translate it into hexadecimal
+			for (int j = 0; j < hashValues.length; j++) {
+				hashValues[j] = binaryToHexadecimal(hashValues[j]);
+			}
 		}
 
 		// Concatenate hash values
@@ -78,6 +92,30 @@ public class SHA_1 extends HashFunction {
 			hash += hashValues[i];
 		}
 		return hash;
+	}
+
+	/**
+	 * Addition of 5 values, performed modul0 2^32
+	 * 
+	 * @param a
+	 * @param b
+	 * @param c
+	 * @param d
+	 * @param e
+	 * @return
+	 */
+	private String addition(String a, String b, String c, String d, String e) {
+		BigInteger ba = new BigInteger(a, 2);
+		BigInteger bb = new BigInteger(b, 2);
+		BigInteger bc = new BigInteger(c, 2);
+		BigInteger bd = new BigInteger(d, 2);
+		BigInteger be = new BigInteger(e, 2);
+		BigInteger bMod = BigInteger.TWO.pow(32);
+		String result = ba.add(bb.add(bc.add(bd.add(be)))).mod(bMod).toString(2);
+		while (result.length() < 32) {
+			result = "0" + result;
+		}
+		return result;
 	}
 
 	/**

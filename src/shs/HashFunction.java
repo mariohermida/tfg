@@ -105,7 +105,49 @@ public abstract class HashFunction {
 			words.add(temp);	
 		}
 	}
+	
+	/**
+	 * 
+	 * @param binary Binary string to be converted
+	 * @return Hexadecimal value from binary string
+	 */
+	public String binaryToHexadecimal(String binary) {
+		String hexadecimal = "", substring;
+		// Adapting binary number for being multiple of 4 bits
+		while (binary.length() % 4 != 0) {
+			binary = "0" + binary;
+		}
+		// Splitting into 4-bit blocks and converting into hexadecimal
+		for (int i = 0; i < binary.length(); i += 4) {
+			substring = "";
+			substring += binary.charAt(i);
+			substring += binary.charAt(i + 1);
+			substring += binary.charAt(i + 2);
+			substring += binary.charAt(i + 3);
+			hexadecimal += Integer.toHexString(Integer.parseInt(substring, 2));
+		}
+		return hexadecimal;
+	}
 
+	/**
+	 * 
+	 * @param hexadecimal Hexadecimal value to be converted
+	 * @return Binary value from hexadecimal value
+	 */
+	public String hexadecimalToBinary(String hexadecimal) {
+		String binary = "", binaryResult = "", hexDigit;
+		for (int i = 0; i < hexadecimal.length(); i++) {
+			hexDigit = String.valueOf(hexadecimal.charAt(i));
+			binary = Integer.toBinaryString((Integer.parseInt(hexDigit, 16)));
+			// Appending zeroes for having numbers multiple of 4 bits
+			while (binary.length() % 4 != 0) {
+				binary = "0" + binary;
+			}
+			binaryResult += binary;
+		}
+		return binaryResult;
+	}
+	
 	/**
 	 * f function, used at the time of computing only SHA-1 algorithm. Depending on
 	 * the value of index it redirects the input to the right function
