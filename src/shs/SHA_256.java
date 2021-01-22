@@ -22,7 +22,7 @@ public class SHA_256 extends HashFunction {
 
 	public SHA_256(String binaryMessage) {
 		System.out.println("\tSHA-256 ALGORITHM");
-		this.binaryMessage = binaryMessage;
+		this.binaryMessage = textToBinary(binaryMessage);
 		messageDigestLength = 256;
 		wordSize = 32;
 		maximumMessageLength = 64;

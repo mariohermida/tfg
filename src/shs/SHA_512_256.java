@@ -31,7 +31,7 @@ public class SHA_512_256 extends HashFunction {
 
 	public SHA_512_256(String binaryMessage) {
 		System.out.println("\tSHA-512/256 ALGORITHM");
-		this.binaryMessage = binaryMessage;
+		this.binaryMessage = textToBinary(binaryMessage);
 		messageDigestLength = 256;
 		wordSize = 64;
 		maximumMessageLength = 128;

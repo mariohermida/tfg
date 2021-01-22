@@ -31,7 +31,7 @@ public class SHA_384 extends HashFunction {
 
 	public SHA_384(String binaryMessage) {
 		System.out.println("\tSHA-384 ALGORITHM");
-		this.binaryMessage = binaryMessage;
+		this.binaryMessage = textToBinary(binaryMessage);
 		messageDigestLength = 384;
 		wordSize = 64;
 		maximumMessageLength = 128;

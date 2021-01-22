@@ -1,6 +1,5 @@
 package shs;
 
-import java.math.BigInteger;
 import java.util.Scanner;
 
 /**
@@ -56,15 +55,8 @@ public class Main {
 //		String message = "Hola a todos, amigos!";
 		System.out.println("The input message is: '" + message + "'");
 
-		DataTreatment d = new DataTreatment();
-		SHA_1 sh = new SHA_1(d.textToBinary(message));
+		SHA_1 sh = new SHA_1(message);
 		System.out.println("The hash value is: '" + sh.computeHash() + "'");
-	}
-
-	private void zeroGenerator(int number) {
-		for (int i = 0; i < number; i++) {
-			System.out.print("0");
-		}
 	}
 
 }

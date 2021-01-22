@@ -22,7 +22,7 @@ public class SHA_224 extends HashFunction {
 
 	public SHA_224(String binaryMessage) {
 		System.out.println("\tSHA-224 ALGORITHM");
-		this.binaryMessage = binaryMessage;
+		this.binaryMessage = textToBinary(binaryMessage);
 		messageDigestLength = 224;
 		wordSize = 32;
 		maximumMessageLength = 64;

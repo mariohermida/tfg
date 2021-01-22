@@ -1,6 +1,7 @@
 package shs;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +24,6 @@ public abstract class HashFunction {
 	 * 
 	 * @return Hexadecimal hash resulted from the original message
 	 */
-	// ADDITION IS PERFORMED MODULO 2^wordSize
 	abstract String computeHash();
 
 	/**
@@ -104,6 +104,26 @@ public abstract class HashFunction {
 			}
 			words.add(temp);	
 		}
+	}
+	
+	/**
+	 * It converts every character (byte) to a 7-bit sequence (US_ASCII), then it is
+	 * zero padded so that it is a 8-bit string.
+	 * 
+	 * @param message Whole text to be converted
+	 * @return The binary string multiple of 8 bits
+	 */
+	public String textToBinary(String text) {
+		byte[] byteArray = text.getBytes(StandardCharsets.US_ASCII);
+		String binaryCharacter, binaryMessage = "";
+		for (byte b : byteArray) {
+			binaryCharacter = Integer.toBinaryString(b);
+			while (binaryCharacter.length() < 8) {
+				binaryCharacter = "0" + binaryCharacter;
+			}
+			binaryMessage += binaryCharacter;
+		}
+		return binaryMessage;
 	}
 	
 	/**

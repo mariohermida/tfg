@@ -15,7 +15,7 @@ public class SHA_1 extends HashFunction {
 
 	public SHA_1(String binaryMessage) {
 		System.out.println("\tSHA-1 ALGORITHM");
-		this.binaryMessage = binaryMessage;
+		this.binaryMessage = textToBinary(binaryMessage);
 		messageDigestLength = 160;
 		wordSize = 32;
 		maximumMessageLength = 64;
@@ -23,9 +23,6 @@ public class SHA_1 extends HashFunction {
 		words = new ArrayList<>();
 		padMessage();
 		parseMessage();
-//		showWords();
-//		computeHash();
-//		showHashValues();
 	}
 
 	@Override
@@ -95,7 +92,7 @@ public class SHA_1 extends HashFunction {
 	}
 
 	/**
-	 * Addition of 5 values, performed modul0 2^32
+	 * Addition of 5 values, performed modulo 2^32
 	 * 
 	 * @param a
 	 * @param b
@@ -139,20 +136,6 @@ public class SHA_1 extends HashFunction {
 			finalResult += (result1.charAt(i) ^ result2.charAt(i));
 		}
 		return finalResult;
-	}
-
-	private void showWords() {
-		for (int i = 0; i < words.size(); i++) {
-			System.out.println("Block number: " + (i + 1));
-			for (int j = 0; j < words.get(i).size(); j++) {
-				System.out.println(words.get(i).get(j));
-			}
-			System.out.println();
-		}
-	}
-
-	public String[] getValues() {
-		return hashValues;
 	}
 
 	public String getBinaryMessagePadded() {
