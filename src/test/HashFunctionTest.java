@@ -551,8 +551,8 @@ class HashFunctionTest {
 	
 	@Test
 	void testHashComputation() {
-		sha1 = new SHA_1("a");
-		assertEquals("", "");
+		sha1 = new SHA_1(d.textToBinary("a"));
+		assertEquals("67452301efcdab8998badcfe10325476c3d2e1f0", sha1.computeHash());
 	}
 
 }

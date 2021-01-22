@@ -12,7 +12,6 @@ public abstract class HashFunction {
 
 	protected String binaryMessage; // Original binary message
 	protected String binaryMessagePadded; // Binary message (multiple of 512/1024 bits)
-	protected ArrayList<String> blocks; // Binary padded message divided into blocks
 	protected ArrayList<ArrayList<String>> words; // 32/64-bits words extracted from every block
 	protected int messageDigestLength; // Number of bits resulted from hash computation
 	protected int wordSize;
@@ -71,11 +70,6 @@ public abstract class HashFunction {
 			binaryMessageLength = "0" + binaryMessageLength;
 		}
 		binaryMessagePadded = binaryMessagePadded + binaryMessageLength;
-
-		// Division into blocks
-		for (int i = 0; i < binaryMessagePadded.length();) {
-			blocks.add(binaryMessagePadded.substring(i, i += blockSize));
-		}
 	}
 
 	/**
@@ -103,12 +97,12 @@ public abstract class HashFunction {
 	 */
 	protected void parseMessage() {
 		ArrayList<String> temp = null;
-		for (int i = 0; i < blocks.size(); i++) {
+		for (int i = 0; i < binaryMessagePadded.length();) {
 			temp = new ArrayList<>();
-			for (int j = 0; j < blocks.get(i).length(); j += wordSize) {
-				temp.add(blocks.get(i).substring(j, j + wordSize));
+			for (int j = 0; j < 16; j++) {
+				temp.add(binaryMessagePadded.substring(i, i+=wordSize));
 			}
-			words.add(temp);
+			words.add(temp);	
 		}
 	}
 

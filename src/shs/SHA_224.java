@@ -27,7 +27,6 @@ public class SHA_224 extends HashFunction {
 		wordSize = 32;
 		maximumMessageLength = 64;
 		blockSize = 512;
-		blocks = new ArrayList<>();
 		words = new ArrayList<>();
 		padMessage();
 		parseMessage();

@@ -36,7 +36,6 @@ public class SHA_512 extends HashFunction {
 		wordSize = 64;
 		maximumMessageLength = 128;
 		blockSize = 1024;
-		blocks = new ArrayList<>();
 		words = new ArrayList<>();
 		padMessage();
 		parseMessage();

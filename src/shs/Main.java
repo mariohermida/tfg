@@ -28,6 +28,8 @@ public class Main {
 	 * INTO ACCOUNT)
 	 * CONSTANTS IN SHA_* CLASS SHOULD BE SET TO PRIVATE INSTEAD OF STATIC
 	 * CHANGE INITIAL HASH VALUES TO HASH VALUES BECAUSE THEY ARE GOING TO BE CHANGED EVERY ITERATION
+	 * CHECK EVERYTHING REGARDING TESTS, IT IS NOT WORTHY HAVING PUBLIC METHODS JUST FOR TESTING (FOR
+	 * EXAMPLE GET BINARY MESSAGE PADDED)
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -55,6 +57,7 @@ public class Main {
 		zeroGenerator(116);*/
 
 		SHA_1 sh = new SHA_1(d.textToBinary(message));
+		System.out.println("The hash value is: '" + sh.computeHash() + "'");
 	}
 
 	private void zeroGenerator(int number) {
