@@ -51,8 +51,17 @@ public class SHA_512 extends HashFunction {
 
 	@Override
 	public String computeHash() {
+		return computeHashOperation(null);
+	}
+
+	public String computeHashOperation(String[] newHashValues) {
 		String hash = "";
 		System.out.println("I am computing the hash...");
+
+		// Determine which algorithm we are using (initial hash values change if so)
+		if (newHashValues != null) {
+			hashValues = newHashValues;
+		}
 
 		// Each block is iterated through
 		ArrayList<String> messageSchedule = null;

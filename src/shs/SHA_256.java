@@ -35,7 +35,7 @@ public class SHA_256 extends HashFunction {
 		padMessage();
 		parseMessage();
 	}
-	
+
 	public SHA_256(String message) {
 		this(message, false);
 	}
@@ -49,7 +49,7 @@ public class SHA_256 extends HashFunction {
 		String hash = "";
 		System.out.println("I am computing the hash...");
 
-		// Determine whether using SHA-224 initial hash values or not
+		// Determine which algorithm we are using (initial hash values change if so)
 		if (newHashValues != null) {
 			hashValues = newHashValues;
 		}
@@ -63,10 +63,11 @@ public class SHA_256 extends HashFunction {
 				if (t < 16) {
 					messageSchedule.add(words.get(i).get(t));
 				} else { // From 16 to 63
-					messageSchedule.add(binaryAddition(sigmaFunctionSplitter(messageSchedule.get(t - 2), 32, "lower", 1),
-							messageSchedule.get(t - 7),
-							sigmaFunctionSplitter(messageSchedule.get(t - 15), 32, "lower", 0),
-							messageSchedule.get(t - 16), "0", 32));
+					messageSchedule
+							.add(binaryAddition(sigmaFunctionSplitter(messageSchedule.get(t - 2), 32, "lower", 1),
+									messageSchedule.get(t - 7),
+									sigmaFunctionSplitter(messageSchedule.get(t - 15), 32, "lower", 0),
+									messageSchedule.get(t - 16), "0", 32));
 				}
 			}
 

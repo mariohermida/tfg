@@ -246,6 +246,68 @@ class HashFunctionTest {
 				"f1b4faaf076bf0ddac03b791d089c6724d28205653b79226c5655fdfa8ee8a99fd412d507ee377d36d1fcc182150004058315efbad5fff1ae35cf56253e4cd8c",
 				sha512.computeHash());
 	}
+
+	@Test
+	void testHashComputation_SHA_384() {
+		sha384 = new SHA_384("a");
+		assertEquals("54a59b9f22b0b80880d8427e548b7c23abd873486e1f035dce9cd697e85175033caa88e6d57bc35efae0b5afd3145f31",
+				sha384.computeHash());
+	}
+
+	@Test
+	void testHashComputation2_SHA_384() {
+		sha384 = new SHA_384("");
+		assertEquals("38b060a751ac96384cd9327eb1b1e36a21fdb71114be07434c0cc7bf63f6e1da274edebfe76f65fbd51ad2f14898b95b",
+				sha384.computeHash());
+	}
+
+	@Test
+	void testHashComputation3_SHA_384() {
+		sha384 = new SHA_384(
+				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("3c37955051cb5c3026f94d551d5b5e2ac38d572ae4e07172085fed81f8466b8f90dc23a8ffcdea0b8d8e58e8fdacc80a",
+				sha384.computeHash());
+	}
+
+	@Test
+	void testHashComputation4_SHA_384() {
+		sha384 = new SHA_384(
+				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("187d4e07cb306103c69967bf544d0dfbe9042577599c73c330abc0cb64c61236d5ed565ee19119d8c31779a38f791fcd",
+				sha384.computeHash());
+	}
+
+	@Test
+	void testHashComputation5_SHA_384() {
+		sha384 = new SHA_384(
+				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals("a09263cf52a3fb9c810dadabb4b744eade65e98e4e7c5ce7e76edfd51460255732658a6dc01f6f925663d64636d0522b",
+				sha384.computeHash());
+	}
+
+	@Test
+	void testHashComputation6_SHA_384() {
+		sha384 = new SHA_384(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("bc1db39a331f1120871290e6e4d62bdd53505c068f30069baecef47def661e66aba5d6562756fa94ceaa55af5405a53f",
+				sha384.computeHash());
+	}
+
+	@Test
+	void testHashComputation7_SHA_384() {
+		sha384 = new SHA_384(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829Ajsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("7476ef2819be31b2185181b11a66ce77ddea3d1e8c3fd5031a2f44555dcdb8cd7ba3b8c41188dafbf3c227df3788a3e6",
+				sha384.computeHash());
+	}
+
+	@Test
+	void testHashComputation8_SHA_384() {
+		sha384 = new SHA_384(
+				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals("21131ae6b08496e859e1593981967bb646c35c174b637073027d199f8a3b047d1ed618850af9e810e5e4bfd7fcd88d16",
+				sha384.computeHash());
+	}
 	// END HASH COMPUTATIONS
 
 	@Test
