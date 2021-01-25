@@ -34,6 +34,7 @@ public class Main {
 	 * CHECK EMPTY STRING FOR SHA_* COMPUTATION
 	 * CHECK VALUES IN THE LIMIT IN ORDER TO SEE IF COMPUTATION FOR SEVERAL BLOCKS WORKS
 	 * IN HASHFUNCTION IT IS POSSIBLE THAT MESSAGEDIGESTSIZE IS NO LONGER USEFUL
+	 * DECIDE WHAT TO DO WIT CLASSES AND TESTS (SAME PACKAGE ?)
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -55,7 +56,7 @@ public class Main {
 //		String message = "Hola a todos, amigos!";
 		System.out.println("The input message is: '" + message + "'");
 
-		SHA_1 sh = new SHA_1(message);
+		SHA_256 sh = new SHA_256(message);
 		System.out.println("The hash value is: '" + sh.computeHash() + "'");
 	}
 

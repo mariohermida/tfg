@@ -17,8 +17,8 @@ public class SHA_224 extends HashFunction {
 			"c24b8b70", "c76c51a3", "d192e819", "d6990624", "f40e3585", "106aa070", "19a4c116", "1e376c08", "2748774c",
 			"34b0bcb5", "391c0cb3", "4ed8aa4a", "5b9cca4f", "682e6ff3", "748f82ee", "78a5636f", "84c87814", "8cc70208",
 			"90befffa", "a4506ceb", "bef9a3f7", "c67178f2" };
-	private String[] initialHashValues = { "c1059ed8", "367cd507", "3070dd17", "f70e5939", "ffc00b31", "68581511",
-			"64f98fa7", "befa4fa4" };
+	private String[] hashValues = { "c1059ed8", "367cd507", "3070dd17", "f70e5939", "ffc00b31", "68581511", "64f98fa7",
+			"befa4fa4" };
 
 	public SHA_224(String binaryMessage) {
 		System.out.println("\tSHA-224 ALGORITHM");
@@ -30,27 +30,12 @@ public class SHA_224 extends HashFunction {
 		words = new ArrayList<>();
 		padMessage();
 		parseMessage();
-		showWords();
 	}
-	
+
 	@Override
-	String computeHash() {
+	public String computeHash() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	private void showWords() {
-		for (int i = 0; i < words.size(); i++) {
-			System.out.println("Block number: " + (i + 1));
-			for (int j = 0; j < words.get(i).size(); j++) {
-				System.out.println(words.get(i).get(j));
-			}
-			System.out.println();
-		}
-	}
-
-	public String[] getValues() {
-		return initialHashValues;
 	}
 
 	public String getBinaryMessagePadded() {

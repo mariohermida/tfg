@@ -17,8 +17,8 @@ public class SHA_256 extends HashFunction {
 			"c24b8b70", "c76c51a3", "d192e819", "d6990624", "f40e3585", "106aa070", "19a4c116", "1e376c08", "2748774c",
 			"34b0bcb5", "391c0cb3", "4ed8aa4a", "5b9cca4f", "682e6ff3", "748f82ee", "78a5636f", "84c87814", "8cc70208",
 			"90befffa", "a4506ceb", "bef9a3f7", "c67178f2" };
-	private String[] initialHashValues = { "6a09e667", "bb67ae85", "3c6ef372", "a54ff53a", "510e527f", "9b05688c",
-			"1f83d9ab", "5be0cd19" };
+	private String[] hashValues = { "6a09e667", "bb67ae85", "3c6ef372", "a54ff53a", "510e527f", "9b05688c", "1f83d9ab",
+			"5be0cd19" };
 
 	public SHA_256(String binaryMessage) {
 		System.out.println("\tSHA-256 ALGORITHM");
@@ -30,27 +30,75 @@ public class SHA_256 extends HashFunction {
 		words = new ArrayList<>();
 		padMessage();
 		parseMessage();
-		showWords();
 	}
-	
+
 	@Override
-	String computeHash() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String computeHash() {
+		String hash = "";
+		System.out.println("I am computing the hash...");
 
-	private void showWords() {
+		// Each block is iterated through
+		ArrayList<String> messageSchedule = null;
 		for (int i = 0; i < words.size(); i++) {
-			System.out.println("Block number: " + (i + 1));
-			for (int j = 0; j < words.get(i).size(); j++) {
-				System.out.println(words.get(i).get(j));
+			// Message schedule preparation (64 words)
+			messageSchedule = new ArrayList<>();
+			for (int t = 0; t < 64; t++) {
+				if (t < 16) {
+					messageSchedule.add(words.get(i).get(t));
+				} else { // From 16 to 63
+					messageSchedule.add(addition(sigmaFunctionSplitter(messageSchedule.get(t - 2), 32, "lower", 1),
+							messageSchedule.get(t - 7),
+							sigmaFunctionSplitter(messageSchedule.get(t - 15), 32, "lower", 0),
+							messageSchedule.get(t - 16), "0", 32));
+				}
 			}
-			System.out.println();
-		}
-	}
 
-	public String[] getValues() {
-		return initialHashValues;
+			// Initialize the working variables
+			String a = hexadecimalToBinary(hashValues[0]);
+			String b = hexadecimalToBinary(hashValues[1]);
+			String c = hexadecimalToBinary(hashValues[2]);
+			String d = hexadecimalToBinary(hashValues[3]);
+			String e = hexadecimalToBinary(hashValues[4]);
+			String f = hexadecimalToBinary(hashValues[5]);
+			String g = hexadecimalToBinary(hashValues[6]);
+			String h = hexadecimalToBinary(hashValues[7]);
+
+			String T1, T2;
+			for (int t = 0; t < 64; t++) {
+				T1 = addition(h, sigmaFunctionSplitter(e, 32, "upper", 1), Ch(e, f, g), hexadecimalToBinary(CONSTANTS[t]),
+						messageSchedule.get(t), 32);
+				T2 = addition(sigmaFunctionSplitter(a, 32, "upper", 0), Maj(a, b, c), "0", "0", "0", 32);
+				h = g;
+				g = f;
+				f = e;
+				e = addition(d, T1, "0", "0", "0", 32);
+				d = c;
+				c = b;
+				b = a;
+				a = addition(T1, T2, "0", "0", "0", 32);
+			}
+
+			// Compute the intermediate hash value
+			hashValues[0] = addition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 32);
+			hashValues[1] = addition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 32);
+			hashValues[2] = addition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 32);
+			hashValues[3] = addition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 32);
+			hashValues[4] = addition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 32);
+			hashValues[5] = addition(f, hexadecimalToBinary(hashValues[5]), "0", "0", "0", 32);
+			hashValues[6] = addition(g, hexadecimalToBinary(hashValues[6]), "0", "0", "0", 32);
+			hashValues[7] = addition(h, hexadecimalToBinary(hashValues[7]), "0", "0", "0", 32);
+
+			// Since hashValues are binary we should translate it into hexadecimal
+			for (int j = 0; j < hashValues.length; j++) {
+				hashValues[j] = binaryToHexadecimal(hashValues[j]);
+			}
+		}
+
+		// Concatenate hash values
+		for (int i = 0; i < hashValues.length; i++) {
+			hash += hashValues[i];
+		}
+		return hash;
 	}
 
 	public String getBinaryMessagePadded() {

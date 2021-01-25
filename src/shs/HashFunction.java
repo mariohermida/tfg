@@ -107,6 +107,30 @@ public abstract class HashFunction {
 	}
 	
 	/**
+	 * Addition of 5 values, performed modulo 2^mod
+	 * 
+	 * @param a
+	 * @param b
+	 * @param c
+	 * @param d
+	 * @param e
+	 * @return
+	 */
+	protected String addition(String a, String b, String c, String d, String e, int mod) {
+		BigInteger ba = new BigInteger(a, 2);
+		BigInteger bb = new BigInteger(b, 2);
+		BigInteger bc = new BigInteger(c, 2);
+		BigInteger bd = new BigInteger(d, 2);
+		BigInteger be = new BigInteger(e, 2);
+		BigInteger bMod = BigInteger.TWO.pow(mod);
+		String result = ba.add(bb.add(bc.add(bd.add(be)))).mod(bMod).toString(2);
+		while (result.length() < mod) {
+			result = "0" + result;
+		}
+		return result;
+	}
+	
+	/**
 	 * It converts every character (byte) to a 7-bit sequence (US_ASCII), then it is
 	 * zero padded so that it is a 8-bit string.
 	 * 

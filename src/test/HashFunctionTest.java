@@ -601,15 +601,81 @@ class HashFunctionTest {
 
 	// SHA-1
 	@Test
-	void testHashComputation() {
+	void testHashComputation_SHA_1() {
 		sha1 = new SHA_1("a");
 		assertEquals("86f7e437faa5a7fce15d1ddcb9eaeaea377667b8", sha1.computeHash());
 	}
 
 	@Test
-	void testHashComputation2() {
+	void testHashComputation2_SHA_1() {
 		sha1 = new SHA_1(""); // empty string
 		assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709", sha1.computeHash());
+	}
+
+	@Test
+	void testHashComputation3_SHA_1() {
+		sha1 = new SHA_1("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("c1c8bbdc22796e28c0e15163d20899b65621d65a", sha1.computeHash());
+	}
+
+	@Test
+	void testHashComputation4_SHA_1() {
+		sha1 = new SHA_1("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("c2db330f6083854c99d4b5bfb6e8f29f201be699", sha1.computeHash());
+	}
+
+	@Test
+	void testHashComputation5_SHA_1() {
+		sha1 = new SHA_1(
+				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals("e4f8188cdca2a68b074005e2ccab5b67842c6fc7", sha1.computeHash());
+	}
+
+	@Test
+	void testHashComputation6_SHA_1() {
+		sha1 = new SHA_1(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("3775e8d97dac1f0a26ac1418d6009698fa6c8631", sha1.computeHash());
+	}
+
+	@Test
+	void testHashComputation7_SHA_1() {
+		sha1 = new SHA_1(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A");
+		assertEquals("111dd7f517ac9fcc76308b43877df74bf80be10c", sha1.computeHash());
+	}
+
+	@Test
+	void testHashComputation8_SHA_1() {
+		sha1 = new SHA_1(
+				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals("1af89fe6c87f9ce56fe768e5598c9876659052e1", sha1.computeHash());
+	}
+
+	// SHA-256
+	@Test
+	void testHashComputation_SHA_256() {
+		sha256 = new SHA_256("a");
+		assertEquals("ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb", sha256.computeHash());
+	}
+
+	@Test
+	void testHashComputation2_SHA_256() {
+		sha256 = new SHA_256(""); // empty string
+		assertEquals("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", sha256.computeHash());
+	}
+
+	// SHA-224
+	@Test
+	void testHashComputation_SHA_224() {
+		sha224 = new SHA_224(""); // empty string
+		assertEquals("abd37534c7d9a2efb9465de931cd7055ffdb8879563ae98078d6d6d5", sha224.computeHash());
+	}
+
+	@Test
+	void testHashComputation2_SHA_224() {
+		sha224 = new SHA_224("a");
+		assertEquals("d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f", sha224.computeHash());
 	}
 
 }

@@ -1,6 +1,5 @@
 package shs;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -63,7 +62,8 @@ public class SHA_1 extends HashFunction {
 				} else {
 					index = 3;
 				}
-				T = addition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS[index]), messageSchedule.get(t));
+				T = addition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS[index]),
+						messageSchedule.get(t), 32);
 				e = d;
 				d = c;
 				c = ROTL(b, 30);
@@ -72,12 +72,12 @@ public class SHA_1 extends HashFunction {
 			}
 
 			// Compute the intermediate hash value
-			hashValues[0] = addition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0");
-			hashValues[1] = addition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0");
-			hashValues[2] = addition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0");
-			hashValues[3] = addition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0");
-			hashValues[4] = addition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0");
-			
+			hashValues[0] = addition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 32);
+			hashValues[1] = addition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 32);
+			hashValues[2] = addition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 32);
+			hashValues[3] = addition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 32);
+			hashValues[4] = addition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 32);
+
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
 				hashValues[j] = binaryToHexadecimal(hashValues[j]);
@@ -89,30 +89,6 @@ public class SHA_1 extends HashFunction {
 			hash += hashValues[i];
 		}
 		return hash;
-	}
-
-	/**
-	 * Addition of 5 values, performed modulo 2^32
-	 * 
-	 * @param a
-	 * @param b
-	 * @param c
-	 * @param d
-	 * @param e
-	 * @return
-	 */
-	private String addition(String a, String b, String c, String d, String e) {
-		BigInteger ba = new BigInteger(a, 2);
-		BigInteger bb = new BigInteger(b, 2);
-		BigInteger bc = new BigInteger(c, 2);
-		BigInteger bd = new BigInteger(d, 2);
-		BigInteger be = new BigInteger(e, 2);
-		BigInteger bMod = BigInteger.TWO.pow(32);
-		String result = ba.add(bb.add(bc.add(bd.add(be)))).mod(bMod).toString(2);
-		while (result.length() < 32) {
-			result = "0" + result;
-		}
-		return result;
 	}
 
 	/**
