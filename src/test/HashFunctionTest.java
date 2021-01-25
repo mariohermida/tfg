@@ -700,20 +700,54 @@ class HashFunctionTest {
 		sha256 = new SHA_256("And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("9bbbd77600ee390ab31746a11a6202182572158766295d8919ab3c90123f2a14", sha256.computeHash());
 	}
-	
-	
 
 	// SHA-224
 	@Test
 	void testHashComputation_SHA_224() {
-		sha224 = new SHA_224(""); // empty string
+		sha224 = new SHA_224("a");
 		assertEquals("abd37534c7d9a2efb9465de931cd7055ffdb8879563ae98078d6d6d5", sha224.computeHash());
 	}
-
+	
 	@Test
 	void testHashComputation2_SHA_224() {
-		sha224 = new SHA_224("a");
+		sha224 = new SHA_224(""); // empty string
 		assertEquals("d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f", sha224.computeHash());
+	}
+	
+	@Test
+	void testHashComputation3_SHA_224() {
+		sha224 = new SHA_224("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("fb0bd626a70c28541dfa781bb5cc4d7d7f56622a58f01a0b1ddd646f", sha224.computeHash());
+	}
+	
+	@Test
+	void testHashComputation4_SHA_224() {
+		sha224 = new SHA_224("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("d40854fc9caf172067136f2e29e1380b14626bf6f0dd06779f820dcd", sha224.computeHash());
+	}
+	
+	@Test
+	void testHashComputation5_SHA_224() {
+		sha224 = new SHA_224(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals("88cc8b6a9c95f8322361f219efb3309020b865fbe0bc0e580c442ff1", sha224.computeHash());
+	}
+	
+	@Test
+	void testHashComputation6_SHA_224() {
+		sha224 = new SHA_224("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("de71734bcdd6e336732466572da170ae12034b2434d1d7821ac63066", sha224.computeHash());
+	}
+	
+	@Test
+	void testHashComputation7_SHA_224() {
+		sha224 = new SHA_224("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A");
+		assertEquals("4794eb16378a30b6f467c4888193ae64699a38345ed6d25458031bd6", sha224.computeHash());
+	}
+	
+	@Test
+	void testHashComputation8_SHA_224() {
+		sha224 = new SHA_224("And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals("07fefa4dd58d9aba6210e6efdc19f5d56bc0195ff78e72ef2cdc6291", sha224.computeHash());
 	}
 
 }
