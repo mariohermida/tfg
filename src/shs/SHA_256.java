@@ -20,9 +20,13 @@ public class SHA_256 extends HashFunction {
 	private String[] hashValues = { "6a09e667", "bb67ae85", "3c6ef372", "a54ff53a", "510e527f", "9b05688c", "1f83d9ab",
 			"5be0cd19" };
 
-	public SHA_256(String binaryMessage) {
+	public SHA_256(String message, boolean isBinary) {
 		System.out.println("\tSHA-256 ALGORITHM");
-		this.binaryMessage = textToBinary(binaryMessage);
+		if (isBinary) {
+			this.binaryMessage = message;
+		} else {
+			this.binaryMessage = textToBinary(message);
+		}
 		messageDigestLength = 256;
 		wordSize = 32;
 		maximumMessageLength = 64;
@@ -31,11 +35,24 @@ public class SHA_256 extends HashFunction {
 		padMessage();
 		parseMessage();
 	}
+	
+	public SHA_256(String message) {
+		this(message, false);
+	}
 
 	@Override
 	public String computeHash() {
+		return computeHashOperation(null);
+	}
+
+	public String computeHashOperation(String[] newHashValues) {
 		String hash = "";
 		System.out.println("I am computing the hash...");
+
+		// Determine whether using SHA-224 initial hash values or not
+		if (newHashValues != null) {
+			hashValues = newHashValues;
+		}
 
 		// Each block is iterated through
 		ArrayList<String> messageSchedule = null;
@@ -65,8 +82,8 @@ public class SHA_256 extends HashFunction {
 
 			String T1, T2;
 			for (int t = 0; t < 64; t++) {
-				T1 = addition(h, sigmaFunctionSplitter(e, 32, "upper", 1), Ch(e, f, g), hexadecimalToBinary(CONSTANTS[t]),
-						messageSchedule.get(t), 32);
+				T1 = addition(h, sigmaFunctionSplitter(e, 32, "upper", 1), Ch(e, f, g),
+						hexadecimalToBinary(CONSTANTS[t]), messageSchedule.get(t), 32);
 				T2 = addition(sigmaFunctionSplitter(a, 32, "upper", 0), Maj(a, b, c), "0", "0", "0", 32);
 				h = g;
 				g = f;

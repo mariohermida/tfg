@@ -100,14 +100,14 @@ public abstract class HashFunction {
 		for (int i = 0; i < binaryMessagePadded.length();) {
 			temp = new ArrayList<>();
 			for (int j = 0; j < 16; j++) {
-				temp.add(binaryMessagePadded.substring(i, i+=wordSize));
+				temp.add(binaryMessagePadded.substring(i, i += wordSize));
 			}
-			words.add(temp);	
+			words.add(temp);
 		}
 	}
-	
+
 	/**
-	 * Addition of 5 values, performed modulo 2^mod
+	 * Binary addition of 5 values, performed modulo 2^mod
 	 * 
 	 * @param a
 	 * @param b
@@ -129,7 +129,7 @@ public abstract class HashFunction {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * It converts every character (byte) to a 7-bit sequence (US_ASCII), then it is
 	 * zero padded so that it is a 8-bit string.
@@ -137,7 +137,7 @@ public abstract class HashFunction {
 	 * @param message Whole text to be converted
 	 * @return The binary string multiple of 8 bits
 	 */
-	public String textToBinary(String text) {
+	protected String textToBinary(String text) {
 		byte[] byteArray = text.getBytes(StandardCharsets.US_ASCII);
 		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {
@@ -149,13 +149,13 @@ public abstract class HashFunction {
 		}
 		return binaryMessage;
 	}
-	
+
 	/**
 	 * 
 	 * @param binary Binary string to be converted
 	 * @return Hexadecimal value from binary string
 	 */
-	public String binaryToHexadecimal(String binary) {
+	protected String binaryToHexadecimal(String binary) {
 		String hexadecimal = "", substring;
 		// Adapting binary number for being multiple of 4 bits
 		while (binary.length() % 4 != 0) {
@@ -178,7 +178,7 @@ public abstract class HashFunction {
 	 * @param hexadecimal Hexadecimal value to be converted
 	 * @return Binary value from hexadecimal value
 	 */
-	public String hexadecimalToBinary(String hexadecimal) {
+	protected String hexadecimalToBinary(String hexadecimal) {
 		String binary = "", binaryResult = "", hexDigit;
 		for (int i = 0; i < hexadecimal.length(); i++) {
 			hexDigit = String.valueOf(hexadecimal.charAt(i));
@@ -191,7 +191,7 @@ public abstract class HashFunction {
 		}
 		return binaryResult;
 	}
-	
+
 	/**
 	 * f function, used at the time of computing only SHA-1 algorithm. Depending on
 	 * the value of index it redirects the input to the right function
@@ -202,7 +202,7 @@ public abstract class HashFunction {
 	 * @param index Variable in charge of selecting the right logical function
 	 * @return 32-bit word resulted from the convenient logical function
 	 */
-	public String f(String x, String y, String z, int index) {
+	protected String f(String x, String y, String z, int index) {
 		if (index >= 0 && index <= 19) {
 			return Ch(x, y, z);
 		} else if (index >= 20 && index <= 39) {
@@ -223,7 +223,7 @@ public abstract class HashFunction {
 	 * @param z
 	 * @return (x AND y) XOR (~x AND z)
 	 */
-	public String Ch(String x, String y, String z) {
+	protected String Ch(String x, String y, String z) {
 		String result1, result2, finalResult = "";
 		BigInteger bx = new BigInteger(x, 2);
 		BigInteger by = new BigInteger(y, 2);
@@ -251,7 +251,7 @@ public abstract class HashFunction {
 	 * @param z
 	 * @return x XOR y XOR z
 	 */
-	public String Parity(String x, String y, String z) {
+	protected String Parity(String x, String y, String z) {
 		String result = "", finalResult = "";
 		for (int i = 0; i < x.length(); i++) {
 			result += (x.charAt(i) ^ y.charAt(i));
@@ -270,7 +270,7 @@ public abstract class HashFunction {
 	 * @param z
 	 * @return (x AND y) XOR (x AND z) XOR (y AND z)
 	 */
-	public String Maj(String x, String y, String z) {
+	protected String Maj(String x, String y, String z) {
 		String result1, result2, result3, result4 = "", finalResult = "";
 		BigInteger bx = new BigInteger(x, 2);
 		BigInteger by = new BigInteger(y, 2);
@@ -307,7 +307,7 @@ public abstract class HashFunction {
 	 * @param zeroOrOne    Represents the kind of sigma operation (0 or 1)
 	 * @return The binary word modified according to the right sigma function
 	 */
-	public String sigmaFunctionSplitter(String word, int wordLength, String upperOrLower, int zeroOrOne) {
+	protected String sigmaFunctionSplitter(String word, int wordLength, String upperOrLower, int zeroOrOne) {
 		switch (wordLength) {
 		case 32:
 			switch (upperOrLower) {
@@ -359,8 +359,7 @@ public abstract class HashFunction {
 	 * @return ROTR(parameter1)(word) XOR ROTR(parameter2)(word) XOR
 	 *         (ROTR(parameter3)(word) | SHR(parameter3)(word))
 	 */
-	private String sigmaFunctionOperation(String word, int parameter1, int parameter2, int parameter3,
-			boolean SHR) {
+	private String sigmaFunctionOperation(String word, int parameter1, int parameter2, int parameter3, boolean SHR) {
 		String result = "", finalResult = "";
 		String rotation1 = ROTR(word, parameter1), rotation2 = ROTR(word, parameter2), rotation3;
 		if (SHR) {
@@ -385,7 +384,7 @@ public abstract class HashFunction {
 	 * @param n        Times the sequence is rotated
 	 * @return The binary sequence left-rotated n times
 	 */
-	public String ROTL(String sequence, int n) {
+	protected String ROTL(String sequence, int n) {
 		String result;
 		BigInteger b1 = new BigInteger(leftShiftOperation(sequence, n), 2);
 		BigInteger b2 = new BigInteger(rightShiftOperation(sequence, sequence.length() - n), 2);
@@ -404,7 +403,7 @@ public abstract class HashFunction {
 	 * @param n        Times the sequence is rotated
 	 * @return The binary sequence right-rotated n times
 	 */
-	public String ROTR(String sequence, int n) {
+	protected String ROTR(String sequence, int n) {
 		String result;
 		BigInteger b1 = new BigInteger(rightShiftOperation(sequence, n), 2);
 		BigInteger b2 = new BigInteger(leftShiftOperation(sequence, sequence.length() - n), 2);
@@ -422,7 +421,7 @@ public abstract class HashFunction {
 	 * @param n
 	 * @return
 	 */
-	public String SHR(String sequence, int n) {
+	protected String SHR(String sequence, int n) {
 		return rightShiftOperation(sequence, n);
 	}
 
@@ -434,7 +433,7 @@ public abstract class HashFunction {
 	 * @param n        Number of zeroes padded
 	 * @return left-shift binary sequence
 	 */
-	public String leftShiftOperation(String sequence, int n) {
+	protected String leftShiftOperation(String sequence, int n) {
 		int start = n;
 		if (n < 0) {
 			throw new NumberFormatException("Cannot left shift bits a negative number of times.");
@@ -455,7 +454,7 @@ public abstract class HashFunction {
 	 * @return right-shift binary sequence
 	 * @throws Exception
 	 */
-	public String rightShiftOperation(String sequence, int n) {
+	protected String rightShiftOperation(String sequence, int n) {
 		int end = n;
 		if (n < 0) {
 			throw new NumberFormatException("Cannot right shift bits a negative number of times.");

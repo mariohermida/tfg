@@ -12,9 +12,14 @@ public class SHA_1 extends HashFunction {
 	static final String[] CONSTANTS = { "5a827999", "6ed9eba1", "8f1bbcdc", "ca62c1d6" };
 	private String[] hashValues = { "67452301", "efcdab89", "98badcfe", "10325476", "c3d2e1f0" };
 
-	public SHA_1(String binaryMessage) {
+	public SHA_1(String message, boolean isBinary) {
 		System.out.println("\tSHA-1 ALGORITHM");
-		this.binaryMessage = textToBinary(binaryMessage);
+		if (isBinary) {
+			this.binaryMessage = message;
+		} else {
+			this.binaryMessage = textToBinary(message);
+		}
+		this.binaryMessage = textToBinary(message);
 		messageDigestLength = 160;
 		wordSize = 32;
 		maximumMessageLength = 64;
@@ -22,6 +27,10 @@ public class SHA_1 extends HashFunction {
 		words = new ArrayList<>();
 		padMessage();
 		parseMessage();
+	}
+	
+	public SHA_1(String message) {
+		this(message, false);
 	}
 
 	@Override

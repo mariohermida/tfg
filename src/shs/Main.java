@@ -35,6 +35,10 @@ public class Main {
 	 * CHECK VALUES IN THE LIMIT IN ORDER TO SEE IF COMPUTATION FOR SEVERAL BLOCKS WORKS
 	 * IN HASHFUNCTION IT IS POSSIBLE THAT MESSAGEDIGESTSIZE IS NO LONGER USEFUL
 	 * DECIDE WHAT TO DO WIT CLASSES AND TESTS (SAME PACKAGE ?)
+	 * I HAVE THOUGHT DROPPING PADMESSAGE AND PARSEMESSAGE FUNCTIONS FROM THE CONSTRUCTOR
+	 * THINK OF WHETHER INCLUDING ALTERNATE COMPUTATION METHOD FOR SHA-1 OR NOT
+	 * TESTS FOR ADDING AND FOR ISBINARYSTRING
+	 * ORDER METHODS IN BOTH HASHFUNCTION AND HASHFUNTIONTEST
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -53,10 +57,9 @@ public class Main {
 		System.out.println("Write a message to be hashed: ");
 		String message = sc.nextLine();
 		sc.close();
-//		String message = "Hola a todos, amigos!";
 		System.out.println("The input message is: '" + message + "'");
 
-		SHA_256 sh = new SHA_256(message);
+		SHA_224 sh = new SHA_224(message);
 		System.out.println("The hash value is: '" + sh.computeHash() + "'");
 	}
 
