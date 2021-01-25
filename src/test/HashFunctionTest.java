@@ -664,6 +664,44 @@ class HashFunctionTest {
 		sha256 = new SHA_256(""); // empty string
 		assertEquals("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", sha256.computeHash());
 	}
+	
+	@Test
+	void testHashComputation3_SHA_256() {
+		sha256 = new SHA_256("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("9f4390f8d30c2dd92ec9f095b65e2b9ae9b0a925a5258e241c9f1e910f734318", sha256.computeHash());
+	}
+
+	@Test
+	void testHashComputation4_SHA_256() {
+		sha256 = new SHA_256("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("b35439a4ac6f0948b6d6f9e3c6af0f5f590ce20f1bde7090ef7970686ec6738a", sha256.computeHash());
+	}
+	
+	@Test
+	void testHashComputation5_SHA_256() {
+		sha256 = new SHA_256(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals("cb2a9233adc1225c5c495c46e62cf6308223c5e241ef33ad109f03141b57966a", sha256.computeHash());
+	}
+
+	@Test
+	void testHashComputation6_SHA_256() {
+		sha256 = new SHA_256("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("b5309136b68ba3506388149a71be42699a8a12bcf6c27891472664680b687b55", sha256.computeHash());
+	}
+	
+	@Test
+	void testHashComputation7_SHA_256() {
+		sha256 = new SHA_256("jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A");
+		assertEquals("a99b2e5ff1db9f5985bc1de6065c3dbab32a4f8c99e30aba4fe516a7978ad748", sha256.computeHash());
+	}
+
+	@Test
+	void testHashComputation8_SHA_256() {
+		sha256 = new SHA_256("And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals("9bbbd77600ee390ab31746a11a6202182572158766295d8919ab3c90123f2a14", sha256.computeHash());
+	}
+	
+	
 
 	// SHA-224
 	@Test
