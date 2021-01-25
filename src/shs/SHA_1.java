@@ -71,7 +71,7 @@ public class SHA_1 extends HashFunction {
 				} else {
 					index = 3;
 				}
-				T = addition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS[index]),
+				T = binaryAddition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS[index]),
 						messageSchedule.get(t), 32);
 				e = d;
 				d = c;
@@ -81,11 +81,11 @@ public class SHA_1 extends HashFunction {
 			}
 
 			// Compute the intermediate hash value
-			hashValues[0] = addition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 32);
-			hashValues[1] = addition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 32);
-			hashValues[2] = addition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 32);
-			hashValues[3] = addition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 32);
-			hashValues[4] = addition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 32);
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 32);
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 32);
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 32);
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 32);
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 32);
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
@@ -121,10 +121,6 @@ public class SHA_1 extends HashFunction {
 			finalResult += (result1.charAt(i) ^ result2.charAt(i));
 		}
 		return finalResult;
-	}
-
-	public String getBinaryMessagePadded() {
-		return binaryMessagePadded;
 	}
 
 }

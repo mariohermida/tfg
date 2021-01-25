@@ -114,9 +114,10 @@ public abstract class HashFunction {
 	 * @param c
 	 * @param d
 	 * @param e
+	 * @param mod
 	 * @return
 	 */
-	protected String addition(String a, String b, String c, String d, String e, int mod) {
+	protected String binaryAddition(String a, String b, String c, String d, String e, int mod) {
 		BigInteger ba = new BigInteger(a, 2);
 		BigInteger bb = new BigInteger(b, 2);
 		BigInteger bc = new BigInteger(c, 2);
@@ -134,7 +135,7 @@ public abstract class HashFunction {
 	 * It converts every character (byte) to a 7-bit sequence (US_ASCII), then it is
 	 * zero padded so that it is a 8-bit string.
 	 * 
-	 * @param message Whole text to be converted
+	 * @param text Whole text to be converted
 	 * @return The binary string multiple of 8 bits
 	 */
 	protected String textToBinary(String text) {

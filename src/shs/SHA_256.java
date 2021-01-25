@@ -63,7 +63,7 @@ public class SHA_256 extends HashFunction {
 				if (t < 16) {
 					messageSchedule.add(words.get(i).get(t));
 				} else { // From 16 to 63
-					messageSchedule.add(addition(sigmaFunctionSplitter(messageSchedule.get(t - 2), 32, "lower", 1),
+					messageSchedule.add(binaryAddition(sigmaFunctionSplitter(messageSchedule.get(t - 2), 32, "lower", 1),
 							messageSchedule.get(t - 7),
 							sigmaFunctionSplitter(messageSchedule.get(t - 15), 32, "lower", 0),
 							messageSchedule.get(t - 16), "0", 32));
@@ -82,28 +82,28 @@ public class SHA_256 extends HashFunction {
 
 			String T1, T2;
 			for (int t = 0; t < 64; t++) {
-				T1 = addition(h, sigmaFunctionSplitter(e, 32, "upper", 1), Ch(e, f, g),
+				T1 = binaryAddition(h, sigmaFunctionSplitter(e, 32, "upper", 1), Ch(e, f, g),
 						hexadecimalToBinary(CONSTANTS[t]), messageSchedule.get(t), 32);
-				T2 = addition(sigmaFunctionSplitter(a, 32, "upper", 0), Maj(a, b, c), "0", "0", "0", 32);
+				T2 = binaryAddition(sigmaFunctionSplitter(a, 32, "upper", 0), Maj(a, b, c), "0", "0", "0", 32);
 				h = g;
 				g = f;
 				f = e;
-				e = addition(d, T1, "0", "0", "0", 32);
+				e = binaryAddition(d, T1, "0", "0", "0", 32);
 				d = c;
 				c = b;
 				b = a;
-				a = addition(T1, T2, "0", "0", "0", 32);
+				a = binaryAddition(T1, T2, "0", "0", "0", 32);
 			}
 
 			// Compute the intermediate hash value
-			hashValues[0] = addition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 32);
-			hashValues[1] = addition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 32);
-			hashValues[2] = addition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 32);
-			hashValues[3] = addition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 32);
-			hashValues[4] = addition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 32);
-			hashValues[5] = addition(f, hexadecimalToBinary(hashValues[5]), "0", "0", "0", 32);
-			hashValues[6] = addition(g, hexadecimalToBinary(hashValues[6]), "0", "0", "0", 32);
-			hashValues[7] = addition(h, hexadecimalToBinary(hashValues[7]), "0", "0", "0", 32);
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 32);
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 32);
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 32);
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 32);
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 32);
+			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), "0", "0", "0", 32);
+			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), "0", "0", "0", 32);
+			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), "0", "0", "0", 32);
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
@@ -116,10 +116,6 @@ public class SHA_256 extends HashFunction {
 			hash += hashValues[i];
 		}
 		return hash;
-	}
-
-	public String getBinaryMessagePadded() {
-		return binaryMessagePadded;
 	}
 
 }

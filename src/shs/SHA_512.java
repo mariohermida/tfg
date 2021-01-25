@@ -26,12 +26,16 @@ public class SHA_512 extends HashFunction {
 			"0a637dc5a2c898a6", "113f9804bef90dae", "1b710b35131c471b", "28db77f523047d84", "32caab7b40c72493",
 			"3c9ebe0a15c9bebc", "431d67c49c100d4c", "4cc5d4becb3e42b6", "597f299cfc657e2a", "5fcb6fab3ad6faec",
 			"6c44198c4a475817" };
-	private String[] initialHashValues = { "6a09e667f3bcc908", "bb67ae8584caa73b", "3c6ef372fe94f82b",
+	private String[] hashValues = { "6a09e667f3bcc908", "bb67ae8584caa73b", "3c6ef372fe94f82b",
 			"a54ff53a5f1d36f1", "510e527fade682d1", "9b05688c2b3e6c1f", "1f83d9abfb41bd6b", "5be0cd19137e2179" };
 
-	public SHA_512(String binaryMessage) {
+	public SHA_512(String message, boolean isBinary) {
 		System.out.println("\tSHA-512 ALGORITHM");
-		this.binaryMessage = textToBinary(binaryMessage);
+		if (isBinary) {
+			this.binaryMessage = message;
+		} else {
+			this.binaryMessage = textToBinary(message);
+		}
 		messageDigestLength = 512;
 		wordSize = 64;
 		maximumMessageLength = 128;
@@ -39,7 +43,10 @@ public class SHA_512 extends HashFunction {
 		words = new ArrayList<>();
 		padMessage();
 		parseMessage();
-		showWords();
+	}
+	
+	public SHA_512(String message) {
+		this(message, false);
 	}
 	
 	@Override
@@ -47,23 +54,5 @@ public class SHA_512 extends HashFunction {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	private void showWords() {
-		for (int i = 0; i < words.size(); i++) {
-			System.out.println("Block number: " + (i + 1));
-			for (int j = 0; j < words.get(i).size(); j++) {
-				System.out.println(words.get(i).get(j));
-			}
-			System.out.println();
-		}
-	}
-
-	public String[] getValues() {
-		return initialHashValues;
-	}
-
-	public String getBinaryMessagePadded() {
-		return binaryMessagePadded;
-	}
-
+	
 }

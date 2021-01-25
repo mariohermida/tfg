@@ -39,8 +39,4 @@ public class SHA_224 extends HashFunction {
 		return sh.computeHashOperation(hashValues).substring(0, 56);
 	}
 
-	public String getBinaryMessagePadded() {
-		return binaryMessagePadded;
-	}
-
 }
