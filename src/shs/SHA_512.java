@@ -26,8 +26,8 @@ public class SHA_512 extends HashFunction {
 			"0a637dc5a2c898a6", "113f9804bef90dae", "1b710b35131c471b", "28db77f523047d84", "32caab7b40c72493",
 			"3c9ebe0a15c9bebc", "431d67c49c100d4c", "4cc5d4becb3e42b6", "597f299cfc657e2a", "5fcb6fab3ad6faec",
 			"6c44198c4a475817" };
-	private String[] hashValues = { "6a09e667f3bcc908", "bb67ae8584caa73b", "3c6ef372fe94f82b",
-			"a54ff53a5f1d36f1", "510e527fade682d1", "9b05688c2b3e6c1f", "1f83d9abfb41bd6b", "5be0cd19137e2179" };
+	private String[] hashValues = { "6a09e667f3bcc908", "bb67ae8584caa73b", "3c6ef372fe94f82b", "a54ff53a5f1d36f1",
+			"510e527fade682d1", "9b05688c2b3e6c1f", "1f83d9abfb41bd6b", "5be0cd19137e2179" };
 
 	public SHA_512(String message, boolean isBinary) {
 		System.out.println("\tSHA-512 ALGORITHM");
@@ -44,15 +44,79 @@ public class SHA_512 extends HashFunction {
 		padMessage();
 		parseMessage();
 	}
-	
+
 	public SHA_512(String message) {
 		this(message, false);
 	}
-	
+
 	@Override
-	String computeHash() {
-		// TODO Auto-generated method stub
-		return null;
+	public String computeHash() {
+		String hash = "";
+		System.out.println("I am computing the hash...");
+
+		// Each block is iterated through
+		ArrayList<String> messageSchedule = null;
+		for (int i = 0; i < words.size(); i++) {
+			// Message schedule preparation (80 words)
+			messageSchedule = new ArrayList<>();
+			for (int t = 0; t < 80; t++) {
+				if (t < 16) {
+					messageSchedule.add(words.get(i).get(t));
+				} else { // From 16 to 79
+					messageSchedule
+							.add(binaryAddition(sigmaFunctionSplitter(messageSchedule.get(t - 2), 64, "lower", 1),
+									messageSchedule.get(t - 7),
+									sigmaFunctionSplitter(messageSchedule.get(t - 15), 64, "lower", 0),
+									messageSchedule.get(t - 16), "0", 64));
+				}
+			}
+
+			// Initialize the working variables
+			String a = hexadecimalToBinary(hashValues[0]);
+			String b = hexadecimalToBinary(hashValues[1]);
+			String c = hexadecimalToBinary(hashValues[2]);
+			String d = hexadecimalToBinary(hashValues[3]);
+			String e = hexadecimalToBinary(hashValues[4]);
+			String f = hexadecimalToBinary(hashValues[5]);
+			String g = hexadecimalToBinary(hashValues[6]);
+			String h = hexadecimalToBinary(hashValues[7]);
+
+			String T1, T2;
+			for (int t = 0; t < 80; t++) {
+				T1 = binaryAddition(h, sigmaFunctionSplitter(e, 64, "upper", 1), Ch(e, f, g),
+						hexadecimalToBinary(CONSTANTS[t]), messageSchedule.get(t), 64);
+				T2 = binaryAddition(sigmaFunctionSplitter(a, 64, "upper", 0), Maj(a, b, c), "0", "0", "0", 64);
+				h = g;
+				g = f;
+				f = e;
+				e = binaryAddition(d, T1, "0", "0", "0", 64);
+				d = c;
+				c = b;
+				b = a;
+				a = binaryAddition(T1, T2, "0", "0", "0", 64);
+			}
+
+			// Compute the intermediate hash value
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 64);
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 64);
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 64);
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 64);
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 64);
+			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), "0", "0", "0", 64);
+			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), "0", "0", "0", 64);
+			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), "0", "0", "0", 64);
+
+			// Since hashValues are binary we should translate it into hexadecimal
+			for (int j = 0; j < hashValues.length; j++) {
+				hashValues[j] = binaryToHexadecimal(hashValues[j]);
+			}
+		}
+
+		// Concatenate hash values
+		for (int i = 0; i < hashValues.length; i++) {
+			hash += hashValues[i];
+		}
+		return hash;
 	}
-	
+
 }

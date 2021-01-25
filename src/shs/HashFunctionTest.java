@@ -175,6 +175,77 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("07fefa4dd58d9aba6210e6efdc19f5d56bc0195ff78e72ef2cdc6291", sha224.computeHash());
 	}
+
+	// SHA-512
+	@Test
+	void testHashComputation_SHA_512() {
+		sha512 = new SHA_512("a");
+		assertEquals(
+				"1f40fc92da241694750979ee6cf582f2d5d7d28e18335de05abc54d0560e0f5302860c652bf08d560252aa5e74210546f369fbbbce8c12cfc7957b2652fe9a75",
+				sha512.computeHash());
+	}
+
+	@Test
+	void testHashComputation2_SHA_512() {
+		sha512 = new SHA_512(""); // empty string
+		assertEquals(
+				"cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e",
+				sha512.computeHash());
+	}
+
+	@Test
+	void testHashComputation3_SHA_512() {
+		sha512 = new SHA_512(
+				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals(
+				"fa9121c7b32b9e01733d034cfc78cbf67f926c7ed83e82200ef86818196921760b4beff48404df811b953828274461673c68d04e297b0eb7b2b4d60fc6b566a2",
+				sha512.computeHash());
+	}
+
+	@Test
+	void testHashComputation4_SHA_512() {
+		sha512 = new SHA_512(
+				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals(
+				"c01d080efd492776a1c43bd23dd99d0a2e626d481e16782e75d54c2503b5dc32bd05f0f1ba33e568b88fd2d970929b719ecbb152f58f130a407c8830604b70ca",
+				sha512.computeHash());
+	}
+
+	@Test
+	void testHashComputation5_SHA_512() {
+		sha512 = new SHA_512(
+				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals(
+				"2078a296f525f03cbb046a26308fbc34d2b9f159f1918978aed4c8e3ca8359c675d7f1188d426016462456b168b6b4c018089db66931ba03b987a87270b95d92",
+				sha512.computeHash());
+	}
+
+	@Test
+	void testHashComputation6_SHA_512() {
+		sha512 = new SHA_512(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals(
+				"26950004405cfd9c02c8d6bcb41748123923709cf7678a8cc0303457096d49b1e7e029bd3d8e5e6c61660fd43353b3917a10c1bb78383e9052905ee470f90ea6",
+				sha512.computeHash());
+	}
+
+	@Test
+	void testHashComputation7_SHA_512() {
+		sha512 = new SHA_512(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829Ajsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals(
+				"105f1ee5e621618215ac0728911a2a5e1f27b40f306d8eee904fc282ed71aec608607d480199cb9a2ffb586422ded3a0c24db3bdc491577ce78cf5bef3de918d",
+				sha512.computeHash());
+	}
+
+	@Test
+	void testHashComputation8_SHA_512() {
+		sha512 = new SHA_512(
+				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals(
+				"f1b4faaf076bf0ddac03b791d089c6724d28205653b79226c5655fdfa8ee8a99fd412d507ee377d36d1fcc182150004058315efbad5fff1ae35cf56253e4cd8c",
+				sha512.computeHash());
+	}
 	// END HASH COMPUTATIONS
 
 	@Test
@@ -333,52 +404,68 @@ class HashFunctionTest {
 
 	@Test
 	void testBinaryAddition_32bits() {
-		assertEquals("11111111111111111111111111111111", sha1.binaryAddition("11111111111111111111111111111111", "0", "0", "0", "0", 32));
+		assertEquals("11111111111111111111111111111111",
+				sha1.binaryAddition("11111111111111111111111111111111", "0", "0", "0", "0", 32));
 	}
-	
+
 	@Test
 	void testBinaryAddition2_32bits() {
-		assertEquals("00000000000000000000000000000000", sha1.binaryAddition("11111111111111111111111111111111", "1", "0", "0", "0", 32));
+		assertEquals("00000000000000000000000000000000",
+				sha1.binaryAddition("11111111111111111111111111111111", "1", "0", "0", "0", 32));
 	}
-	
+
 	@Test
 	void testBinaryAddition3_32bits() {
-		assertEquals("00000000000000000000000000000000", sha1.binaryAddition("11111111111111111111111111111111", "11111111111111111111111111111111", "1", "1", "0", 32));
+		assertEquals("00000000000000000000000000000000", sha1.binaryAddition("11111111111111111111111111111111",
+				"11111111111111111111111111111111", "1", "1", "0", 32));
 	}
-	
+
 	@Test
 	void testBinaryAddition4_32bits() {
-		assertEquals("00111001010000100011011001001110", sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1000011", "10101111000101110011", "111010110111100110100010101", 32));
+		assertEquals("00111001010000100011011001001110",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1000011",
+						"10101111000101110011", "111010110111100110100010101", 32));
 	}
-	
+
 	@Test
 	void testBinaryAddition5_32bits() {
-		assertEquals("00111001010000100011011000001010", sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "11111111111111111111111111111111", "10101111000101110011", "111010110111100110100010101", 32));
+		assertEquals("00111001010000100011011000001010",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100",
+						"11111111111111111111111111111111", "10101111000101110011", "111010110111100110100010101", 32));
 	}
-	
+
 	@Test
 	void testBinaryAddition_64bits() {
-		assertEquals("1111111111111111111111111111111111111111111111111111111111111111", sha1.binaryAddition("1111111111111111111111111111111111111111111111111111111111111111", "0", "0", "0", "0", 64));
+		assertEquals("1111111111111111111111111111111111111111111111111111111111111111", sha1.binaryAddition(
+				"1111111111111111111111111111111111111111111111111111111111111111", "0", "0", "0", "0", 64));
 	}
-	
+
 	@Test
 	void testBinaryAddition2_64bits() {
-		assertEquals("0000000000000000000000000000000000000000000000000000000000000000", sha1.binaryAddition("1111111111111111111111111111111111111111111111111111111111111111", "1", "0", "0", "0", 64));
+		assertEquals("0000000000000000000000000000000000000000000000000000000000000000", sha1.binaryAddition(
+				"1111111111111111111111111111111111111111111111111111111111111111", "1", "0", "0", "0", 64));
 	}
-	
+
 	@Test
 	void testBinaryAddition3_64bits() {
-		assertEquals("0000000000000000000000000000000000000000000000000000000000000000", sha1.binaryAddition("1111111111111111111111111111111111111111111111111111111111111111", "1111111111111111111111111111111111111111111111111111111111111111", "1", "1", "0", 64));
+		assertEquals("0000000000000000000000000000000000000000000000000000000000000000",
+				sha1.binaryAddition("1111111111111111111111111111111111111111111111111111111111111111",
+						"1111111111111111111111111111111111111111111111111111111111111111", "1", "1", "0", 64));
 	}
-	
+
 	@Test
 	void testBinaryAddition4_64bits() {
-		assertEquals("0000000000000000000000000000000000111001010000100011011001001110", sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1000011", "10101111000101110011", "111010110111100110100010101", 64));
+		assertEquals("0000000000000000000000000000000000111001010000100011011001001110",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1000011",
+						"10101111000101110011", "111010110111100110100010101", 64));
 	}
-	
+
 	@Test
 	void testBinaryAddition5_64bits() {
-		assertEquals("0000000000000000000000000000000000111001010000100011011000001010", sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1111111111111111111111111111111111111111111111111111111111111111", "10101111000101110011", "111010110111100110100010101", 64));
+		assertEquals("0000000000000000000000000000000000111001010000100011011000001010",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100",
+						"1111111111111111111111111111111111111111111111111111111111111111", "10101111000101110011",
+						"111010110111100110100010101", 64));
 	}
 
 	@Test
@@ -725,7 +812,7 @@ class HashFunctionTest {
 			sha1.SHR("11", -999);
 		});
 	}
-	
+
 	@Test
 	void testLeftShiftOperation() {
 		assertEquals("111010", sha1.leftShiftOperation("111010", 0));
