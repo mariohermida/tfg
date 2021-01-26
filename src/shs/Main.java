@@ -31,7 +31,7 @@ public class Main {
 		System.out.println("Write a message to be hashed: ");
 		String message = sc.nextLine();
 		sc.close();
-		/*System.out.println("The input message is: '" + message + "'");
+		System.out.println("The input message is: '" + message + "'");
 
 		SHA_1 sh1 = new SHA_1(message);
 		System.out.println("The hash value is: '" + sh1.computeHash() + "'");
@@ -40,26 +40,19 @@ public class Main {
 		System.out.println("The hash value is: '" + sh2.computeHash() + "'");
 		
 		SHA_224 sh3 = new SHA_224(message);
-		System.out.println("The second hash value is: '" + sh3.computeHash() + "'");
+		System.out.println("The hash value is: '" + sh3.computeHash() + "'");
 		
 		SHA_512 sh4 = new SHA_512(message);
-		System.out.println("The second hash value is: '" + sh4.computeHash() + "'");
+		System.out.println("The hash value is: '" + sh4.computeHash() + "'");
 		
 		SHA_384 sh5 = new SHA_384(message);
-		System.out.println("The second hash value is: '" + sh5.computeHash() + "'");
+		System.out.println("The hash value is: '" + sh5.computeHash() + "'");
 		
 		SHA_512_224 sh6 = new SHA_512_224(message);
-		System.out.println("The second hash value is: '" + sh6.computeHash() + "'");
+		System.out.println("The hash value is: '" + sh6.computeHash() + "'");
 		
 		SHA_512_256 sh7 = new SHA_512_256(message);
-		System.out.println("The second hash value is: '" + sh7.computeHash() + "'");*/
-		String[] s = message.split(" ");
-		message = "";
-		for (int i = 0; i < s.length; i++) {
-			message += s[i] ;
-		}
-		System.out.println(message.toLowerCase());
-		
+		System.out.println("The hash value is: '" + sh7.computeHash() + "'");
 	}
 
 }
