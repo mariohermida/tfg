@@ -69,6 +69,12 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("1af89fe6c87f9ce56fe768e5598c9876659052e1", sha1.computeHash());
 	}
+	
+	@Test
+	void testHashComputation9_SHA_1() { // the one proposed by the NIST institution
+		sha1 = new SHA_1("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+		assertEquals("84983e441c3bd26ebaae4aa1f95129e5e54670f1", sha1.computeHash());
+	}
 
 	// SHA-256
 	@Test
@@ -122,6 +128,12 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("9bbbd77600ee390ab31746a11a6202182572158766295d8919ab3c90123f2a14", sha256.computeHash());
 	}
+	
+	@Test
+	void testHashComputation9_SHA_256() { // the one proposed by the NIST institution
+		sha256 = new SHA_256("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+		assertEquals("248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1", sha256.computeHash());
+	}
 
 	// SHA-224
 	@Test
@@ -174,6 +186,12 @@ class HashFunctionTest {
 		sha224 = new SHA_224(
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("07fefa4dd58d9aba6210e6efdc19f5d56bc0195ff78e72ef2cdc6291", sha224.computeHash());
+	}
+	
+	@Test
+	void testHashComputation9_SHA_224() { // the one proposed by the NIST institution
+		sha224 = new SHA_224("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+		assertEquals("75388b16512776cc5dba5da1fd890150b0c6455cb4f58b1952522525", sha224.computeHash());
 	}
 
 	// SHA-512
@@ -246,6 +264,12 @@ class HashFunctionTest {
 				"f1b4faaf076bf0ddac03b791d089c6724d28205653b79226c5655fdfa8ee8a99fd412d507ee377d36d1fcc182150004058315efbad5fff1ae35cf56253e4cd8c",
 				sha512.computeHash());
 	}
+	
+	@Test
+	void testHashComputation9_SHA_512() { // the one proposed by the NIST institution
+		sha512 = new SHA_512("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		assertEquals("8e959b75dae313da8cf4f72814fc143f8f7779c6eb9f7fa17299aeadb6889018501d289e4900f7e4331b99dec4b5433ac7d329eeb6dd26545e96e55b874be909", sha512.computeHash());
+	}
 
 	// SHA-384
 	@Test
@@ -309,6 +333,12 @@ class HashFunctionTest {
 		assertEquals("21131ae6b08496e859e1593981967bb646c35c174b637073027d199f8a3b047d1ed618850af9e810e5e4bfd7fcd88d16",
 				sha384.computeHash());
 	}
+	
+	@Test
+	void testHashComputation9_SHA_384() { // the one proposed by the NIST institution
+		sha384 = new SHA_384("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		assertEquals("09330c33f71147e83d192fc782cd1b4753111b173b3b05d22fa08086e3b0f712fcc7c71a557e2db966c3e9fa91746039", sha384.computeHash());
+	}
 
 	// SHA-512/224
 	@Test
@@ -364,6 +394,12 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("79bb805e77b4dc0abd46eb4b8c030fad9f85adaf2775a231f877bd60", sha512_224.computeHash());
 	}
+	
+	@Test
+	void testHashComputation9_SHA_512_224() { // the one proposed by the NIST institution
+		sha512_224 = new SHA_512_224("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		assertEquals("23fec5bb94d60b23308192640b0c453335d664734fe40e7268674af9", sha512_224.computeHash());
+	}
 
 	// SHA-512/256
 	@Test
@@ -418,6 +454,12 @@ class HashFunctionTest {
 		sha512_256 = new SHA_512_256(
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("dc4636c1e3b12e5d1f79a853587f88d2bfa7570793587d50d1097c8a40b7c646", sha512_256.computeHash());
+	}
+	
+	@Test
+	void testHashComputation9_SHA_512_256() { // the one proposed by the NIST institution
+		sha512_256 = new SHA_512_256("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		assertEquals("3928e184fb8690f840da3988121d31be65cb9d3ef83ee6146feac861e19b563a", sha512_256.computeHash());
 	}
 	// END HASH COMPUTATIONS
 

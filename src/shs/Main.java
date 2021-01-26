@@ -11,14 +11,8 @@ import java.util.Scanner;
 public class Main {
 
 	/*
-	 * THINK OF CHANGING HASHFUNCTION TO NON-ABSTRACT AGAIN
-	 * THINK OF DECLARING ALL THE VARIABLES IN THE SUPERCLASS (HASHFUNCTION) 
-	 * CONSTANTS IN SHA_* CLASS SHOULD BE SET TO PRIVATE INSTEAD OF STATIC
-	 * TRY TO THINK OTHER WAY TO KEEP RECORD OF HASH VALUES BEING BINARY
 	 * I HAVE THOUGHT DROPPING PADMESSAGE AND PARSEMESSAGE FUNCTIONS FROM THE CONSTRUCTOR
 	 * THINK OF WHETHER INCLUDING ALTERNATE COMPUTATION METHOD FOR SHA-1 OR NOT
-	 * HASH CAN ALSO BE COMPUTED FROM FILES WITH A NEW CONSTRUCTOR (IT CAN HAVE THE FILE AND FROM THERE
-	 * THE TEXT WITHIN THE FILE)
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -37,7 +31,7 @@ public class Main {
 		System.out.println("Write a message to be hashed: ");
 		String message = sc.nextLine();
 		sc.close();
-		System.out.println("The input message is: '" + message + "'");
+		/*System.out.println("The input message is: '" + message + "'");
 
 		SHA_1 sh1 = new SHA_1(message);
 		System.out.println("The hash value is: '" + sh1.computeHash() + "'");
@@ -58,7 +52,14 @@ public class Main {
 		System.out.println("The second hash value is: '" + sh6.computeHash() + "'");
 		
 		SHA_512_256 sh7 = new SHA_512_256(message);
-		System.out.println("The second hash value is: '" + sh7.computeHash() + "'");
+		System.out.println("The second hash value is: '" + sh7.computeHash() + "'");*/
+		String[] s = message.split(" ");
+		message = "";
+		for (int i = 0; i < s.length; i++) {
+			message += s[i] ;
+		}
+		System.out.println(message.toLowerCase());
+		
 	}
 
 }
