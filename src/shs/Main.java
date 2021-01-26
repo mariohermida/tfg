@@ -65,7 +65,7 @@ public class Main {
 		sc.close();
 		System.out.println("The input message is: '" + message + "'");
 
-		SHA_512 sh = new SHA_512(message);
+		SHA_512_256 sh = new SHA_512_256(message);
 		System.out.println("The hash value is: '" + sh.computeHash() + "'");
 	}
 

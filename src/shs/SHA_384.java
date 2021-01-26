@@ -34,8 +34,8 @@ public class SHA_384 extends HashFunction {
 	
 	@Override
 	String computeHash() {
-		// TODO Auto-generated method stub
-		return null;
+		SHA_512 sh = new SHA_512(binaryMessage, true);
+		return sh.computeHashOperation(hashValues).substring(0, 96);
 	}
 
 }
