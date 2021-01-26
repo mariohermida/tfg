@@ -19,7 +19,6 @@ public class SHA_224 extends HashFunction {
 		} else {
 			this.binaryMessage = textToBinary(message);
 		}
-		this.binaryMessage = textToBinary(message);
 		messageDigestLength = 224;
 		wordSize = 32;
 		maximumMessageLength = 64;
@@ -28,15 +27,14 @@ public class SHA_224 extends HashFunction {
 		padMessage();
 		parseMessage();
 	}
-	
+
 	public SHA_224(String message) {
 		this(message, false);
 	}
 
 	@Override
 	public String computeHash() {
-		SHA_256 sh = new SHA_256(binaryMessage, true);
-		return sh.computeHashOperation(hashValues).substring(0, 56);
+		return computeSHA2Hash(hashValues, 64, 1).substring(0, messageDigestLength / 4);
 	}
 
 }

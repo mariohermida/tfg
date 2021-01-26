@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class SHA_512_256 extends HashFunction {
 
-	private String[] hashValues = { "22312194fc2bf72c", "9f555fa3c84c64c2", "2393b86b6f53b151",
-			"963877195940eabd", "96283ee2a88effe3", "be5e1e2553863992", "2b0199fc2c85b8aa", "0eb72ddc81c52ca2" };
+	private String[] hashValues = { "22312194fc2bf72c", "9f555fa3c84c64c2", "2393b86b6f53b151", "963877195940eabd",
+			"96283ee2a88effe3", "be5e1e2553863992", "2b0199fc2c85b8aa", "0eb72ddc81c52ca2" };
 
 	public SHA_512_256(String message, boolean isBinary) {
 		System.out.println("\tSHA-512/256 ALGORITHM");
@@ -27,15 +27,14 @@ public class SHA_512_256 extends HashFunction {
 		padMessage();
 		parseMessage();
 	}
-	
+
 	public SHA_512_256(String message) {
 		this(message, false);
 	}
-	
+
 	@Override
 	String computeHash() {
-		SHA_512 sh = new SHA_512(binaryMessage, true);
-		return sh.computeHashOperation(hashValues).substring(0, 64);
+		return computeSHA2Hash(hashValues, 80, 2).substring(0, messageDigestLength / 4);
 	}
 
 }
