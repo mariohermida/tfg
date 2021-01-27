@@ -27,7 +27,10 @@ public class Main {
 
 	private void start() {
 		System.out.println("Starting program...\n");
-		Scanner sc = new Scanner(System.in);
+		
+		new ControllerSHS(); 
+		
+		/*Scanner sc = new Scanner(System.in);
 		System.out.println("Write a message to be hashed: ");
 		String message = sc.nextLine();
 		sc.close();
@@ -52,7 +55,7 @@ public class Main {
 		System.out.println("The hash value is: '" + sh6.computeHash() + "'");
 		
 		SHA_512_256 sh7 = new SHA_512_256(message);
-		System.out.println("The hash value is: '" + sh7.computeHash() + "'");
+		System.out.println("The hash value is: '" + sh7.computeHash() + "'");*/
 	}
 
 }
