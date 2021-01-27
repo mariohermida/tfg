@@ -1,5 +1,6 @@
 package shs;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.*;
 
@@ -15,24 +16,27 @@ public class ViewSHS extends JFrame{
 
 	private void showWindow() {
 		// JLabel labelWelcome
-		/*JLabel labelWelcome = new JLabel();
+		JLabel labelWelcome = new JLabel();
 		labelWelcome.setText("Welcome! Choose the algorithm you want to use:");
 		labelWelcome.setBounds(70, 10, 350, 50);
-		this.add(labelWelcome);*/
+		this.add(labelWelcome);
 
 		// JButton buttonGenerateHash
 		JButton buttonGenerateHash = new JButton();
 		buttonGenerateHash.setText("Generate hash");
 		buttonGenerateHash.setBounds(125, 80, 200, 50);
-		buttonGenerateHash.setBackground(Color.YELLOW);
+		buttonGenerateHash.setBackground(Color.CYAN);
 		buttonGenerateHash.addActionListener(controllerSHS);
 		buttonGenerateHash.setActionCommand("generateHash");
 		this.add(buttonGenerateHash);
+		
+		// It allows setting bounds to objects
+		this.setLayout(new BorderLayout());
 
 		// Window
 		this.setTitle("Secure Hash Generator");
 		this.setResizable(false);
-		this.setBounds(458, 234, 450, 250);
+		this.setBounds(350, 120, 500, 500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
