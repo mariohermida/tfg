@@ -13,6 +13,8 @@ public class ControllerSHS implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("generateHash")) {
 			System.out.println("You pressed generateHash button");
+		} else if (e.getActionCommand().equals("radioButtonSHA1")) {
+			System.out.println("You pressed radioSHA1 radioButton");
 		}
 	}
 
