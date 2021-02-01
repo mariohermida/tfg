@@ -75,22 +75,36 @@ public class ViewSHS extends JFrame {
 		buttonGroup.add(radioButtonSHA512_224);
 		buttonGroup.add(radioButtonSHA512_256);
 
-		// TextField for the text to be hashed
-		JTextField textFieldText = new JTextField();
-		textFieldText.setBounds(40, 175, 400, 100);
-		add(textFieldText);
+		// JLabel labelText
+		JLabel labelText = new JLabel();
+		labelText.setText("Introduce the text you want to hash:");
+		labelText.setBounds(130, 135, 350, 50);
+		add(labelText);
 
-		//Scroll should be added in both jtext fields
-		
+		// TextField for the text to be hashed
+		JTextArea textAreaText = new JTextArea();
+		textAreaText.setBounds(40, 175, 400, 100);
+		JScrollPane scrollPane = new JScrollPane(textAreaText);
+		scrollPane.setBounds(40, 175, 400, 100);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        add(scrollPane);
+		//add(textAreaText);
+
+		// JLabel labelHash
+		JLabel labelHash = new JLabel();
+		labelHash.setText("Resulting hash:");
+		labelHash.setBounds(190, 280, 350, 50);
+		add(labelHash);
+
 		// TextField for the text to be hashed
 		JTextField textFieldHash = new JTextField();
-		textFieldHash.setBounds(40, 280, 400, 100);
+		textFieldHash.setBounds(40, 320, 400, 100);
 		add(textFieldHash);
 
 		// JButton buttonGenerateHash
 		JButton buttonGenerateHash = new JButton();
 		buttonGenerateHash.setText("Generate hash");
-		buttonGenerateHash.setBounds(140, 400, 200, 50);
+		buttonGenerateHash.setBounds(140, 450, 200, 50);
 		buttonGenerateHash.setBackground(Color.CYAN);
 		buttonGenerateHash.addActionListener(controllerSHS);
 		buttonGenerateHash.setActionCommand("generateHash");
@@ -100,7 +114,7 @@ public class ViewSHS extends JFrame {
 		setLayout(null);
 		setTitle("Secure Hash Generator");
 		setResizable(false);
-		setBounds(350, 120, 500, 500);
+		setBounds(350, 120, 500, 600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
