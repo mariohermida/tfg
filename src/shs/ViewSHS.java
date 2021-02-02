@@ -7,6 +7,7 @@ import javax.swing.*;
 public class ViewSHS extends JFrame {
 
 	private ControllerSHS controllerSHS;
+	private ButtonGroup buttonGroup;
 
 	public ViewSHS(ControllerSHS controllerSHS) {
 		this.controllerSHS = controllerSHS;
@@ -66,7 +67,7 @@ public class ViewSHS extends JFrame {
 		add(radioButtonSHA512_256);
 
 		// Include all the radioButtons within the same button group
-		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup = new ButtonGroup();
 		buttonGroup.add(radioButtonSHA1);
 		buttonGroup.add(radioButtonSHA224);
 		buttonGroup.add(radioButtonSHA256);
@@ -81,14 +82,12 @@ public class ViewSHS extends JFrame {
 		labelText.setBounds(130, 135, 350, 50);
 		add(labelText);
 
-		// TextField for the text to be hashed
+		// TextField for the text to be hashed plus the Scroll
 		JTextArea textAreaText = new JTextArea();
-		textAreaText.setBounds(40, 175, 400, 100);
-		JScrollPane scrollPane = new JScrollPane(textAreaText);
-		scrollPane.setBounds(40, 175, 400, 100);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        add(scrollPane);
-		//add(textAreaText);
+		JScrollPane scrollPane = new JScrollPane(textAreaText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(40, 175, 800, 100);
+		add(scrollPane);
 
 		// JLabel labelHash
 		JLabel labelHash = new JLabel();
@@ -98,13 +97,13 @@ public class ViewSHS extends JFrame {
 
 		// TextField for the text to be hashed
 		JTextField textFieldHash = new JTextField();
-		textFieldHash.setBounds(40, 320, 400, 100);
+		textFieldHash.setBounds(40, 320, 800, 100);
 		add(textFieldHash);
 
 		// JButton buttonGenerateHash
 		JButton buttonGenerateHash = new JButton();
 		buttonGenerateHash.setText("Generate hash");
-		buttonGenerateHash.setBounds(140, 450, 200, 50);
+		buttonGenerateHash.setBounds(140, 440, 200, 50);
 		buttonGenerateHash.setBackground(Color.CYAN);
 		buttonGenerateHash.addActionListener(controllerSHS);
 		buttonGenerateHash.setActionCommand("generateHash");
@@ -114,9 +113,17 @@ public class ViewSHS extends JFrame {
 		setLayout(null);
 		setTitle("Secure Hash Generator");
 		setResizable(false);
-		setBounds(350, 120, 500, 600);
+		setBounds(350, 120, 1000, 550);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
+	}
+
+	public void showAlgorithmAlert() {
+		JOptionPane.showMessageDialog(this, "An algorithm must be selected");
+	}
+
+	public ButtonGroup getButtonGroup() {
+		return buttonGroup;
 	}
 
 }
