@@ -15,6 +15,8 @@ public class Main {
 	 * CONSTRUCTOR THINK OF WHETHER INCLUDING ALTERNATE COMPUTATION METHOD FOR SHA-1
 	 * OR NOT TAKE CARE WHEN PROCESSING CARRIAGE RETURN CHARACTERS AT THE END OF THE
 	 * LINE /r/n, /r MUST BE DROPPED IN ORDER TO PRODUCE THE RIGHT RESULTS
+	 * MAYBE ADDING A METHOD FOR COMPUTING BINARY ADDITION JUST FOR 2 ARGS
+	 * INCLUDE SwingUtilities.invokeLater(new Runnable() { FOR STARTING THE PROGRAM
 	 * 
 	 * FURTHER ACTIONS: CREATE USER INTERFACE AND ESTABLISH EVENT LISTENER POLICIES
 	 * 
@@ -36,8 +38,9 @@ public class Main {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Write a message to be hashed: ");
 //		String message = sc.nextLine();
-		String message = "c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51\n"
-				+ "c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51";
+//		String message = "c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51\n"
+//				+ "c56d80e97ccde9a94edb51f7b63997160efb140c0319b0f559b1fdef0c07ea51";
+		String message = "cbc";
 		message.replace("\r\n", "\n").replace("\r", "\n");
 		sc.close();
 		System.out.println("The input message is: '" + message + "'");
@@ -61,8 +64,8 @@ public class Main {
 		System.out.println("The hash value is: '" + sh6.computeHash() + "'");
 
 		SHA_512_256 sh7 = new SHA_512_256(message);
-		System.out.println("The hash value is: '" + sh7.computeHash() + "'");
-		*/
+		System.out.println("The hash value is: '" + sh7.computeHash() + "'");*/
+		
 	}
 
 }

@@ -81,11 +81,11 @@ public class SHA_1 extends HashFunction {
 			}
 
 			// Compute the intermediate hash value
-			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", 32);
-			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", 32);
-			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", 32);
-			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", 32);
-			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", 32);
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), wordSize);
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), wordSize);
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), wordSize);
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), wordSize);
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), wordSize);
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {

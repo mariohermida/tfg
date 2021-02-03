@@ -58,7 +58,8 @@ public abstract class HashFunction {
 	 * 
 	 * @param hashValues     Array containing the initial hash values of each class
 	 * @param loopIterations Number of iterations performed in main loop (64 or 80)
-	 * @param oneOrTwo       It
+	 * @param oneOrTwo       It identifies the group of constants (depends on the
+	 *                       algorithm)
 	 * @return Hexadecimal hash computed
 	 */
 	protected String computeSHA2Hash(String[] hashValues, int loopIterations, int oneOrTwo) {
@@ -78,7 +79,7 @@ public abstract class HashFunction {
 							.add(binaryAddition(sigmaFunctionSplitter(messageSchedule.get(t - 2), wordSize, "lower", 1),
 									messageSchedule.get(t - 7),
 									sigmaFunctionSplitter(messageSchedule.get(t - 15), wordSize, "lower", 0),
-									messageSchedule.get(t - 16), "0", wordSize));
+									messageSchedule.get(t - 16), wordSize));
 				}
 			}
 
@@ -101,27 +102,26 @@ public abstract class HashFunction {
 					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
 							hexadecimalToBinary(CONSTANTS2[t]), messageSchedule.get(t), wordSize);
 				}
-				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", 0), Maj(a, b, c), "0", "0", "0",
-						wordSize);
+				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", 0), Maj(a, b, c), wordSize);
 				h = g;
 				g = f;
 				f = e;
-				e = binaryAddition(d, T1, "0", "0", "0", wordSize);
+				e = binaryAddition(d, T1, wordSize);
 				d = c;
 				c = b;
 				b = a;
-				a = binaryAddition(T1, T2, "0", "0", "0", wordSize);
+				a = binaryAddition(T1, T2, wordSize);
 			}
 
 			// Compute the intermediate hash value
-			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), "0", "0", "0", wordSize);
-			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), "0", "0", "0", wordSize);
-			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), "0", "0", "0", wordSize);
-			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), "0", "0", "0", wordSize);
-			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), "0", "0", "0", wordSize);
-			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), "0", "0", "0", wordSize);
-			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), "0", "0", "0", wordSize);
-			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), "0", "0", "0", wordSize);
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), wordSize);
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), wordSize);
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), wordSize);
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), wordSize);
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), wordSize);
+			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), wordSize);
+			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), wordSize);
+			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), wordSize);
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
@@ -238,6 +238,14 @@ public abstract class HashFunction {
 			result = "0" + result;
 		}
 		return result;
+	}
+
+	protected String binaryAddition(String a, String b, String c, String d, int mod) {
+		return binaryAddition(a, b, c, d, "0", mod);
+	}
+
+	protected String binaryAddition(String a, String b, int mod) {
+		return binaryAddition(a, b, "0", "0", "0", mod);
 	}
 
 	/**
