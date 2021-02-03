@@ -20,50 +20,50 @@ public class ViewSHS extends JFrame {
 		// JLabel labelWelcome
 		JLabel labelWelcome = new JLabel();
 		labelWelcome.setText("Welcome! Choose the algorithm you want to use:");
-		labelWelcome.setBounds(100, 0, 350, 50);
+		labelWelcome.setBounds(330, 0, 350, 50);
 		add(labelWelcome);
 
 		// RadioButtons regarding all the algorithms
 		// First row algorithms
+		int initialPosition = 130;
 		JRadioButton radioButtonSHA1 = new JRadioButton("SHA-1");
-		radioButtonSHA1.setBounds(50, 50, 60, 50);
+		radioButtonSHA1.setBounds(initialPosition, 50, 60, 50);
 		radioButtonSHA1.addActionListener(controllerSHS);
 		radioButtonSHA1.setActionCommand("radioButtonSHA1");
 		add(radioButtonSHA1);
 
 		JRadioButton radioButtonSHA224 = new JRadioButton("SHA-224");
-		radioButtonSHA224.setBounds(150, 50, 80, 50);
+		radioButtonSHA224.setBounds(100+initialPosition, 50, 80, 50);
 		radioButtonSHA224.addActionListener(controllerSHS);
 		radioButtonSHA224.setActionCommand("radioButtonSHA224");
 		add(radioButtonSHA224);
 
 		JRadioButton radioButtonSHA256 = new JRadioButton("SHA-256");
-		radioButtonSHA256.setBounds(250, 50, 80, 50);
+		radioButtonSHA256.setBounds(200+initialPosition, 50, 80, 50);
 		radioButtonSHA256.addActionListener(controllerSHS);
 		radioButtonSHA256.setActionCommand("radioButtonSHA256");
 		add(radioButtonSHA256);
 
 		JRadioButton radioButtonSHA384 = new JRadioButton("SHA-384");
-		radioButtonSHA384.setBounds(350, 50, 80, 50);
+		radioButtonSHA384.setBounds(300+initialPosition, 50, 80, 50);
 		radioButtonSHA384.addActionListener(controllerSHS);
 		radioButtonSHA384.setActionCommand("radioButtonSHA384");
 		add(radioButtonSHA384);
 
-		// Second row algorithms
 		JRadioButton radioButtonSHA512 = new JRadioButton("SHA-512");
-		radioButtonSHA512.setBounds(75, 100, 80, 50);
+		radioButtonSHA512.setBounds(400+initialPosition, 50, 80, 50);
 		radioButtonSHA512.addActionListener(controllerSHS);
 		radioButtonSHA512.setActionCommand("radioButtonSHA512");
 		add(radioButtonSHA512);
 
 		JRadioButton radioButtonSHA512_224 = new JRadioButton("SHA-512/224");
-		radioButtonSHA512_224.setBounds(200, 100, 100, 50);
+		radioButtonSHA512_224.setBounds(500+initialPosition, 50, 100, 50);
 		radioButtonSHA512_224.addActionListener(controllerSHS);
 		radioButtonSHA512_224.setActionCommand("radioButtonSHA512_224");
 		add(radioButtonSHA512_224);
 
 		JRadioButton radioButtonSHA512_256 = new JRadioButton("SHA-512/256");
-		radioButtonSHA512_256.setBounds(325, 100, 100, 50);
+		radioButtonSHA512_256.setBounds(625+initialPosition, 50, 100, 50);
 		radioButtonSHA512_256.addActionListener(controllerSHS);
 		radioButtonSHA512_256.setActionCommand("radioButtonSHA512_256");
 		add(radioButtonSHA512_256);
@@ -81,10 +81,10 @@ public class ViewSHS extends JFrame {
 		// JLabel labelTextToBeHashed
 		JLabel labelTextToBeHashed = new JLabel();
 		labelTextToBeHashed.setText("Introduce the text you want to hash:");
-		labelTextToBeHashed.setBounds(130, 135, 350, 50);
+		labelTextToBeHashed.setBounds(365, 135, 350, 50);
 		add(labelTextToBeHashed);
 
-		// TextField for the text to be hashed plus the Scroll
+		// TextArea for the text to be hashed plus the ScrollPane
 		textAreaTextToBeHashed = new JTextArea();
 		JScrollPane scrollPane = new JScrollPane(textAreaTextToBeHashed);
 		scrollPane.setBounds(40, 175, 900, 100);
@@ -92,8 +92,8 @@ public class ViewSHS extends JFrame {
 
 		// JLabel labelHash
 		JLabel labelHash = new JLabel();
-		labelHash.setText("Resulting hash:");
-		labelHash.setBounds(190, 280, 350, 50);
+		labelHash.setText("Resulting hash value:");
+		labelHash.setBounds(410, 280, 350, 50);
 		add(labelHash);
 
 		// TextField for the text to be hashed
@@ -106,7 +106,7 @@ public class ViewSHS extends JFrame {
 		// JButton buttonGenerateHash
 		JButton buttonGenerateHash = new JButton();
 		buttonGenerateHash.setText("Generate hash");
-		buttonGenerateHash.setBounds(140, 440, 200, 50);
+		buttonGenerateHash.setBounds(370, 440, 200, 50);
 		buttonGenerateHash.setBackground(Color.CYAN);
 		buttonGenerateHash.addActionListener(controllerSHS);
 		buttonGenerateHash.setActionCommand("generateHash");
@@ -116,7 +116,7 @@ public class ViewSHS extends JFrame {
 		setLayout(null);
 		setTitle("Secure Hash Generator");
 		setResizable(false);
-		setBounds(350, 120, 1000, 550);
+		setBounds(175, 100, 1000, 550);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}

@@ -256,7 +256,7 @@ public abstract class HashFunction {
 	 * @return The binary string multiple of 8 bits
 	 */
 	protected String textToBinary(String text) {
-		byte[] byteArray = text.getBytes(StandardCharsets.US_ASCII);
+		byte[] byteArray = text.getBytes(StandardCharsets.UTF_8);
 		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {
 			binaryCharacter = Integer.toBinaryString(b);
