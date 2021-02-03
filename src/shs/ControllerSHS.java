@@ -14,12 +14,33 @@ public class ControllerSHS implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("generateHash")) {
-			System.out.println("You pressed generateHash button");
 			if (viewSHS.getButtonGroup().getSelection() == null) {
-				viewSHS.showAlgorithmAlert();
+				viewSHS.showNoAlgorithmChosenAlert();
 			} else {
-				System.out.println("The algorithm " + viewSHS.getButtonGroup().toString() + " has been selected.");
-				// A method has to be implemented for selecting the algorithm you want to work with
+				HashFunction sh;
+				String option = viewSHS.getButtonGroup().getSelection().getActionCommand();
+				if (option.equals("radioButtonSHA1")) {
+					sh = new SHA_1(viewSHS.getTextAreaTextToBeHashed().getText());
+					viewSHS.getTextFieldHash().setText(sh.computeHash());
+				} else if (option.equals("radioButtonSHA224")) {
+					sh = new SHA_224(viewSHS.getTextAreaTextToBeHashed().getText());
+					viewSHS.getTextFieldHash().setText(sh.computeHash());
+				} else if (option.equals("radioButtonSHA256")) {
+					sh = new SHA_256(viewSHS.getTextAreaTextToBeHashed().getText());
+					viewSHS.getTextFieldHash().setText(sh.computeHash());
+				} else if (option.equals("radioButtonSHA384")) {
+					sh = new SHA_384(viewSHS.getTextAreaTextToBeHashed().getText());
+					viewSHS.getTextFieldHash().setText(sh.computeHash());
+				} else if (option.equals("radioButtonSHA512")) {
+					sh = new SHA_512(viewSHS.getTextAreaTextToBeHashed().getText());
+					viewSHS.getTextFieldHash().setText(sh.computeHash());
+				} else if (option.equals("radioButtonSHA512_224")) {
+					sh = new SHA_512_224(viewSHS.getTextAreaTextToBeHashed().getText());
+					viewSHS.getTextFieldHash().setText(sh.computeHash());
+				} else if (option.equals("radioButtonSHA512_256")) {
+					sh = new SHA_512_256(viewSHS.getTextAreaTextToBeHashed().getText());
+					viewSHS.getTextFieldHash().setText(sh.computeHash());
+				}
 			}
 		}
 	}

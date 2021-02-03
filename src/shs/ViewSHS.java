@@ -8,6 +8,8 @@ public class ViewSHS extends JFrame {
 
 	private ControllerSHS controllerSHS;
 	private ButtonGroup buttonGroup;
+	private JTextField textFieldHash;
+	private JTextArea textAreaTextToBeHashed;
 
 	public ViewSHS(ControllerSHS controllerSHS) {
 		this.controllerSHS = controllerSHS;
@@ -76,17 +78,16 @@ public class ViewSHS extends JFrame {
 		buttonGroup.add(radioButtonSHA512_224);
 		buttonGroup.add(radioButtonSHA512_256);
 
-		// JLabel labelText
-		JLabel labelText = new JLabel();
-		labelText.setText("Introduce the text you want to hash:");
-		labelText.setBounds(130, 135, 350, 50);
-		add(labelText);
+		// JLabel labelTextToBeHashed
+		JLabel labelTextToBeHashed = new JLabel();
+		labelTextToBeHashed.setText("Introduce the text you want to hash:");
+		labelTextToBeHashed.setBounds(130, 135, 350, 50);
+		add(labelTextToBeHashed);
 
 		// TextField for the text to be hashed plus the Scroll
-		JTextArea textAreaText = new JTextArea();
-		JScrollPane scrollPane = new JScrollPane(textAreaText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollPane.setBounds(40, 175, 800, 100);
+		textAreaTextToBeHashed = new JTextArea();
+		JScrollPane scrollPane = new JScrollPane(textAreaTextToBeHashed);
+		scrollPane.setBounds(40, 175, 900, 100);
 		add(scrollPane);
 
 		// JLabel labelHash
@@ -96,8 +97,10 @@ public class ViewSHS extends JFrame {
 		add(labelHash);
 
 		// TextField for the text to be hashed
-		JTextField textFieldHash = new JTextField();
-		textFieldHash.setBounds(40, 320, 800, 100);
+		textFieldHash = new JTextField();
+		textFieldHash.setBounds(40, 320, 900, 100);
+		textFieldHash.setEditable(false);
+		textFieldHash.setBackground(Color.WHITE);
 		add(textFieldHash);
 
 		// JButton buttonGenerateHash
@@ -118,12 +121,20 @@ public class ViewSHS extends JFrame {
 		setVisible(true);
 	}
 
-	public void showAlgorithmAlert() {
+	public void showNoAlgorithmChosenAlert() {
 		JOptionPane.showMessageDialog(this, "An algorithm must be selected");
 	}
 
 	public ButtonGroup getButtonGroup() {
 		return buttonGroup;
+	}
+
+	public JTextArea getTextAreaTextToBeHashed() {
+		return textAreaTextToBeHashed;
+	}
+	
+	public JTextField getTextFieldHash() {
+		return textFieldHash;
 	}
 
 }
