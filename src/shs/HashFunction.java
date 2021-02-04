@@ -260,7 +260,7 @@ public abstract class HashFunction {
 		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {
 			binaryCharacter = Integer.toBinaryString(b);
-			while (binaryCharacter.length() < 8) {
+			while (binaryCharacter.length() % 8 != 0) {
 				binaryCharacter = "0" + binaryCharacter;
 			}
 			binaryMessage += binaryCharacter;

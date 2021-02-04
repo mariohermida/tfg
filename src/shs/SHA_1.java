@@ -19,7 +19,6 @@ public class SHA_1 extends HashFunction {
 		} else {
 			this.binaryMessage = textToBinary(message);
 		}
-		this.binaryMessage = textToBinary(message);
 		messageDigestLength = 160;
 		wordSize = 32;
 		maximumMessageLength = 64;
