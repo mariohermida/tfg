@@ -249,8 +249,8 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * It converts every character (byte) to a 7-bit sequence (US_ASCII), then it is
-	 * zero padded so that it is a 8-bit string.
+	 * It converts the whole text to a multiple of 8 bit string (using UNICODE
+	 * encoding)
 	 * 
 	 * @param text Whole text to be converted
 	 * @return The binary string multiple of 8 bits
@@ -260,6 +260,14 @@ public abstract class HashFunction {
 		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {
 			binaryCharacter = Integer.toBinaryString(b);
+			// Java Integer class works with signed 32-bit numbers, but UNICODE works with
+			// 8-bit blocks, so the only thing it is needed is to get the least significant
+			// 8 bits
+			if (binaryCharacter.length() > 8) {
+				binaryCharacter = binaryCharacter.substring(binaryCharacter.length() - 8);
+			}
+			// If an ASCII character is input the binary string will be padded to reach
+			// those mentioned 8 bits
 			while (binaryCharacter.length() % 8 != 0) {
 				binaryCharacter = "0" + binaryCharacter;
 			}

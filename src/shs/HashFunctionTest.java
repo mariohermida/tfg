@@ -461,6 +461,19 @@ class HashFunctionTest {
 		sha512_256 = new SHA_512_256("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
 		assertEquals("3928e184fb8690f840da3988121d31be65cb9d3ef83ee6146feac861e19b563a", sha512_256.computeHash());
 	}
+	
+	@Test
+	void testHashComputation_UNICODE() { //Armenian characters
+		sha1 = new SHA_1("ԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖՙ՚՛՜՝՞՟ՠաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆևֈ։֊֍֎֏");
+		assertEquals("0fb9cd7870517bf0984bd061963abb28b50e33c5", sha1.computeHash());
+	}
+	
+	@Test
+	void testHashComputation_UNICODE2() { //Manding languages characters
+		sha512 = new SHA_512("߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
+		assertEquals("393a94c271d0717b7bab57d8652064b71d7ffd6349564d15f64e7243c92bfb910bef6ec237b0811f50223354c226d1e048707d1033970a3d9368143ae22e77a9", sha512.computeHash());
+	}
+	
 	// END HASH COMPUTATIONS
 
 	@Test
@@ -479,24 +492,24 @@ class HashFunctionTest {
 				joinWords(sha1.words));
 	}
 
-	@Test // one block length (binary length = 440 bits)
-	void testPadMessage3_32bitsWords() {
+	@Test
+	void testPadMessage3_32bitsWords() { // one block length (binary length = 440 bits)
 		sha224 = new SHA_224("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		assertEquals(
 				"01100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001100000000000000000000000000000000000000000000000000000000000000110111000",
 				joinWords(sha224.words));
 	}
 
-	@Test // binary length = 448 bits exactly (despite the length pad must be added)
-	void testPadMessage4_32bitsWords() {
+	@Test
+	void testPadMessage4_32bitsWords() { // binary length = 448 bits exactly (despite the length pad must be added)
 		sha256 = new SHA_256("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		assertEquals(
 				"0110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001011000010110000101100001100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111000000",
 				joinWords(sha256.words));
 	}
 
-	@Test // two blocks needed (binary length = 760 bits)
-	void testPadMessage5_32bitsWords() {
+	@Test
+	void testPadMessage5_32bitsWords() { // two blocks needed (binary length = 760 bits)
 		sha1 = new SHA_1(
 				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
 		assertEquals(
@@ -504,8 +517,8 @@ class HashFunctionTest {
 				joinWords(sha1.words));
 	}
 
-	@Test // binary length = 960 bits (last block wholly padded)
-	void testPadMessage6_32bitsWords() {
+	@Test
+	void testPadMessage6_32bitsWords() { // binary length = 960 bits (last block wholly padded)
 		sha224 = new SHA_224(
 				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
 		assertEquals(
@@ -547,8 +560,8 @@ class HashFunctionTest {
 				joinWords(sha512.words));
 	}
 
-	@Test // one block length (binary length = 888 bits)
-	void testPadMessage3_64bitsWords() {
+	@Test
+	void testPadMessage3_64bitsWords() { // one block length (binary length = 888 bits)
 		sha512_224 = new SHA_512_224(
 				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		assertEquals(
@@ -556,8 +569,8 @@ class HashFunctionTest {
 				joinWords(sha512_224.words));
 	}
 
-	@Test // binary length = 896 bits exactly (despite the length pad must be added)
-	void testPadMessage4_64bitsWords() {
+	@Test
+	void testPadMessage4_64bitsWords() { // binary length = 896 bits exactly (despite the length pad must be added)
 		sha512_256 = new SHA_512_256(
 				"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		assertEquals(
@@ -565,8 +578,8 @@ class HashFunctionTest {
 				joinWords(sha512_256.words));
 	}
 
-	@Test // two blocks needed (binary length = 1520 bits)
-	void testPadMessage5_64bitsWords() {
+	@Test
+	void testPadMessage5_64bitsWords() { // two blocks needed (binary length = 1520 bits)
 		sha384 = new SHA_384(
 				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
 		assertEquals(
@@ -574,8 +587,8 @@ class HashFunctionTest {
 				joinWords(sha384.words));
 	}
 
-	@Test // binary length = 1920 bits (last block wholly padded)
-	void testPadMessage6_64bitsWords() {
+	@Test
+	void testPadMessage6_64bitsWords() { // binary length = 1920 bits (last block wholly padded)
 		sha512 = new SHA_512(
 				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
 		assertEquals(
@@ -708,7 +721,7 @@ class HashFunctionTest {
 	}
 
 	@Test
-	void testTextToBinary2() { // all the printable ASCII characters
+	void testTextToBinary2() { // all printable ASCII characters
 		assertEquals(
 				"0010000000100001001000100010001100100100001001010010011000100111001010000010100100101010001010110010110000101101001011100010111100110000001100010011001000110011001101000011010100110110001101110011100000111001001110100011101100111100001111010011111000111111010000000100000101000010010000110100010001000101010001100100011101001000010010010100101001001011010011000100110101001110010011110101000001010001010100100101001101010100010101010101011001010111010110000101100101011010010110110101110001011101010111100101111101100000011000010110001001100011011001000110010101100110011001110110100001101001011010100110101101101100011011010110111001101111011100000111000101110010011100110111010001110101011101100111011101111000011110010111101001111011011111000111110101111110",
 				sha1.textToBinary(
