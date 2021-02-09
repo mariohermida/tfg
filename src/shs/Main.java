@@ -1,5 +1,6 @@
 package shs;
 
+import java.math.BigInteger;
 import java.util.Scanner;
 
 /**
@@ -14,6 +15,8 @@ public class Main {
 	 * FUNCTIONALITY
 	 * I HAVE THOUGHT DROPPING PADMESSAGE AND PARSEMESSAGE FUNCTIONS FROM THE
 	 * CONSTRUCTOR THINK OF WHETHER INCLUDING ALTERNATE COMPUTATION METHOD FOR SHA-1
+	 * CHECK IF BIGINTEGER CAN BE USED MORE OFTEN INSTEAD OF STRING
+	 * SHA-1 ALGORITHM CAN BE USED WITH INTEGERS ONLY
 	 * 
 	 * SWING
 	 * INCLUDE SwingUtilities.invokeLater(new Runnable() { FOR STARTING THE PROGRAM
@@ -31,8 +34,23 @@ public class Main {
 	private void start() {
 		System.out.println("Starting program...\n");
 
-		new ControllerSHS();
-
+//		new ControllerSHS();
+	
+		long lo, lo2 = 1;
+		lo = Long.parseUnsignedLong("1111111111111111111111111111111111111111111111111111111111111111", 2);
+		lo2 = Long.parseUnsignedLong("11111111111111111111111111111111110", 2);
+		System.out.println(lo);
+		System.out.println(Long.toUnsignedString((lo + lo2 )));
+		System.out.println(Long.toBinaryString((lo & lo2<<5)));
+		
+		SHA_224 sh = new SHA_224("Hola");
+		System.out.println(sh.computeHash());
+		System.out.println(sh.computeHash2());
+		
+		SHA_512 sh2 = new SHA_512("Hola");
+		System.out.println(sh2.computeHash());
+		System.out.println(sh2.computeHash2());
+		
 		/*
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Write a message to be hashed: ");

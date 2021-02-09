@@ -11,6 +11,8 @@ public class SHA_224 extends HashFunction {
 
 	private String[] hashValues = { "c1059ed8", "367cd507", "3070dd17", "f70e5939", "ffc00b31", "68581511", "64f98fa7",
 			"befa4fa4" };
+	private long[] hashValues2 = { 0xc1059ed8, 0x367cd507, 0x3070dd17, 0xf70e5939, 0xffc00b31, 0x68581511, 0x64f98fa7,
+	0xbefa4fa4 };
 
 	public SHA_224(String message, boolean isBinary) {
 		System.out.println("\tSHA-224 ALGORITHM");
@@ -35,6 +37,10 @@ public class SHA_224 extends HashFunction {
 	@Override
 	public String computeHash() {
 		return computeSHA2Hash(hashValues, 64, 1).substring(0, messageDigestLength / 4);
+	}
+	
+	public String computeHash2() {
+		return computeSHA2Hash2(hashValues2, 64, 1).substring(0, messageDigestLength / 4);
 	}
 
 }

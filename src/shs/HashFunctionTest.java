@@ -69,7 +69,7 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("1af89fe6c87f9ce56fe768e5598c9876659052e1", sha1.computeHash());
 	}
-	
+
 	@Test
 	void testHashComputation9_SHA_1() { // the one proposed by the NIST institution
 		sha1 = new SHA_1("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
@@ -128,7 +128,7 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("9bbbd77600ee390ab31746a11a6202182572158766295d8919ab3c90123f2a14", sha256.computeHash());
 	}
-	
+
 	@Test
 	void testHashComputation9_SHA_256() { // the one proposed by the NIST institution
 		sha256 = new SHA_256("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
@@ -187,7 +187,7 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("07fefa4dd58d9aba6210e6efdc19f5d56bc0195ff78e72ef2cdc6291", sha224.computeHash());
 	}
-	
+
 	@Test
 	void testHashComputation9_SHA_224() { // the one proposed by the NIST institution
 		sha224 = new SHA_224("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
@@ -264,11 +264,14 @@ class HashFunctionTest {
 				"f1b4faaf076bf0ddac03b791d089c6724d28205653b79226c5655fdfa8ee8a99fd412d507ee377d36d1fcc182150004058315efbad5fff1ae35cf56253e4cd8c",
 				sha512.computeHash());
 	}
-	
+
 	@Test
 	void testHashComputation9_SHA_512() { // the one proposed by the NIST institution
-		sha512 = new SHA_512("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
-		assertEquals("8e959b75dae313da8cf4f72814fc143f8f7779c6eb9f7fa17299aeadb6889018501d289e4900f7e4331b99dec4b5433ac7d329eeb6dd26545e96e55b874be909", sha512.computeHash());
+		sha512 = new SHA_512(
+				"abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		assertEquals(
+				"8e959b75dae313da8cf4f72814fc143f8f7779c6eb9f7fa17299aeadb6889018501d289e4900f7e4331b99dec4b5433ac7d329eeb6dd26545e96e55b874be909",
+				sha512.computeHash());
 	}
 
 	// SHA-384
@@ -333,11 +336,13 @@ class HashFunctionTest {
 		assertEquals("21131ae6b08496e859e1593981967bb646c35c174b637073027d199f8a3b047d1ed618850af9e810e5e4bfd7fcd88d16",
 				sha384.computeHash());
 	}
-	
+
 	@Test
 	void testHashComputation9_SHA_384() { // the one proposed by the NIST institution
-		sha384 = new SHA_384("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
-		assertEquals("09330c33f71147e83d192fc782cd1b4753111b173b3b05d22fa08086e3b0f712fcc7c71a557e2db966c3e9fa91746039", sha384.computeHash());
+		sha384 = new SHA_384(
+				"abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		assertEquals("09330c33f71147e83d192fc782cd1b4753111b173b3b05d22fa08086e3b0f712fcc7c71a557e2db966c3e9fa91746039",
+				sha384.computeHash());
 	}
 
 	// SHA-512/224
@@ -394,10 +399,11 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("79bb805e77b4dc0abd46eb4b8c030fad9f85adaf2775a231f877bd60", sha512_224.computeHash());
 	}
-	
+
 	@Test
 	void testHashComputation9_SHA_512_224() { // the one proposed by the NIST institution
-		sha512_224 = new SHA_512_224("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		sha512_224 = new SHA_512_224(
+				"abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
 		assertEquals("23fec5bb94d60b23308192640b0c453335d664734fe40e7268674af9", sha512_224.computeHash());
 	}
 
@@ -455,25 +461,29 @@ class HashFunctionTest {
 				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
 		assertEquals("dc4636c1e3b12e5d1f79a853587f88d2bfa7570793587d50d1097c8a40b7c646", sha512_256.computeHash());
 	}
-	
+
 	@Test
 	void testHashComputation9_SHA_512_256() { // the one proposed by the NIST institution
-		sha512_256 = new SHA_512_256("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
+		sha512_256 = new SHA_512_256(
+				"abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu");
 		assertEquals("3928e184fb8690f840da3988121d31be65cb9d3ef83ee6146feac861e19b563a", sha512_256.computeHash());
 	}
-	
+
 	@Test
-	void testHashComputation_UNICODE() { //Armenian characters
+	void testHashComputation_UNICODE() { // Armenian characters
 		sha1 = new SHA_1("ԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖՙ՚՛՜՝՞՟ՠաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆևֈ։֊֍֎֏");
 		assertEquals("0fb9cd7870517bf0984bd061963abb28b50e33c5", sha1.computeHash());
 	}
-	
+
 	@Test
-	void testHashComputation_UNICODE2() { //Manding languages characters
-		sha512 = new SHA_512("߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
-		assertEquals("393a94c271d0717b7bab57d8652064b71d7ffd6349564d15f64e7243c92bfb910bef6ec237b0811f50223354c226d1e048707d1033970a3d9368143ae22e77a9", sha512.computeHash());
+	void testHashComputation_UNICODE2() { // Manding languages characters
+		sha512 = new SHA_512(
+				"߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
+		assertEquals(
+				"393a94c271d0717b7bab57d8652064b71d7ffd6349564d15f64e7243c92bfb910bef6ec237b0811f50223354c226d1e048707d1033970a3d9368143ae22e77a9",
+				sha512.computeHash());
 	}
-	
+
 	// END HASH COMPUTATIONS
 
 	@Test
@@ -870,6 +880,58 @@ class HashFunctionTest {
 		assertEquals("0011000001011101000000010011001011100000101110000111110101111001", sha1.sigmaFunctionSplitter(
 				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", 1));
 	}
+	
+	//NEW TESTS
+	
+	@Test
+	void testUpperSigma256_0_32bits2() {
+		assertEquals(364173816,
+				sha1.sigmaFunctionSplitter2(2062044487, 32, "upper", 0));
+	}
+
+	@Test
+	void testUpperSigma256_1_32bits2() {
+		assertEquals("11000001001000100101111110000001",
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", 1));
+	}
+
+	@Test
+	void testLowerSigma256_0_32bits2() {
+		assertEquals("10010010111110010000011110001000",
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", 0));
+	}
+
+	@Test
+	void testLowerSigma256_1_32bits2() {
+		assertEquals("00101111000101011110100000111010",
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", 1));
+	}
+
+	@Test
+	void testUpperSigma512_0_64bits2() {
+		assertEquals("1111001100100011101110010001011001001000010000111000010111001111", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", 0));
+	}
+
+	@Test
+	void testUpperSigma512_1_64bits2() {
+		assertEquals("1001100000001101011001100001100010000110110111010010111000000101", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", 1));
+	}
+
+	@Test
+	void testLowerSigma512_0_64bits2() {
+		assertEquals("1001111010101011001010011010010100111010110101000100000000001100", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", 0));
+	}
+
+	@Test
+	void testLowerSigma512_1_64bits2() {
+		assertEquals("0011000001011101000000010011001011100000101110000111110101111001", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", 1));
+	}
+	
+	//END NEW TESTS
 
 	@Test
 	void testSigmaFunctionSplitterException() {
