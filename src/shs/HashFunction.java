@@ -94,7 +94,7 @@ public abstract class HashFunction {
 		// Each block is iterated through
 		ArrayList<String> messageSchedule = null;
 		for (int i = 0; i < words.size(); i++) {
-			// Message schedule preparation (80 words)
+			// Message schedule preparation (80/64 words)
 			messageSchedule = new ArrayList<>();
 			for (int t = 0; t < loopIterations; t++) {
 				if (t < 16) {
@@ -222,12 +222,8 @@ public abstract class HashFunction {
 			hashValues[6] = g + hashValues[6];
 			hashValues[7] = h + hashValues[7];
 
-			// Since hashValues are binary we should translate it into hexadecimal
-			for (int j = 0; j < hashValues.length; j++) {
-				hashValues[j] = hashValues[j];
-			}
 		}
-		
+		System.out.println(hash);
 		// Concatenate hash values
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += Long.toHexString(hashValues[i]);
@@ -489,6 +485,10 @@ public abstract class HashFunction {
 			finalResult += (result.charAt(i) ^ z.charAt(i));
 		}
 		return finalResult;
+	}
+	
+	protected long Parity2(long x, long y, long z) {
+		return (x ^ y ^ z);
 	}
 
 	/**
