@@ -107,6 +107,10 @@ public abstract class HashFunction {
 									messageSchedule.get(t - 16), wordSize));
 				}
 			}
+			
+			for (int k = 0; k < messageSchedule.size(); k++) {
+				System.out.println(k + "\t" + messageSchedule.get(k));
+			}
 
 			// Initialize the working variables
 			String a = hexadecimalToBinary(hashValues[0]);
@@ -158,7 +162,6 @@ public abstract class HashFunction {
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += hashValues[i];
 		}
-		System.out.println(hash);
 		return hash;
 	}
 
@@ -169,7 +172,7 @@ public abstract class HashFunction {
 		// Each block is iterated through
 		ArrayList<Long> messageSchedule = null;
 		for (int i = 0; i < words.size(); i++) {
-			// Message schedule preparation (80 words)
+			// Message schedule preparation (80/64 words)
 			messageSchedule = new ArrayList<>();
 			for (int t = 0; t < loopIterations; t++) {
 				if (t < 16) {
@@ -180,6 +183,10 @@ public abstract class HashFunction {
 							+ sigmaFunctionSplitter2(messageSchedule.get(t - 15), wordSize, "lower", 0)
 							+ messageSchedule.get(t - 16));
 				}
+			}
+			
+			for (int k = 0; k < messageSchedule.size(); k++) {
+				System.out.println(k + "\t" + Long.toBinaryString(messageSchedule.get(k)));
 			}
 
 			// Initialize the working variables
@@ -223,7 +230,6 @@ public abstract class HashFunction {
 			hashValues[7] = h + hashValues[7];
 
 		}
-		System.out.println(hash);
 		// Concatenate hash values
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += Long.toHexString(hashValues[i]);

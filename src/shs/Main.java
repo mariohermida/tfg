@@ -13,6 +13,7 @@ public class Main {
 	 * FROM THE CONSTRUCTOR THINK OF WHETHER INCLUDING ALTERNATE COMPUTATION METHOD
 	 * FOR SHA-1 CHECK IF BIGINTEGER CAN BE USED MORE OFTEN INSTEAD OF STRING SHA-1
 	 * ALGORITHM CAN BE USED WITH INTEGERS ONLY
+	 * WATCH OUT WITH INTEGERS AND LONG (PARSE WHEN NECESSARY)
 	 * 
 	 * SWING INCLUDE SwingUtilities.invokeLater(new Runnable() { FOR STARTING THE
 	 * PROGRAM INCLUDE A RESIZING FACTOR IN ORDER TO EASE THE MOVEMENT OF ELEMENTS
@@ -28,6 +29,10 @@ public class Main {
 
 	private void start() {
 		System.out.println("Starting program...\n");
+		
+		SHA_512 sh = new SHA_512("Hola");
+		System.out.println(sh.computeHash());
+		System.out.println(sh.computeHash2());
 
 //		new ControllerSHS();
 
