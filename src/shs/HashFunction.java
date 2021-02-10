@@ -108,9 +108,9 @@ public abstract class HashFunction {
 				}
 			}
 			
-			for (int k = 0; k < messageSchedule.size(); k++) {
+			/*for (int k = 0; k < messageSchedule.size(); k++) {
 				System.out.println(k + "\t" + messageSchedule.get(k));
-			}
+			}*/
 
 			// Initialize the working variables
 			String a = hexadecimalToBinary(hashValues[0]);
@@ -151,6 +151,10 @@ public abstract class HashFunction {
 			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), wordSize);
 			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), wordSize);
 			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), wordSize);
+			
+			/*for (int k = 0; k < 8; k++) {
+				System.out.println(hashValues[k]);
+			}*/
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
@@ -185,9 +189,9 @@ public abstract class HashFunction {
 				}
 			}
 			
-			for (int k = 0; k < messageSchedule.size(); k++) {
+			/*for (int k = 0; k < messageSchedule.size(); k++) {
 				System.out.println(k + "\t" + Long.toBinaryString(messageSchedule.get(k)));
-			}
+			}*/
 
 			// Initialize the working variables
 			long a = hashValues[0];
@@ -212,11 +216,11 @@ public abstract class HashFunction {
 				h = g;
 				g = f;
 				f = e;
-				e = d + T1 + wordSize;
+				e = d + T1;
 				d = c;
 				c = b;
 				b = a;
-				a = T1 + T2 + wordSize;
+				a = T1 + T2;
 			}
 
 			// Compute the intermediate hash value
@@ -228,11 +232,17 @@ public abstract class HashFunction {
 			hashValues[5] = f + hashValues[5];
 			hashValues[6] = g + hashValues[6];
 			hashValues[7] = h + hashValues[7];
+			
+			/*for (int k = 0; k < 8; k++) {
+				System.out.println(Long.toBinaryString(hashValues[k]));
+			}*/
 
 		}
 		// Concatenate hash values
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += Long.toHexString(hashValues[i]);
+			// there must be a way to maintain leading zeros in hex string
+//			hash += Long.toHexString(0x10000 | i).substring(1).toUpperCase();
 		}
 		return hash;
 	}
@@ -441,6 +451,19 @@ public abstract class HashFunction {
 		}
 		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
 	}
+	
+	protected int f2(int x, int y, int z, int index) {
+		if (index >= 0 && index <= 19) {
+			return (int)Ch2(x, y, z);
+		} else if (index >= 20 && index <= 39) {
+			return (int)Parity2(x, y, z);
+		} else if (index >= 40 && index <= 59) {
+			return (int)Maj2(x, y, z);
+		} else if (index >= 60 && index <= 79) {
+			return (int)Parity2(x, y, z);
+		}
+		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
+	}
 
 	/**
 	 * Ch function
@@ -533,7 +556,7 @@ public abstract class HashFunction {
 	}
 	
 	protected long Maj2(long x, long y, long z) {
-		return (x & y) ^ (x & z) ^ (y ^ z);
+		return (x & y) ^ (x & z) ^ (y & z);
 	}
 
 	/**
@@ -593,16 +616,16 @@ public abstract class HashFunction {
 			case "upper":
 				switch (zeroOrOne) {
 				case 0:
-					return sigmaFunctionOperation2(word, 2, 13, 22, false);
+					return sigmaFunctionOperation2((int)word, 2, 13, 22, false);
 				case 1:
-					return sigmaFunctionOperation2(word, 6, 11, 25, false);
+					return sigmaFunctionOperation2((int)word, 6, 11, 25, false);
 				}
 			case "lower":
 				switch (zeroOrOne) {
 				case 0:
-					return sigmaFunctionOperation2(word, 7, 18, 3, true);
+					return sigmaFunctionOperation2((int)word, 7, 18, 3, true);
 				case 1:
-					return sigmaFunctionOperation2(word, 17, 19, 10, true);
+					return sigmaFunctionOperation2((int)word, 17, 19, 10, true);
 				}
 			}
 		case 64:
@@ -657,10 +680,19 @@ public abstract class HashFunction {
 
 	private long sigmaFunctionOperation2(long word, int parameter1, int parameter2, int parameter3, boolean SHR) {
 		if (SHR) {
-			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2) ^ word >> parameter3;
+			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2) ^ (word >>> parameter3);
 		} else {
 			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2)
 					^ Long.rotateRight(word, parameter3);
+		}
+	}
+	
+	private long sigmaFunctionOperation2(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+		if (SHR) {
+			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2) ^ (word >>> parameter3);
+		} else {
+			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
+					^ Integer.rotateRight(word, parameter3);
 		}
 	}
 

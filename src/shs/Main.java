@@ -14,6 +14,9 @@ public class Main {
 	 * FOR SHA-1 CHECK IF BIGINTEGER CAN BE USED MORE OFTEN INSTEAD OF STRING SHA-1
 	 * ALGORITHM CAN BE USED WITH INTEGERS ONLY
 	 * WATCH OUT WITH INTEGERS AND LONG (PARSE WHEN NECESSARY)
+	 * MAYBE CHANGE  ARGUMENT ZEROORONE IN SPLITTERFUNCTION USING BOOLEAN
+	 * CHANGE MESSAGE SCHEDULE TO W AND CONVERT IT TO ARRAY INSTEAD OF ARRAYLIST
+	 * INCLUDE ALL METHODS WITHIN THE CLASS HASHFUNCTION (BOTH STRING AND INTEGER)
 	 * 
 	 * SWING INCLUDE SwingUtilities.invokeLater(new Runnable() { FOR STARTING THE
 	 * PROGRAM INCLUDE A RESIZING FACTOR IN ORDER TO EASE THE MOVEMENT OF ELEMENTS
@@ -30,9 +33,21 @@ public class Main {
 	private void start() {
 		System.out.println("Starting program...\n");
 		
-		SHA_512 sh = new SHA_512("Hola");
+		SHA_512 sh = new SHA_512("߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
 		System.out.println(sh.computeHash());
 		System.out.println(sh.computeHash2());
+		
+		SHA_384 sh2 = new SHA_384("߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
+		System.out.println(sh2.computeHash());
+		System.out.println(sh2.computeHash2());
+		
+		SHA_512_224 sh3 = new SHA_512_224("߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
+		System.out.println(sh3.computeHash());
+		System.out.println(sh3.computeHash2());
+		
+		SHA_512_256 sh4 = new SHA_512_256("߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
+		System.out.println(sh4.computeHash());
+		System.out.println(sh4.computeHash2());
 
 //		new ControllerSHS();
 
