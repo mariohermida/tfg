@@ -75,91 +75,8 @@ public abstract class HashFunction {
 	 * @return Hexadecimal hash resulted from the original message
 	 */
 	abstract String computeHash();
-
-	/**
-	 * It performs the hash computation (SHA-2 family) according to different
-	 * parameters. Depending on them the corresponding hash is computed (SHA-224,
-	 * SHA-256, SHA-384, SHA-512, SHA-512/t)
-	 * 
-	 * @param hashValues     Array containing the initial hash values of each class
-	 * @param loopIterations Number of iterations performed in main loop (64 or 80)
-	 * @param oneOrTwo       It identifies the group of constants (depends on the
-	 *                       algorithm)
-	 * @return Hexadecimal hash computed
-	 */
-	protected String computeSHA2Hash(String[] hashValues, int loopIterations, int oneOrTwo) {
-		String hash = "";
-		System.out.println("I am computing the hash...");
-
-		// Iteration through each block
-		String[] w = new String[loopIterations];
-		for (int i = 0; i < words.size(); i++) {
-			// Message schedule (w) preparation (80/64 words)
-			for (int t = 0; t < loopIterations; t++) {
-				if (t < 16) {
-					w[t] = words.get(i).get(t);
-				} else {
-					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", 1), w[t - 7],
-							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", 0), w[t - 16], wordSize);
-				}
-			}
-
-			// Initialize the working variables
-			String a = hexadecimalToBinary(hashValues[0]);
-			String b = hexadecimalToBinary(hashValues[1]);
-			String c = hexadecimalToBinary(hashValues[2]);
-			String d = hexadecimalToBinary(hashValues[3]);
-			String e = hexadecimalToBinary(hashValues[4]);
-			String f = hexadecimalToBinary(hashValues[5]);
-			String g = hexadecimalToBinary(hashValues[6]);
-			String h = hexadecimalToBinary(hashValues[7]);
-
-			String T1, T2;
-			for (int t = 0; t < loopIterations; t++) {
-				if (oneOrTwo == 1) {
-					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
-							hexadecimalToBinary(CONSTANTS1[t]), w[t], wordSize);
-				} else {
-					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
-							hexadecimalToBinary(CONSTANTS2[t]), w[t], wordSize);
-				}
-				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", 0), Maj(a, b, c), wordSize);
-				h = g;
-				g = f;
-				f = e;
-				e = binaryAddition(d, T1, wordSize);
-				d = c;
-				c = b;
-				b = a;
-				a = binaryAddition(T1, T2, wordSize);
-			}
-
-			// Compute the intermediate hash value
-			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), wordSize);
-			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), wordSize);
-			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), wordSize);
-			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), wordSize);
-			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), wordSize);
-			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), wordSize);
-			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), wordSize);
-			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), wordSize);
-
-			// Since hashValues are binary we should translate it into hexadecimal
-			for (int j = 0; j < hashValues.length; j++) {
-				hashValues[j] = binaryToHexadecimal(hashValues[j]);
-			}
-		}
-
-		// Concatenate hash values
-		for (int i = 0; i < hashValues.length; i++) {
-			hash += hashValues[i];
-		}
-		
-		// Length is represented in hexadecimal (divided by 4)
-		return hash.substring(0, messageDigestLength / 4);
-	}
-
-	protected String computeSHA2Hash2(long[] hashValues, int loopIterations, int oneOrTwo) {
+	
+	protected String computeSHA2Hash(long[] hashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
 		System.out.println("I am computing the hash... (Version 2)");
 
@@ -232,6 +149,89 @@ public abstract class HashFunction {
 	}
 
 	/**
+	 * It performs the hash computation (SHA-2 family) according to different
+	 * parameters. Depending on them the corresponding hash is computed (SHA-224,
+	 * SHA-256, SHA-384, SHA-512, SHA-512/t)
+	 * 
+	 * @param hashValues     Array containing the initial hash values of each class
+	 * @param loopIterations Number of iterations performed in main loop (64 or 80)
+	 * @param oneOrTwo       It identifies the group of constants (depends on the
+	 *                       algorithm)
+	 * @return Hexadecimal hash computed
+	 */
+	protected String computeSHA2Hash2(String[] hashValues, int loopIterations, int oneOrTwo) {
+		String hash = "";
+		System.out.println("I am computing the hash...");
+
+		// Iteration through each block
+		String[] w = new String[loopIterations];
+		for (int i = 0; i < words.size(); i++) {
+			// Message schedule (w) preparation (80/64 words)
+			for (int t = 0; t < loopIterations; t++) {
+				if (t < 16) {
+					w[t] = words.get(i).get(t);
+				} else {
+					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", 1), w[t - 7],
+							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", 0), w[t - 16], wordSize);
+				}
+			}
+
+			// Initialize the working variables
+			String a = hexadecimalToBinary(hashValues[0]);
+			String b = hexadecimalToBinary(hashValues[1]);
+			String c = hexadecimalToBinary(hashValues[2]);
+			String d = hexadecimalToBinary(hashValues[3]);
+			String e = hexadecimalToBinary(hashValues[4]);
+			String f = hexadecimalToBinary(hashValues[5]);
+			String g = hexadecimalToBinary(hashValues[6]);
+			String h = hexadecimalToBinary(hashValues[7]);
+
+			String T1, T2;
+			for (int t = 0; t < loopIterations; t++) {
+				if (oneOrTwo == 1) {
+					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
+							hexadecimalToBinary(CONSTANTS1[t]), w[t], wordSize);
+				} else {
+					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
+							hexadecimalToBinary(CONSTANTS2[t]), w[t], wordSize);
+				}
+				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", 0), Maj(a, b, c), wordSize);
+				h = g;
+				g = f;
+				f = e;
+				e = binaryAddition(d, T1, wordSize);
+				d = c;
+				c = b;
+				b = a;
+				a = binaryAddition(T1, T2, wordSize);
+			}
+
+			// Compute the intermediate hash value
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), wordSize);
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), wordSize);
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), wordSize);
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), wordSize);
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), wordSize);
+			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), wordSize);
+			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), wordSize);
+			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), wordSize);
+
+			// Since hashValues are binary we should translate it into hexadecimal
+			for (int j = 0; j < hashValues.length; j++) {
+				hashValues[j] = binaryToHexadecimal(hashValues[j]);
+			}
+		}
+
+		// Concatenate hash values
+		for (int i = 0; i < hashValues.length; i++) {
+			hash += hashValues[i];
+		}
+
+		// Length is represented in hexadecimal (divided by 4)
+		return hash.substring(0, messageDigestLength / 4);
+	}
+
+	/**
 	 * The idea is to have a message whose length is multiple of 512/1024 (block
 	 * size) The binaryMessagePadded is built this way: original binary message + 1
 	 * + as many 0s as needed + length of the original message in binary (reserving
@@ -274,11 +274,11 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * It fills the message with a 1 and as 0s as needed
+	 * It pads the message with a 1 and as many 0s as needed
 	 * 
 	 * @param message
 	 * @param numberOfBitsToAdd
-	 * @return Message with convenient padding added
+	 * @return Message padded
 	 */
 	private String addPadding(String message, int numberOfBitsToAdd) {
 		message += "1";
@@ -354,18 +354,8 @@ public abstract class HashFunction {
 		byte[] byteArray = text.getBytes(StandardCharsets.UTF_8);
 		String binaryCharacter, binaryMessage = "";
 		for (byte b : byteArray) {
-			binaryCharacter = Integer.toBinaryString(b);
-			// Java Integer class works with signed 32-bit numbers, but UNICODE works with
-			// 8-bit blocks, so the only thing it is needed is to get the least significant
-			// 8 bits
-			if (binaryCharacter.length() > 8) {
-				binaryCharacter = binaryCharacter.substring(binaryCharacter.length() - 8);
-			}
-			// If an ASCII character is input the binary string will be padded to reach
-			// those mentioned 8 bits
-			while (binaryCharacter.length() % 8 != 0) {
-				binaryCharacter = "0" + binaryCharacter;
-			}
+			// First 24 bits are ignored, due to 8 bit string is wanted
+			binaryCharacter = Integer.toBinaryString((b & 0xFF) + 0x100).substring(1);
 			binaryMessage += binaryCharacter;
 		}
 		return binaryMessage;
