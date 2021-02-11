@@ -36,11 +36,11 @@ public class SHA_384 extends HashFunction {
 
 	@Override
 	String computeHash() {
-		return computeSHA2Hash(hashValues, 80, 2).substring(0, messageDigestLength / 4);
+		return computeSHA2Hash(hashValues, 80, 2);
 	}
 
 	String computeHash2() {
-		return computeSHA2Hash2(hashValues2, 80, 2).substring(0, messageDigestLength / 4);
+		return computeSHA2Hash2(hashValues2, 80, 2);
 	}
 
 }

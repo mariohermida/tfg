@@ -91,26 +91,18 @@ public abstract class HashFunction {
 		String hash = "";
 		System.out.println("I am computing the hash...");
 
-		// Each block is iterated through
-		ArrayList<String> messageSchedule = null;
+		// Iteration through each block
+		String[] w = new String[loopIterations];
 		for (int i = 0; i < words.size(); i++) {
-			// Message schedule preparation (80/64 words)
-			messageSchedule = new ArrayList<>();
+			// Message schedule (w) preparation (80/64 words)
 			for (int t = 0; t < loopIterations; t++) {
 				if (t < 16) {
-					messageSchedule.add(words.get(i).get(t));
+					w[t] = words.get(i).get(t);
 				} else {
-					messageSchedule
-							.add(binaryAddition(sigmaFunctionSplitter(messageSchedule.get(t - 2), wordSize, "lower", 1),
-									messageSchedule.get(t - 7),
-									sigmaFunctionSplitter(messageSchedule.get(t - 15), wordSize, "lower", 0),
-									messageSchedule.get(t - 16), wordSize));
+					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", 1), w[t - 7],
+							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", 0), w[t - 16], wordSize);
 				}
 			}
-			
-			/*for (int k = 0; k < messageSchedule.size(); k++) {
-				System.out.println(k + "\t" + messageSchedule.get(k));
-			}*/
 
 			// Initialize the working variables
 			String a = hexadecimalToBinary(hashValues[0]);
@@ -126,10 +118,10 @@ public abstract class HashFunction {
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
 					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
-							hexadecimalToBinary(CONSTANTS1[t]), messageSchedule.get(t), wordSize);
+							hexadecimalToBinary(CONSTANTS1[t]), w[t], wordSize);
 				} else {
 					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
-							hexadecimalToBinary(CONSTANTS2[t]), messageSchedule.get(t), wordSize);
+							hexadecimalToBinary(CONSTANTS2[t]), w[t], wordSize);
 				}
 				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", 0), Maj(a, b, c), wordSize);
 				h = g;
@@ -151,10 +143,6 @@ public abstract class HashFunction {
 			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), wordSize);
 			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), wordSize);
 			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), wordSize);
-			
-			/*for (int k = 0; k < 8; k++) {
-				System.out.println(hashValues[k]);
-			}*/
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
@@ -166,32 +154,25 @@ public abstract class HashFunction {
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += hashValues[i];
 		}
-		return hash;
+		return hash.substring(0, messageDigestLength / 4);
 	}
 
 	protected String computeSHA2Hash2(long[] hashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
 		System.out.println("I am computing the hash... (Version 2)");
 
-		// Each block is iterated through
-		ArrayList<Long> messageSchedule = null;
+		// Iteration through each block
+		long[] w = new long[loopIterations];
 		for (int i = 0; i < words.size(); i++) {
-			// Message schedule preparation (80/64 words)
-			messageSchedule = new ArrayList<>();
+			// Message schedule (w) preparation (80/64 words)
 			for (int t = 0; t < loopIterations; t++) {
 				if (t < 16) {
-					messageSchedule.add(Long.parseUnsignedLong(words.get(i).get(t), 2));
+					w[t] = Long.parseUnsignedLong(words.get(i).get(t), 2);
 				} else {
-					messageSchedule.add(sigmaFunctionSplitter2(messageSchedule.get(t - 2), wordSize, "lower", 1)
-							+ messageSchedule.get(t - 7)
-							+ sigmaFunctionSplitter2(messageSchedule.get(t - 15), wordSize, "lower", 0)
-							+ messageSchedule.get(t - 16));
+					w[t] = sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
+							+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16];
 				}
 			}
-			
-			/*for (int k = 0; k < messageSchedule.size(); k++) {
-				System.out.println(k + "\t" + Long.toBinaryString(messageSchedule.get(k)));
-			}*/
 
 			// Initialize the working variables
 			long a = hashValues[0];
@@ -206,11 +187,9 @@ public abstract class HashFunction {
 			long T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
-					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) +
-							C1[t] + messageSchedule.get(t);
+					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C1[t] + w[t];
 				} else {
-					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) +
-							C2[t] + messageSchedule.get(t);
+					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C2[t] + w[t];
 				}
 				T2 = sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
 				h = g;
@@ -232,19 +211,22 @@ public abstract class HashFunction {
 			hashValues[5] = f + hashValues[5];
 			hashValues[6] = g + hashValues[6];
 			hashValues[7] = h + hashValues[7];
-			
-			/*for (int k = 0; k < 8; k++) {
-				System.out.println(Long.toBinaryString(hashValues[k]));
-			}*/
 
 		}
+
 		// Concatenate hash values
+		String temp;
 		for (int i = 0; i < hashValues.length; i++) {
-			hash += Long.toHexString(hashValues[i]);
-			// there must be a way to maintain leading zeros in hex string
-//			hash += Long.toHexString(0x10000 | i).substring(1).toUpperCase();
+			temp = Long.toBinaryString(hashValues[i]);
+			// Fill with leading zeros if length is not the desired
+			while (temp.length() < wordSize) {
+				temp = "0" + temp;
+			}
+			hash += binaryToHexadecimal(temp);
 		}
-		return hash;
+		
+		// Return hexadecimal string (divided by 4)
+		return hash.substring(0, messageDigestLength / 4);
 	}
 
 	/**
@@ -451,16 +433,16 @@ public abstract class HashFunction {
 		}
 		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
 	}
-	
+
 	protected int f2(int x, int y, int z, int index) {
 		if (index >= 0 && index <= 19) {
-			return (int)Ch2(x, y, z);
+			return (int) Ch2(x, y, z);
 		} else if (index >= 20 && index <= 39) {
-			return (int)Parity2(x, y, z);
+			return (int) Parity2(x, y, z);
 		} else if (index >= 40 && index <= 59) {
-			return (int)Maj2(x, y, z);
+			return (int) Maj2(x, y, z);
 		} else if (index >= 60 && index <= 79) {
-			return (int)Parity2(x, y, z);
+			return (int) Parity2(x, y, z);
 		}
 		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
 	}
@@ -492,7 +474,7 @@ public abstract class HashFunction {
 		}
 		return finalResult;
 	}
-	
+
 	protected long Ch2(long x, long y, long z) {
 		return (x & y) ^ (~x & z);
 	}
@@ -515,7 +497,7 @@ public abstract class HashFunction {
 		}
 		return finalResult;
 	}
-	
+
 	protected long Parity2(long x, long y, long z) {
 		return (x ^ y ^ z);
 	}
@@ -554,7 +536,7 @@ public abstract class HashFunction {
 		}
 		return finalResult;
 	}
-	
+
 	protected long Maj2(long x, long y, long z) {
 		return (x & y) ^ (x & z) ^ (y & z);
 	}
@@ -616,16 +598,16 @@ public abstract class HashFunction {
 			case "upper":
 				switch (zeroOrOne) {
 				case 0:
-					return sigmaFunctionOperation2((int)word, 2, 13, 22, false);
+					return sigmaFunctionOperation2((int) word, 2, 13, 22, false);
 				case 1:
-					return sigmaFunctionOperation2((int)word, 6, 11, 25, false);
+					return sigmaFunctionOperation2((int) word, 6, 11, 25, false);
 				}
 			case "lower":
 				switch (zeroOrOne) {
 				case 0:
-					return sigmaFunctionOperation2((int)word, 7, 18, 3, true);
+					return sigmaFunctionOperation2((int) word, 7, 18, 3, true);
 				case 1:
-					return sigmaFunctionOperation2((int)word, 17, 19, 10, true);
+					return sigmaFunctionOperation2((int) word, 17, 19, 10, true);
 				}
 			}
 		case 64:
@@ -686,10 +668,11 @@ public abstract class HashFunction {
 					^ Long.rotateRight(word, parameter3);
 		}
 	}
-	
+
 	private long sigmaFunctionOperation2(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
 		if (SHR) {
-			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2) ^ (word >>> parameter3);
+			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
+					^ (word >>> parameter3);
 		} else {
 			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
 					^ Integer.rotateRight(word, parameter3);
