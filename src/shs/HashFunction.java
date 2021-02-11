@@ -154,6 +154,8 @@ public abstract class HashFunction {
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += hashValues[i];
 		}
+		
+		// Length is represented in hexadecimal (divided by 4)
 		return hash.substring(0, messageDigestLength / 4);
 	}
 
@@ -225,7 +227,7 @@ public abstract class HashFunction {
 			hash += binaryToHexadecimal(temp);
 		}
 		
-		// Return hexadecimal string (divided by 4)
+		// Length is represented in hexadecimal (divided by 4)
 		return hash.substring(0, messageDigestLength / 4);
 	}
 
