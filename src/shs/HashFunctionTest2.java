@@ -4,6 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * This test class is used for carrying out tests over the hash computation that
+ * uses string representation instead of integer values
+ * 
+ * @author Mario Hermida
+ *
+ */
 public class HashFunctionTest2 {
 
 	private SHA_1 sha1 = new SHA_1("");
@@ -16,8 +23,128 @@ public class HashFunctionTest2 {
 
 	// HASH COMPUTATIONS
 
+	// SHA-256
+
+	@Test
+	void testHashComputation_SHA_256() {
+		sha256 = new SHA_256("a");
+		assertEquals("ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation2_SHA_256() {
+		sha256 = new SHA_256(""); // empty string
+		assertEquals("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation3_SHA_256() {
+		sha256 = new SHA_256("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("9f4390f8d30c2dd92ec9f095b65e2b9ae9b0a925a5258e241c9f1e910f734318", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation4_SHA_256() {
+		sha256 = new SHA_256("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("b35439a4ac6f0948b6d6f9e3c6af0f5f590ce20f1bde7090ef7970686ec6738a", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation5_SHA_256() {
+		sha256 = new SHA_256(
+				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals("cb2a9233adc1225c5c495c46e62cf6308223c5e241ef33ad109f03141b57966a", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation6_SHA_256() {
+		sha256 = new SHA_256(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("b5309136b68ba3506388149a71be42699a8a12bcf6c27891472664680b687b55", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation7_SHA_256() {
+		sha256 = new SHA_256(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A");
+		assertEquals("a99b2e5ff1db9f5985bc1de6065c3dbab32a4f8c99e30aba4fe516a7978ad748", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation8_SHA_256() {
+		sha256 = new SHA_256(
+				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals("9bbbd77600ee390ab31746a11a6202182572158766295d8919ab3c90123f2a14", sha256.computeHash2());
+	}
+
+	@Test
+	void testHashComputation9_SHA_256() { // the one proposed by the NIST institution
+		sha256 = new SHA_256("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+		assertEquals("248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1", sha256.computeHash2());
+	}
+
+	// SHA-224
+
+	@Test
+	void testHashComputation_SHA_224() {
+		sha224 = new SHA_224("a");
+		assertEquals("abd37534c7d9a2efb9465de931cd7055ffdb8879563ae98078d6d6d5", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation2_SHA_224() {
+		sha224 = new SHA_224(""); // empty string
+		assertEquals("d14a028c2a3a2bc9476102bb288234c415a2b01f828ea62ac5b3e42f", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation3_SHA_224() {
+		sha224 = new SHA_224("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("fb0bd626a70c28541dfa781bb5cc4d7d7f56622a58f01a0b1ddd646f", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation4_SHA_224() {
+		sha224 = new SHA_224("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("d40854fc9caf172067136f2e29e1380b14626bf6f0dd06779f820dcd", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation5_SHA_224() {
+		sha224 = new SHA_224(
+				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals("88cc8b6a9c95f8322361f219efb3309020b865fbe0bc0e580c442ff1", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation6_SHA_224() {
+		sha224 = new SHA_224(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("de71734bcdd6e336732466572da170ae12034b2434d1d7821ac63066", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation7_SHA_224() {
+		sha224 = new SHA_224(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A");
+		assertEquals("4794eb16378a30b6f467c4888193ae64699a38345ed6d25458031bd6", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation8_SHA_224() {
+		sha224 = new SHA_224(
+				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals("07fefa4dd58d9aba6210e6efdc19f5d56bc0195ff78e72ef2cdc6291", sha224.computeHash2());
+	}
+
+	@Test
+	void testHashComputation9_SHA_224() { // the one proposed by the NIST institution
+		sha224 = new SHA_224("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+		assertEquals("75388b16512776cc5dba5da1fd890150b0c6455cb4f58b1952522525", sha224.computeHash2());
+	}
+
 	// SHA-512
-	
+
 	@Test
 	void testHashComputation_SHA_512() {
 		sha512 = new SHA_512("a");
@@ -98,7 +225,7 @@ public class HashFunctionTest2 {
 	}
 
 	// SHA-384
-	
+
 	@Test
 	void testHashComputation_SHA_384() {
 		sha384 = new SHA_384("a");
@@ -170,7 +297,7 @@ public class HashFunctionTest2 {
 	}
 
 	// SHA-512/224
-	
+
 	@Test
 	void testHashComputation_SHA_512_224() {
 		sha512_224 = new SHA_512_224("a");
@@ -233,7 +360,7 @@ public class HashFunctionTest2 {
 	}
 
 	// SHA-512/256
-	
+
 	@Test
 	void testHashComputation_SHA_512_256() {
 		sha512_256 = new SHA_512_256("a");
