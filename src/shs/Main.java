@@ -11,7 +11,6 @@ public class Main {
 	/*
 	 * FUNCTIONALITY I HAVE THOUGHT DROPPING PADMESSAGE AND PARSEMESSAGE FUNCTIONS
 	 * FROM THE CONSTRUCTOR THINK OF WHETHER INCLUDING ALTERNATE COMPUTATION METHOD
-	 * MAYBE CHANGE ARGUMENT ZEROORONE IN SPLITTERFUNCTION USING BOOLEAN
 	 * 
 	 * SWING INCLUDE SwingUtilities.invokeLater(new Runnable() { FOR STARTING THE
 	 * PROGRAM INCLUDE A RESIZING FACTOR IN ORDER TO EASE THE MOVEMENT OF ELEMENTS
@@ -32,11 +31,7 @@ public class Main {
 	private void start() {
 		System.out.println("Starting program...\n");
 
-//		new ControllerSHS();
-		
-		SHA_256 sh = new SHA_256("Hola");
-		System.out.println(sh.computeHash());
-		System.out.println(sh.computeHash2());
+		new ControllerSHS();
 
 	}
 
