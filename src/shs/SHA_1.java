@@ -11,8 +11,8 @@ public class SHA_1 extends HashFunction {
 
 	static final int[] CONSTANTS = { 0x5a827999, 0x6ed9eba1, 0x8f1bbcdc, 0xca62c1d6 };
 	static final String[] CONSTANTS2 = { "5a827999", "6ed9eba1", "8f1bbcdc", "ca62c1d6" };
-	private int[] hashValues = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0 };
-	private String[] hashValues2 = { "67452301", "efcdab89", "98badcfe", "10325476", "c3d2e1f0" };
+	private int[] initialHashValues = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0 };
+	private String[] initialHashValues2 = { "67452301", "efcdab89", "98badcfe", "10325476", "c3d2e1f0" };
 
 	public SHA_1(String message, boolean isBinary) {
 		System.out.println("\tSHA-1 ALGORITHM");
@@ -38,6 +38,12 @@ public class SHA_1 extends HashFunction {
 	public String computeHash() {
 		String hash = "";
 		System.out.println("I am computing the hash...");
+
+		// A copy of the hashes is made in order not to overwrite original values
+		int[] hashValues = new int[initialHashValues.length];
+		for (int j = 0; j < initialHashValues.length; j++) {
+			hashValues[j] = initialHashValues[j];
+		}
 
 		// Iteration through each block
 		int[] w = new int[80];
@@ -101,7 +107,13 @@ public class SHA_1 extends HashFunction {
 
 	public String computeHash2() {
 		String hash = "";
-		System.out.println("I am computing the hash...");
+		System.out.println("I am computing the hash... (string version)");
+
+		// A copy of the hashes is made in order not to overwrite original values
+		String[] hashValues = new String[initialHashValues2.length];
+		for (int j = 0; j < initialHashValues2.length; j++) {
+			hashValues[j] = initialHashValues2[j];
+		}
 
 		// Iteration through each block
 		String[] w = new String[80];
@@ -116,11 +128,11 @@ public class SHA_1 extends HashFunction {
 			}
 
 			// Initialize the working variables
-			String a = hexadecimalToBinary(hashValues2[0]);
-			String b = hexadecimalToBinary(hashValues2[1]);
-			String c = hexadecimalToBinary(hashValues2[2]);
-			String d = hexadecimalToBinary(hashValues2[3]);
-			String e = hexadecimalToBinary(hashValues2[4]);
+			String a = hexadecimalToBinary(hashValues[0]);
+			String b = hexadecimalToBinary(hashValues[1]);
+			String c = hexadecimalToBinary(hashValues[2]);
+			String d = hexadecimalToBinary(hashValues[3]);
+			String e = hexadecimalToBinary(hashValues[4]);
 
 			String T;
 			int index;
@@ -144,21 +156,21 @@ public class SHA_1 extends HashFunction {
 			}
 
 			// Compute the intermediate hash value
-			hashValues2[0] = binaryAddition(a, hexadecimalToBinary(hashValues2[0]), wordSize);
-			hashValues2[1] = binaryAddition(b, hexadecimalToBinary(hashValues2[1]), wordSize);
-			hashValues2[2] = binaryAddition(c, hexadecimalToBinary(hashValues2[2]), wordSize);
-			hashValues2[3] = binaryAddition(d, hexadecimalToBinary(hashValues2[3]), wordSize);
-			hashValues2[4] = binaryAddition(e, hexadecimalToBinary(hashValues2[4]), wordSize);
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), wordSize);
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), wordSize);
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), wordSize);
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), wordSize);
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), wordSize);
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
-				hashValues2[j] = binaryToHexadecimal(hashValues2[j]);
+				hashValues[j] = binaryToHexadecimal(hashValues[j]);
 			}
 		}
 
 		// Concatenate hash values
-		for (int i = 0; i < hashValues2.length; i++) {
-			hash += hashValues2[i];
+		for (int i = 0; i < hashValues.length; i++) {
+			hash += hashValues[i];
 		}
 		return hash;
 	}
