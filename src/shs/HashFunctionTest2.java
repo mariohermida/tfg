@@ -22,6 +22,23 @@ public class HashFunctionTest2 {
 	private SHA_512_256 sha512_256;
 
 	// HASH COMPUTATIONS
+	
+	// UNICODE ONES
+	
+	@Test
+	void testHashComputation_UNICODE() { // Armenian characters
+		sha1 = new SHA_1("ԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖՙ՚՛՜՝՞՟ՠաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆևֈ։֊֍֎֏");
+		assertEquals("0fb9cd7870517bf0984bd061963abb28b50e33c5", sha1.computeHash2());
+	}
+
+	@Test
+	void testHashComputation_UNICODE2() { // Manding languages characters
+		sha512 = new SHA_512(
+				"߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
+		assertEquals(
+				"393a94c271d0717b7bab57d8652064b71d7ffd6349564d15f64e7243c92bfb910bef6ec237b0811f50223354c226d1e048707d1033970a3d9368143ae22e77a9",
+				sha512.computeHash2());
+	}
 
 	// SHA-256
 

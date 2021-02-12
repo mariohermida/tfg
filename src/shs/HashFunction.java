@@ -87,24 +87,20 @@ public abstract class HashFunction {
 		}
 
 		// Iteration through each block
-//		long[] w = new long[loopIterations];
-		int[] w = new int[loopIterations];
+		long[] w = new long[loopIterations];
+//		int[] w = new int[loopIterations];
 		for (int i = 0; i < words.size(); i++) {
 			// Message schedule (w) preparation (80/64 words)
 			for (int t = 0; t < loopIterations; t++) {
 				if (t < 16) {
-//					w[t] = Long.parseUnsignedLong(words.get(i).get(t), 2);
-					w[t] = Integer.parseUnsignedInt(words.get(i).get(t), 2);
+					w[t] = Long.parseUnsignedLong(words.get(i).get(t), 2);
+//					w[t] = Integer.parseUnsignedInt(words.get(i).get(t), 2);
 				} else {
-//					w[t] = sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
-//							+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16];
-					w[t] = (int) (sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
-					+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16]);					
+					w[t] = sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
+							+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16];
+//					w[t] = (int) (sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
+//					+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16]);					
 				}
-			}
-			
-			for (int k = 0; k < loopIterations; k++) {
-				System.out.println(Integer.toBinaryString(w[k]));
 			}
 
 			// Initialize the working variables
@@ -120,12 +116,12 @@ public abstract class HashFunction {
 			long T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
-					T1 = (int)(h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C1[t] + w[t]);
+					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C1[t] + w[t];
 				} else {
 					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C2[t] + w[t];
 				}
-//				T2 = sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
-				T2 = (int) sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
+				T2 = sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
+//				T2 = (int) sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
 				h = g;
 				g = f;
 				f = e;
@@ -151,7 +147,11 @@ public abstract class HashFunction {
 		// Concatenate hash values
 		String temp;
 		for (int i = 0; i < hashValues.length; i++) {
-			temp = Long.toBinaryString(hashValues[i]);
+			if (wordSize == 32) {
+				temp = Integer.toBinaryString((int) hashValues[i]);
+			} else { // wordSize == 64
+				temp = Long.toBinaryString(hashValues[i]);	
+			}
 			// Fill with leading zeros if length is not the desired
 			while (temp.length() < wordSize) {
 				temp = "0" + temp;
@@ -159,7 +159,7 @@ public abstract class HashFunction {
 			hash += binaryToHexadecimal(temp);
 		}
 
-		// Length is represented in hexadecimal (divided by 4)
+		// Length is represented in bits (divided by 4 to convert it to hexadecimal)
 		return hash.substring(0, messageDigestLength / 4);
 	}
 
@@ -195,10 +195,6 @@ public abstract class HashFunction {
 					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", 1), w[t - 7],
 							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", 0), w[t - 16], wordSize);
 				}
-			}
-			
-			for (int k = 0; k < loopIterations; k++) {
-				System.out.println(w[k]);
 			}
 
 			// Initialize the working variables

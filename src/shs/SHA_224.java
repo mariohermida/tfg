@@ -36,8 +36,7 @@ public class SHA_224 extends HashFunction {
 
 	@Override
 	public String computeHash() {
-		return computeSHA2Hash2(hashValues2, 64, 1);
-//		return computeSHA2Hash(hashValues, 64, 1);
+		return computeSHA2Hash(hashValues, 64, 1);
 	}
 	
 	public String computeHash2() {
