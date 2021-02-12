@@ -24,15 +24,21 @@ public class HashFunctionTest2 {
 	// HASH COMPUTATIONS
 	
 	// UNICODE ONES
-	
+
 	@Test
 	void testHashComputation_UNICODE() { // Armenian characters
 		sha1 = new SHA_1("ԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖՙ՚՛՜՝՞՟ՠաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆևֈ։֊֍֎֏");
 		assertEquals("0fb9cd7870517bf0984bd061963abb28b50e33c5", sha1.computeHash2());
 	}
+	
+	@Test
+	void testHashComputation_UNICODE2() { // Tibetan characters
+		sha224 = new SHA_224("ༀ༁༂༃༄༅༆༇༈༉༊་༌།༎༏༐༑༒༓༔༕༖༗༘༙༚༛༜༝༞༟༠༡༢༣༤༥༦༧༨༩༪༫༬༭༮༯༰༱༲༳༴༵༶༷༸༹༺༻༼༽༾༿ཀཁགགྷངཅཆཇཉཊཋཌཌྷཎཏཐདདྷནཔཕབབྷམཙཚཛཛྷཝཞཟའཡརལཤཥསཧཨཀྵཪཫཬཱཱཱིིུུྲྀཷླྀཹེཻོཽཾཿ྄ཱྀྀྂྃ྅྆྇ྈྉྊྋྌྍྏྐྑྒྒྷྔྕྖྗྙྚྛྜྜྷྞྟྠྡྡྷྣྤྥྦྦྷྨྩྪྫྫྷྭྮྯྰྱྲླྴྵྶྷྸྐྵྺྻྼ྾྿࿀࿁࿂࿃࿄࿅࿆࿇࿈࿉࿊࿋࿌࿎࿏࿐࿑࿒࿓࿔࿕࿖࿗࿘࿙࿚");
+		assertEquals("639ea3cd2385cdcef8a9a36241ca17161d106f3c3f7a38ac8a255673", sha224.computeHash2());
+	}
 
 	@Test
-	void testHashComputation_UNICODE2() { // Manding languages characters
+	void testHashComputation_UNICODE3() { // Manding languages characters
 		sha512 = new SHA_512(
 				"߀‎߁‎߂‎߃‎߄‎߅‎߆‎߇‎߈‎߉‎ߊ‎ߋ‎ߌ‎ߍ‎ߎ‎ߏ‎ߐ‎ߑ‎ߒ‎ߓ‎ߔ‎ߕ‎ߖ‎ߗ‎ߘ‎ߙ‎ߚ‎ߛ‎ߜ‎ߝ‎ߞ‎ߟ‎ߠ‎ߡ‎ߢ‎ߣ‎ߤ‎ߥ‎ߦ‎ߧ‎ߨ‎ߩ‎ߪ‎߫‎߬‎߭‎߮‎߯‎߰‎߱‎߲‎߳‎ߴ‎ߵ‎߶‎߷‎߸‎߹‎ߺ‎߽‎߾‎߿");
 		assertEquals(
@@ -501,253 +507,532 @@ public class HashFunctionTest2 {
 
 	// END HASH COMPUTATIONS
 
+	// BINARY ADDITION
+
+	@Test
+	void testBinaryAddition_32bits() {
+		assertEquals("11111111111111111111111111111111",
+				sha1.binaryAddition("11111111111111111111111111111111", "0", "0", "0", "0", 32));
+	}
+
+	@Test
+	void testBinaryAddition2_32bits() {
+		assertEquals("00000000000000000000000000000000",
+				sha1.binaryAddition("11111111111111111111111111111111", "1", "0", "0", "0", 32));
+	}
+
+	@Test
+	void testBinaryAddition3_32bits() {
+		assertEquals("00000000000000000000000000000000", sha1.binaryAddition("11111111111111111111111111111111",
+				"11111111111111111111111111111111", "1", "1", "0", 32));
+	}
+
+	@Test
+	void testBinaryAddition4_32bits() {
+		assertEquals("00111001010000100011011001001110",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1000011",
+						"10101111000101110011", "111010110111100110100010101", 32));
+	}
+
+	@Test
+	void testBinaryAddition5_32bits() {
+		assertEquals("00111001010000100011011000001010",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100",
+						"11111111111111111111111111111111", "10101111000101110011", "111010110111100110100010101", 32));
+	}
+
+	@Test
+	void testBinaryAddition_32bits_Exception() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.binaryAddition("10010111011110010001100010001000", "10010111011110010001100010001000",
+					"100101110111100100011000100010001", "11", "0", 32);
+		});
+	}
+
+	@Test
+	void testBinaryAddition_64bits() {
+		assertEquals("1111111111111111111111111111111111111111111111111111111111111111", sha1.binaryAddition(
+				"1111111111111111111111111111111111111111111111111111111111111111", "0", "0", "0", "0", 64));
+	}
+
+	@Test
+	void testBinaryAddition2_64bits() {
+		assertEquals("0000000000000000000000000000000000000000000000000000000000000000", sha1.binaryAddition(
+				"1111111111111111111111111111111111111111111111111111111111111111", "1", "0", "0", "0", 64));
+	}
+
+	@Test
+	void testBinaryAddition3_64bits() {
+		assertEquals("0000000000000000000000000000000000000000000000000000000000000000",
+				sha1.binaryAddition("1111111111111111111111111111111111111111111111111111111111111111",
+						"1111111111111111111111111111111111111111111111111111111111111111", "1", "1", "0", 64));
+	}
+
+	@Test
+	void testBinaryAddition4_64bits() {
+		assertEquals("0000000000000000000000000000000000111001010000100011011001001110",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1000011",
+						"10101111000101110011", "111010110111100110100010101", 64));
+	}
+
+	@Test
+	void testBinaryAddition5_64bits() {
+		assertEquals("0000000000000000000000000000000000111001010000100011011000001010",
+				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100",
+						"1111111111111111111111111111111111111111111111111111111111111111", "10101111000101110011",
+						"111010110111100110100010101", 64));
+	}
+
+	@Test
+	void testBinaryAddition_64bits_Exception() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.binaryAddition("1001011101111001000110001000100010010111011110010001100010001000",
+					"1001011101111001000110001000100010010111011110010001100010001000",
+					"1001011101111001000110001000100010010111011110010001100010001000",
+					"1001011101111001000110001000100010010111011110010001100010001000",
+					"10010111011110010001100010001000100101110111100100011000100010001", 64);
+		});
+	}
+
+	// HEXADECIMAL TO BINARY
+
+	@Test
+	void testHexadecimalToBinary() {
+		assertEquals("00000000", sha1.hexadecimalToBinary("00"));
+	}
+
+	@Test
+	void testHexadecimalToBinary2() {
+		assertEquals("01010010", sha1.hexadecimalToBinary("52"));
+	}
+
+	@Test
+	void testHexadecimalToBinary3() {
+		assertEquals("00001001010010101100101010101111", sha1.hexadecimalToBinary("094acaaf"));
+	}
+
 	// FUNCTIONS
 
 	@Test
 	void testF() {
-		int a = Integer.parseUnsignedInt("01111011010100110000001101110000", 2);
-		int b = Integer.parseUnsignedInt("10010111011110010001100010001000", 2);
-		int c = Integer.parseUnsignedInt("01110000111100010010001111101110", 2);
-		assertEquals("10011111100010010000010001110", Integer.toBinaryString(sha1.f2(a, b, c, 0)));
+		assertEquals("0001001111110001001000001000111000101010010101100010010001100111",
+				sha1.f("0111101101010011000000110111000011001100011011110110110110011101",
+						"1001011101111001000110001000100000101010110101101011010001000101",
+						"0111000011110001001000111110111010101010011110010010010101111010", 0));
 	}
 
 	@Test
 	void testF2() {
-		int a = Integer.parseUnsignedInt("01111011010100110000001101110000", 2);
-		int b = Integer.parseUnsignedInt("10010111011110010001100010001000", 2);
-		int c = Integer.parseUnsignedInt("01110000111100010010001111101110", 2);
-		assertEquals("10011100110110110011100000010110", Integer.toBinaryString(sha1.f2(a, b, c, 39)));
+		assertEquals("1001110011011011001110000001011001001100110000001111110010100010",
+				sha1.f("0111101101010011000000110111000011001100011011110110110110011101",
+						"1001011101111001000110001000100000101010110101101011010001000101",
+						"0111000011110001001000111110111010101010011110010010010101111010", 39));
 	}
 
 	@Test
 	void testF3() {
-		int a = Integer.parseUnsignedInt("01111011010100110000001101110000", 2);
-		int b = Integer.parseUnsignedInt("10010111011110010001100010001000", 2);
-		int c = Integer.parseUnsignedInt("01110000111100010010001111101110", 2);
-		assertEquals("1110011011100010000001111101000", Integer.toBinaryString(sha1.f2(a, b, c, 40)));
+		assertEquals("0111001101110001000000111110100010101010011111110010010101011101",
+				sha1.f("0111101101010011000000110111000011001100011011110110110110011101",
+						"1001011101111001000110001000100000101010110101101011010001000101",
+						"0111000011110001001000111110111010101010011110010010010101111010", 40));
 	}
 
 	@Test
 	void testF4() {
-		int a = Integer.parseUnsignedInt("01111011010100110000001101110000", 2);
-		int b = Integer.parseUnsignedInt("10010111011110010001100010001000", 2);
-		int c = Integer.parseUnsignedInt("01110000111100010010001111101110", 2);
-		assertEquals("10011100110110110011100000010110", Integer.toBinaryString(sha1.f2(a, b, c, 79)));
+		assertEquals("1001110011011011001110000001011001001100110000001111110010100010",
+				sha1.f("0111101101010011000000110111000011001100011011110110110110011101",
+						"1001011101111001000110001000100000101010110101101011010001000101",
+						"0111000011110001001000111110111010101010011110010010010101111010", 79));
+	}
+
+	@Test
+	void testFException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.f("0111101101010011000000110111000011001100011011110110110110011101",
+					"1001011101111001000110001000100000101010110101101011010001000101",
+					"0111000011110001001000111110111010101010011110010010010101111010", 80);
+		});
 	}
 
 	@Test
 	void testCh() {
-		long a = Long.parseUnsignedLong("0111101101010011000000110111000011001100011011110110110110011101", 2);
-		long b = Long.parseUnsignedLong("1001011101111001000110001000100000101010110101101011010001000101", 2);
-		long c = Long.parseUnsignedLong("0111000011110001001000111110111010101010011110010010010101111010", 2);
-		assertEquals("1001111110001001000001000111000101010010101100010010001100111",
-				Long.toBinaryString(sha1.Ch2(a, b, c)));
+		assertEquals("0001001111110001001000001000111000101010010101100010010001100111",
+				sha1.Ch("0111101101010011000000110111000011001100011011110110110110011101",
+						"1001011101111001000110001000100000101010110101101011010001000101",
+						"0111000011110001001000111110111010101010011110010010010101111010"));
 	}
 
 	@Test
 	void testParity() {
-		long a = Long.parseUnsignedLong("0111101101010011000000110111000011001100011011110110110110011101", 2);
-		long b = Long.parseUnsignedLong("1001011101111001000110001000100000101010110101101011010001000101", 2);
-		long c = Long.parseUnsignedLong("0111000011110001001000111110111010101010011110010010010101111010", 2);
 		assertEquals("1001110011011011001110000001011001001100110000001111110010100010",
-				Long.toBinaryString(sha1.Parity2(a, b, c)));
+				sha1.Parity("0111101101010011000000110111000011001100011011110110110110011101",
+						"1001011101111001000110001000100000101010110101101011010001000101",
+						"0111000011110001001000111110111010101010011110010010010101111010"));
 	}
 
 	@Test
 	void testMaj() {
-		long a = Long.parseUnsignedLong("0111101101010011000000110111000011001100011011110110110110011101", 2);
-		long b = Long.parseUnsignedLong("1001011101111001000110001000100000101010110101101011010001000101", 2);
-		long c = Long.parseUnsignedLong("0111000011110001001000111110111010101010011110010010010101111010", 2);
-		assertEquals("111001101110001000000111110100010101010011111110010010101011101",
-				Long.toBinaryString(sha1.Maj2(a, b, c)));
+		assertEquals("0111001101110001000000111110100010101010011111110010010101011101",
+				sha1.Maj("0111101101010011000000110111000011001100011011110110110110011101",
+						"1001011101111001000110001000100000101010110101101011010001000101",
+						"0111000011110001001000111110111010101010011110010010010101111010"));
 	}
 
 	// SIGMA FUNCTION SPLITTER (64 bits)
 
 	@Test
 	void testUpperSigma512_0_64bits() {
-		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
-		assertEquals("1111001100100011101110010001011001001000010000111000010111001111",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter2(l, 64, "upper", 0)));
+		assertEquals("1111001100100011101110010001011001001000010000111000010111001111", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", 0));
 	}
 
 	@Test
 	void testUpperSigma512_1_64bits() {
-		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
-		assertEquals("1001100000001101011001100001100010000110110111010010111000000101",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter2(l, 64, "upper", 1)));
+		assertEquals("1001100000001101011001100001100010000110110111010010111000000101", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", 1));
 	}
 
 	@Test
 	void testLowerSigma512_0_64bits() {
-		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
-		assertEquals("1001111010101011001010011010010100111010110101000100000000001100",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter2(l, 64, "lower", 0)));
+		assertEquals("1001111010101011001010011010010100111010110101000100000000001100", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", 0));
 	}
 
 	@Test
 	void testLowerSigma512_1_64bits() {
-		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
-		assertEquals("11000001011101000000010011001011100000101110000111110101111001",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter2(l, 64, "lower", 1)));
+		assertEquals("0011000001011101000000010011001011100000101110000111110101111001", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", 1));
 	}
 
-	// SIGMA FUNCTION SPLITTER (32 bits)
+	// SIGMA FUNCTION SPLITTER (32 BITS)
 
 	@Test
 	void testUpperSigma256_0_32bits() {
-		Long l = Long.parseLong("01111010111010000100110101000111", 2);
-		assertEquals("10101101101001101100111111000",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter2(l, 32, "upper", 0)));
+		assertEquals("00010101101101001101100111111000",
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", 0));
 	}
 
 	@Test
 	void testUpperSigma256_1_32bits() {
-		Long l = Long.parseLong("01111010111010000100110101000111", 2);
 		assertEquals("11000001001000100101111110000001",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter2(l, 32, "upper", 1)));
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", 1));
 	}
 
 	@Test
 	void testLowerSigma256_0_32bits() {
-		Long l = Long.parseLong("01111010111010000100110101000111", 2);
 		assertEquals("10010010111110010000011110001000",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter2(l, 32, "lower", 0)));
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", 0));
 	}
 
 	@Test
 	void testLowerSigma256_1_32bits() {
-		Long l = Long.parseLong("01111010111010000100110101000111", 2);
-		assertEquals("101111000101011110100000111010",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter2(l, 32, "lower", 1)));
+		assertEquals("00101111000101011110100000111010",
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", 1));
 	}
 
-	// LEFT ROTATION
+	// EXCEPTIONS OVER SIGMA FUNCTION
+
+	@Test
+	void testSigmaFunctionSplitterException() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 32, "lower",
+					-1);
+		});
+	}
+
+	@Test
+	void testSigmaFunctionSplitterException2() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 32, "upper",
+					-55);
+		});
+	}
+
+	@Test
+	void testSigmaFunctionSplitterException3() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 64, "LOWER",
+					0);
+		});
+	}
+
+	@Test
+	void testSigmaFunctionSplitterException4() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 64, "lower",
+					3);
+		});
+	}
+
+	@Test
+	void testSigmaFunctionSplitterException5() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 128, "lower",
+					1);
+		});
+	}
+
+	// ROTATE LEFT
+
+	@Test
+	void testROTL() {
+		assertEquals("111010", sha1.ROTL("111010", 0));
+	}
+
+	@Test
+	void testROTL2() {
+		assertEquals("110111", sha1.ROTL("111011", 1));
+	}
+
+	@Test
+	void testROTL3() {
+		assertEquals("111101", sha1.ROTL("111011", 5));
+	}
 
 	@Test
 	void testROTL4() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("10100010110001010010100101010111", Integer.toBinaryString(Integer.rotateLeft((int) l, 2)));
+		assertEquals("10100010110001010010100101010111", sha1.ROTL("11101000101100010100101001010101", 2));
 	}
 
 	@Test
 	void testROTL5() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("10010100101010111101000101100010", Integer.toBinaryString(Integer.rotateLeft((int) l, 17)));
+		assertEquals("10010100101010111101000101100010", sha1.ROTL("11101000101100010100101001010101", 17));
 	}
 
 	@Test
 	void testROTL6() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
 		assertEquals("1001010010010010101010011101001010101010101101001100101001010010",
-				Long.toBinaryString(Long.rotateLeft(l, 8)));
+				sha1.ROTL("0101001010010100100100101010100111010010101010101011010011001010", 8));
 	}
 
 	@Test
 	void testROTL7() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals("101001010010100101001001001010101001110100101010101010110100110",
-				Long.toBinaryString(Long.rotateLeft(l, 59)));
+		assertEquals("0101001010010100101001001001010101001110100101010101010110100110",
+				sha1.ROTL("0101001010010100100100101010100111010010101010101011010011001010", 59));
 	}
 
-	// RIGHT ROTATION
+	@Test
+	void testROTLException() {
+		assertThrows(NumberFormatException.class, () -> {
+			sha1.ROTL("111010", -5);
+		});
+	}
+
+	// ROTATE RIGHT
+
+	@Test
+	void testROTR() {
+		assertEquals("111010", sha1.ROTR("111010", 0));
+	}
+
+	@Test
+	void testROTR2() {
+		assertEquals("011101", sha1.ROTR("111010", 1));
+	}
+
+	@Test
+	void testROTR3() {
+		assertEquals("110101", sha1.ROTR("111010", 5));
+	}
 
 	@Test
 	void testROTR4() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("1111010001011000101001010010101", Integer.toBinaryString(Integer.rotateRight((int) l, 2)));
+		assertEquals("01111010001011000101001010010101", sha1.ROTR("11101000101100010100101001010101", 2));
 	}
 
 	@Test
 	void testROTR5() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("10100101001010101111010001011000", Integer.toBinaryString(Integer.rotateRight((int) l, 17)));
+		assertEquals("10100101001010101111010001011000", sha1.ROTR("11101000101100010100101001010101", 17));
 	}
 
 	@Test
 	void testROTR6() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
 		assertEquals("1100101001010010100101001001001010101001110100101010101010110100",
-				Long.toBinaryString(Long.rotateRight(l, 8)));
+				sha1.ROTR("0101001010010100100100101010100111010010101010101011010011001010", 8));
 	}
 
 	@Test
 	void testROTR7() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals("101001010010010010101010011101001010101010101101001100101001010",
-				Long.toBinaryString(Long.rotateRight(l, 59)));
+		assertEquals("0101001010010010010101010011101001010101010101101001100101001010",
+				sha1.ROTR("0101001010010100100100101010100111010010101010101011010011001010", 59));
+	}
+
+	@Test
+	void testROTRException() {
+		assertThrows(NumberFormatException.class, () -> {
+			sha1.ROTR("1110", -19);
+		});
 	}
 
 	// DOUBLE ROTATION
 
 	@Test
 	void testROTLROTR() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals(Long.rotateRight(l, 56), Long.rotateLeft(l, 8));
+		assertEquals(sha1.ROTR("0101001010010100100100101010100111010010101010101011010011001010", 56),
+				sha1.ROTL("0101001010010100100100101010100111010010101010101011010011001010", 8));
 	}
 
 	@Test
 	void testROTLROTR2() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals(Long.rotateRight(l, 5), Long.rotateLeft(l, 59));
+		assertEquals(sha1.ROTR("0101010100001010011110101010101010101010010110011010101111101010", 5),
+				sha1.ROTL("0101010100001010011110101010101010101010010110011010101111101010", 59));
+	}
+
+	// SHIFT ROTATION
+
+	@Test
+	void testSHR() {
+		assertEquals("111010", sha1.SHR("111010", 0));
+	}
+
+	@Test
+	void testSHR2() {
+		assertEquals("011101", sha1.SHR("111010", 1));
+	}
+
+	@Test
+	void testSHR3() {
+		assertEquals("000001", sha1.SHR("111010", 5));
+	}
+
+	@Test
+	void testSHR4() {
+		assertEquals("000000", sha1.SHR("111010", 15));
+	}
+
+	@Test
+	void testSHR5() {
+		assertEquals("00111010001011000101001010010101", sha1.SHR("11101000101100010100101001010101", 2));
+	}
+
+	@Test
+	void testSHR6() {
+		assertEquals("00000000000000000111010001011000", sha1.SHR("11101000101100010100101001010101", 17));
+	}
+
+	@Test
+	void testSHR7() {
+		assertEquals("0000000001010010100101001001001010101001110100101010101010110100",
+				sha1.SHR("0101001010010100100100101010100111010010101010101011010011001010", 8));
+	}
+
+	@Test
+	void testSHR8() {
+		assertEquals("0000000000000000000000000000000000000000000000000000000000001010",
+				sha1.SHR("0101001010010100100100101010100111010010101010101011010011001010", 59));
+	}
+
+	@Test
+	void testSHRException() {
+		assertThrows(NumberFormatException.class, () -> {
+			sha1.SHR("11", -999);
+		});
 	}
 
 	// LEFT SHIFT OPERATION
 
 	@Test
+	void testLeftShiftOperation() {
+		assertEquals("111010", sha1.leftShiftOperation("111010", 0));
+	}
+
+	@Test
+	void testLeftShiftOperation2() {
+		assertEquals("110110", sha1.leftShiftOperation("111011", 1));
+	}
+
+	@Test
+	void testLeftShiftOperation3() {
+		assertEquals("100000", sha1.leftShiftOperation("111011", 5));
+	}
+
+	@Test
+	void testLeftShiftOperation4() {
+		assertEquals("000000", sha1.leftShiftOperation("111011", 15));
+	}
+
+	@Test
 	void testLeftShiftOperation5() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("10100010110001010010100101010100", Integer.toBinaryString(((int) l << 2)));
+		assertEquals("10100010110001010010100101010100",
+				sha1.leftShiftOperation("11101000101100010100101001010101", 2));
 	}
 
 	@Test
 	void testLeftShiftOperation6() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("10010100101010100000000000000000", Integer.toBinaryString(((int) l << 17)));
+		assertEquals("10010100101010100000000000000000",
+				sha1.leftShiftOperation("11101000101100010100101001010101", 17));
 	}
 
 	@Test
 	void testLeftShiftOperation7() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals("1001010010010010101010011101001010101010101101001100101000000000", Long.toBinaryString(l << 8));
+		assertEquals("1001010010010010101010011101001010101010101101001100101000000000",
+				sha1.leftShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 8));
 	}
 
 	@Test
 	void testLeftShiftOperation8() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals("101000000000000000000000000000000000000000000000000000000000000", Long.toBinaryString(l << 59));
+		assertEquals("0101000000000000000000000000000000000000000000000000000000000000",
+				sha1.leftShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 59));
+	}
+
+	@Test
+	void testLeftShiftOperationException() {
+		assertThrows(NumberFormatException.class, () -> {
+			sha1.leftShiftOperation("111010", -1);
+		});
 	}
 
 	// RIGHT SHIFT OPERATION
 
 	@Test
+	void testRightShiftOperation() {
+		assertEquals("111010", sha1.rightShiftOperation("111010", 0));
+	}
+
+	@Test
+	void testRightShiftOperation2() {
+		assertEquals("011101", sha1.rightShiftOperation("111010", 1));
+	}
+
+	@Test
+	void testRightShiftOperation3() {
+		assertEquals("000001", sha1.rightShiftOperation("111010", 5));
+	}
+
+	@Test
+	void testRightShiftOperation4() {
+		assertEquals("000000", sha1.rightShiftOperation("111010", 15));
+	}
+
+	@Test
 	void testRightShiftOperation5() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("111010001011000101001010010101", Long.toBinaryString(l >>> 2));
+		assertEquals("00111010001011000101001010010101",
+				sha1.rightShiftOperation("11101000101100010100101001010101", 2));
 	}
 
 	@Test
 	void testRightShiftOperation6() {
-		long l = Long.parseLong("11101000101100010100101001010101", 2);
-		assertEquals("111010001011000", Long.toBinaryString(l >>> 17));
+		assertEquals("00000000000000000111010001011000",
+				sha1.rightShiftOperation("11101000101100010100101001010101", 17));
 	}
 
 	@Test
 	void testRightShiftOperation7() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals("1010010100101001001001010101001110100101010101010110100", Long.toBinaryString(l >>> 8));
+		assertEquals("0000000001010010100101001001001010101001110100101010101010110100",
+				sha1.rightShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 8));
 	}
 
 	@Test
 	void testRightShiftOperation8() {
-		long l = Long.parseLong("0101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals("1010", Long.toBinaryString(l >>> 59));
+		assertEquals("0000000000000000000000000000000000000000000000000000000000001010",
+				sha1.rightShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 59));
 	}
 
 	@Test
-	void testRightShiftOperation9() {
-		long l = Long.parseUnsignedLong("1101001010010100100100101010100111010010101010101011010011001010", 2);
-		assertEquals("11010", Long.toBinaryString(l >>> 59));
+	void testRightShiftOperationException() {
+		assertThrows(NumberFormatException.class, () -> {
+			sha1.rightShiftOperation("111010", -9);
+		});
 	}
 
 }

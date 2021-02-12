@@ -34,10 +34,6 @@ public class Main {
 
 //		new ControllerSHS();
 
-		SHA_256 sh = new SHA_256("Hola");
-		System.out.println(sh.computeHash());
-		System.out.println(sh.computeHash2());
-
 	}
 
 }

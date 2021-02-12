@@ -78,9 +78,9 @@ public abstract class HashFunction {
 
 	protected String computeSHA2Hash(long[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
-		System.out.println("I am computing the hash... (Version 2)");
+		System.out.println("Hash is being computed... (integer version)");
 
-		// A copy of the hashes is made in order not to overwrite values
+		// A copy of the hashes is made in order not to overwrite original values
 		long[] hashValues = new long[initialHashValues.length];
 		for (int i = 0; i < initialHashValues.length; i++) {
 			hashValues[i] = initialHashValues[i];
@@ -88,18 +88,14 @@ public abstract class HashFunction {
 
 		// Iteration through each block
 		long[] w = new long[loopIterations];
-//		int[] w = new int[loopIterations];
 		for (int i = 0; i < words.size(); i++) {
 			// Message schedule (w) preparation (80/64 words)
 			for (int t = 0; t < loopIterations; t++) {
 				if (t < 16) {
 					w[t] = Long.parseUnsignedLong(words.get(i).get(t), 2);
-//					w[t] = Integer.parseUnsignedInt(words.get(i).get(t), 2);
 				} else {
 					w[t] = sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
-							+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16];
-//					w[t] = (int) (sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
-//					+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16]);					
+							+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16];					
 				}
 			}
 
@@ -121,7 +117,6 @@ public abstract class HashFunction {
 					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C2[t] + w[t];
 				}
 				T2 = sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
-//				T2 = (int) sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
 				h = g;
 				g = f;
 				f = e;
@@ -176,9 +171,9 @@ public abstract class HashFunction {
 	 */
 	protected String computeSHA2Hash2(String[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
-		System.out.println("I am computing the hash...");
+		System.out.println("Hash is being computed... (string version)");
 
-		// A copy of the hashes is made in order not to overwrite values
+		// A copy of the hashes is made in order not to overwrite original values
 		String[] hashValues = new String[initialHashValues.length];
 		for (int i = 0; i < initialHashValues.length; i++) {
 			hashValues[i] = initialHashValues[i];
