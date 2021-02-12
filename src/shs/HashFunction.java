@@ -94,8 +94,8 @@ public abstract class HashFunction {
 				if (t < 16) {
 					w[t] = Long.parseUnsignedLong(words.get(i).get(t), 2);
 				} else {
-					w[t] = sigmaFunctionSplitter2(w[t - 2], wordSize, "lower", 1) + w[t - 7]
-							+ sigmaFunctionSplitter2(w[t - 15], wordSize, "lower", 0) + w[t - 16];					
+					w[t] = sigmaFunctionSplitter(w[t - 2], wordSize, "lower", true) + w[t - 7]
+							+ sigmaFunctionSplitter(w[t - 15], wordSize, "lower", false) + w[t - 16];
 				}
 			}
 
@@ -112,11 +112,11 @@ public abstract class HashFunction {
 			long T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
-					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C1[t] + w[t];
+					T1 = h + sigmaFunctionSplitter(e, wordSize, "upper", true) + Ch(e, f, g) + C1[t] + w[t];
 				} else {
-					T1 = h + sigmaFunctionSplitter2(e, wordSize, "upper", 1) + Ch2(e, f, g) + C2[t] + w[t];
+					T1 = h + sigmaFunctionSplitter(e, wordSize, "upper", true) + Ch(e, f, g) + C2[t] + w[t];
 				}
-				T2 = sigmaFunctionSplitter2(a, wordSize, "upper", 0) + Maj2(a, b, c);
+				T2 = sigmaFunctionSplitter(a, wordSize, "upper", false) + Maj(a, b, c);
 				h = g;
 				g = f;
 				f = e;
@@ -145,7 +145,7 @@ public abstract class HashFunction {
 			if (wordSize == 32) {
 				temp = Integer.toBinaryString((int) hashValues[i]);
 			} else { // wordSize == 64
-				temp = Long.toBinaryString(hashValues[i]);	
+				temp = Long.toBinaryString(hashValues[i]);
 			}
 			// Fill with leading zeros if length is not the desired
 			while (temp.length() < wordSize) {
@@ -169,7 +169,7 @@ public abstract class HashFunction {
 	 *                       algorithm)
 	 * @return Hexadecimal hash computed
 	 */
-	protected String computeSHA2Hash2(String[] initialHashValues, int loopIterations, int oneOrTwo) {
+	protected String computeSHA2Hash(String[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
 		System.out.println("Hash is being computed... (string version)");
 
@@ -187,8 +187,8 @@ public abstract class HashFunction {
 				if (t < 16) {
 					w[t] = words.get(i).get(t);
 				} else {
-					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", 1), w[t - 7],
-							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", 0), w[t - 16], wordSize);
+					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", true), w[t - 7],
+							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", false), w[t - 16], wordSize);
 				}
 			}
 
@@ -205,13 +205,13 @@ public abstract class HashFunction {
 			String T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
-					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
+					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", true), Ch(e, f, g),
 							hexadecimalToBinary(CONSTANTS1[t]), w[t], wordSize);
 				} else {
-					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", 1), Ch(e, f, g),
+					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", true), Ch(e, f, g),
 							hexadecimalToBinary(CONSTANTS2[t]), w[t], wordSize);
 				}
-				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", 0), Maj(a, b, c), wordSize);
+				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", false), Maj(a, b, c), wordSize);
 				h = g;
 				g = f;
 				f = e;
@@ -419,6 +419,19 @@ public abstract class HashFunction {
 		return binaryResult;
 	}
 
+	protected int f(int x, int y, int z, int index) {
+		if (index >= 0 && index <= 19) {
+			return (int) Ch(x, y, z);
+		} else if (index >= 20 && index <= 39) {
+			return (int) Parity(x, y, z);
+		} else if (index >= 40 && index <= 59) {
+			return (int) Maj(x, y, z);
+		} else if (index >= 60 && index <= 79) {
+			return (int) Parity(x, y, z);
+		}
+		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
+	}
+
 	/**
 	 * f function, used at the time of computing only SHA-1 algorithm. Depending on
 	 * the value of index it redirects the input to the right function
@@ -442,17 +455,8 @@ public abstract class HashFunction {
 		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
 	}
 
-	protected int f2(int x, int y, int z, int index) {
-		if (index >= 0 && index <= 19) {
-			return (int) Ch2(x, y, z);
-		} else if (index >= 20 && index <= 39) {
-			return (int) Parity2(x, y, z);
-		} else if (index >= 40 && index <= 59) {
-			return (int) Maj2(x, y, z);
-		} else if (index >= 60 && index <= 79) {
-			return (int) Parity2(x, y, z);
-		}
-		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
+	protected long Ch(long x, long y, long z) {
+		return (x & y) ^ (~x & z);
 	}
 
 	/**
@@ -483,8 +487,8 @@ public abstract class HashFunction {
 		return finalResult;
 	}
 
-	protected long Ch2(long x, long y, long z) {
-		return (x & y) ^ (~x & z);
+	protected long Parity(long x, long y, long z) {
+		return (x ^ y ^ z);
 	}
 
 	/**
@@ -506,8 +510,8 @@ public abstract class HashFunction {
 		return finalResult;
 	}
 
-	protected long Parity2(long x, long y, long z) {
-		return (x ^ y ^ z);
+	protected long Maj(long x, long y, long z) {
+		return (x & y) ^ (x & z) ^ (y & z);
 	}
 
 	/**
@@ -545,8 +549,55 @@ public abstract class HashFunction {
 		return finalResult;
 	}
 
-	protected long Maj2(long x, long y, long z) {
-		return (x & y) ^ (x & z) ^ (y & z);
+	protected long sigmaFunctionSplitter(long word, int wordLength, String upperOrLower, boolean oneOrZero) {
+		switch (wordLength) {
+		case 32:
+			switch (upperOrLower) {
+			case "upper":
+				if (oneOrZero) {
+					return sigmaFunctionOperationInteger((int) word, 6, 11, 25, false);
+				}
+				return sigmaFunctionOperationInteger((int) word, 2, 13, 22, false);
+			case "lower":
+				if (oneOrZero) {
+					return sigmaFunctionOperationInteger((int) word, 17, 19, 10, true);
+				}
+				return sigmaFunctionOperationInteger((int) word, 7, 18, 3, true);
+			}
+		case 64:
+			switch (upperOrLower) {
+			case "upper":
+				if (oneOrZero) {
+					return sigmaFunctionOperationLong(word, 14, 18, 41, false);
+				}
+				return sigmaFunctionOperationLong(word, 28, 34, 39, false);				
+			case "lower":
+				if (oneOrZero) {
+					return sigmaFunctionOperationLong(word, 19, 61, 6, true);
+				}
+				return sigmaFunctionOperationLong(word, 1, 8, 7, true);
+			}
+		}
+		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
+	}
+
+	private long sigmaFunctionOperationLong(long word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+		if (SHR) {
+			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2) ^ (word >>> parameter3);
+		} else {
+			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2)
+					^ Long.rotateRight(word, parameter3);
+		}
+	}
+
+	private long sigmaFunctionOperationInteger(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+		if (SHR) {
+			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
+					^ (word >>> parameter3);
+		} else {
+			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
+					^ Integer.rotateRight(word, parameter3);
+		}
 	}
 
 	/**
@@ -556,84 +607,37 @@ public abstract class HashFunction {
 	 * @param word         The binary word to be changed
 	 * @param wordLength   Word length (32 or 64) (bits)
 	 * @param upperOrLower Represents the kind of sigma operation (upper or lower)
-	 * @param zeroOrOne    Represents the kind of sigma operation (0 or 1)
+	 * @param oneOrZero    Represents the kind of sigma operation (1 (true) or 0
+	 *                     (false))
 	 * @return The binary word modified according to the right sigma function
 	 */
-	protected String sigmaFunctionSplitter(String word, int wordLength, String upperOrLower, int zeroOrOne) {
+	protected String sigmaFunctionSplitter(String word, int wordLength, String upperOrLower, boolean oneOrZero) {
 		switch (wordLength) {
 		case 32:
 			switch (upperOrLower) {
 			case "upper":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation(word, 2, 13, 22, false);
-				case 1:
+				if (oneOrZero) {
 					return sigmaFunctionOperation(word, 6, 11, 25, false);
 				}
+				return sigmaFunctionOperation(word, 2, 13, 22, false);
 			case "lower":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation(word, 7, 18, 3, true);
-				case 1:
+				if (oneOrZero) {
 					return sigmaFunctionOperation(word, 17, 19, 10, true);
 				}
+				return sigmaFunctionOperation(word, 7, 18, 3, true);
 			}
 		case 64:
 			switch (upperOrLower) {
 			case "upper":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation(word, 28, 34, 39, false);
-				case 1:
+				if (oneOrZero) {
 					return sigmaFunctionOperation(word, 14, 18, 41, false);
 				}
+				return sigmaFunctionOperation(word, 28, 34, 39, false);
 			case "lower":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation(word, 1, 8, 7, true);
-				case 1:
+				if (oneOrZero) {
 					return sigmaFunctionOperation(word, 19, 61, 6, true);
 				}
-			}
-		}
-		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
-	}
-
-	protected long sigmaFunctionSplitter2(long word, int wordLength, String upperOrLower, int zeroOrOne) {
-		switch (wordLength) {
-		case 32:
-			switch (upperOrLower) {
-			case "upper":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation2((int) word, 2, 13, 22, false);
-				case 1:
-					return sigmaFunctionOperation2((int) word, 6, 11, 25, false);
-				}
-			case "lower":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation2((int) word, 7, 18, 3, true);
-				case 1:
-					return sigmaFunctionOperation2((int) word, 17, 19, 10, true);
-				}
-			}
-		case 64:
-			switch (upperOrLower) {
-			case "upper":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation2(word, 28, 34, 39, false);
-				case 1:
-					return sigmaFunctionOperation2(word, 14, 18, 41, false);
-				}
-			case "lower":
-				switch (zeroOrOne) {
-				case 0:
-					return sigmaFunctionOperation2(word, 1, 8, 7, true);
-				case 1:
-					return sigmaFunctionOperation2(word, 19, 61, 6, true);
-				}
+				return sigmaFunctionOperation(word, 1, 8, 7, true);
 			}
 		}
 		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
@@ -666,25 +670,6 @@ public abstract class HashFunction {
 			finalResult += result.charAt(i) ^ rotation3.charAt(i);
 		}
 		return finalResult;
-	}
-
-	private long sigmaFunctionOperation2(long word, int parameter1, int parameter2, int parameter3, boolean SHR) {
-		if (SHR) {
-			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2) ^ (word >>> parameter3);
-		} else {
-			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2)
-					^ Long.rotateRight(word, parameter3);
-		}
-	}
-
-	private long sigmaFunctionOperation2(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
-		if (SHR) {
-			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
-					^ (word >>> parameter3);
-		} else {
-			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
-					^ Integer.rotateRight(word, parameter3);
-		}
 	}
 
 	/**

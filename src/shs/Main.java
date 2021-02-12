@@ -33,6 +33,10 @@ public class Main {
 		System.out.println("Starting program...\n");
 
 //		new ControllerSHS();
+		
+		SHA_256 sh = new SHA_256("Hola");
+		System.out.println(sh.computeHash());
+		System.out.println(sh.computeHash2());
 
 	}
 

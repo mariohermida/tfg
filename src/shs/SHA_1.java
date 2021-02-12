@@ -75,7 +75,7 @@ public class SHA_1 extends HashFunction {
 				} else {
 					index = 3;
 				}
-				T = Integer.rotateLeft(a, 5) + f2(b, c, d, t) + e + CONSTANTS[index] + w[t];
+				T = Integer.rotateLeft(a, 5) + f(b, c, d, t) + e + CONSTANTS[index] + w[t];
 				e = d;
 				d = c;
 				c = Integer.rotateLeft(b, 30);

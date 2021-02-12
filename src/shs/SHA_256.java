@@ -40,7 +40,7 @@ public class SHA_256 extends HashFunction {
 	}
 
 	public String computeHash2() {
-		return computeSHA2Hash2(initialHashValues2, 64, 1);
+		return computeSHA2Hash(initialHashValues2, 64, 1);
 	}
 
 }

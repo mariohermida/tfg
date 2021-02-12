@@ -40,7 +40,7 @@ public class SHA_512 extends HashFunction {
 	}
 
 	public String computeHash2() {
-		return computeSHA2Hash2(initialHashValues2, 80, 2);
+		return computeSHA2Hash(initialHashValues2, 80, 2);
 	}
 
 }

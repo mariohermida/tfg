@@ -22,7 +22,7 @@ public class HashFunctionTest2 {
 	private SHA_512_256 sha512_256;
 
 	// HASH COMPUTATIONS
-	
+
 	// UNICODE ONES
 
 	@Test
@@ -30,10 +30,11 @@ public class HashFunctionTest2 {
 		sha1 = new SHA_1("ԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖՙ՚՛՜՝՞՟ՠաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆևֈ։֊֍֎֏");
 		assertEquals("0fb9cd7870517bf0984bd061963abb28b50e33c5", sha1.computeHash2());
 	}
-	
+
 	@Test
 	void testHashComputation_UNICODE2() { // Tibetan characters
-		sha224 = new SHA_224("ༀ༁༂༃༄༅༆༇༈༉༊་༌།༎༏༐༑༒༓༔༕༖༗༘༙༚༛༜༝༞༟༠༡༢༣༤༥༦༧༨༩༪༫༬༭༮༯༰༱༲༳༴༵༶༷༸༹༺༻༼༽༾༿ཀཁགགྷངཅཆཇཉཊཋཌཌྷཎཏཐདདྷནཔཕབབྷམཙཚཛཛྷཝཞཟའཡརལཤཥསཧཨཀྵཪཫཬཱཱཱིིུུྲྀཷླྀཹེཻོཽཾཿ྄ཱྀྀྂྃ྅྆྇ྈྉྊྋྌྍྏྐྑྒྒྷྔྕྖྗྙྚྛྜྜྷྞྟྠྡྡྷྣྤྥྦྦྷྨྩྪྫྫྷྭྮྯྰྱྲླྴྵྶྷྸྐྵྺྻྼ྾྿࿀࿁࿂࿃࿄࿅࿆࿇࿈࿉࿊࿋࿌࿎࿏࿐࿑࿒࿓࿔࿕࿖࿗࿘࿙࿚");
+		sha224 = new SHA_224(
+				"ༀ༁༂༃༄༅༆༇༈༉༊་༌།༎༏༐༑༒༓༔༕༖༗༘༙༚༛༜༝༞༟༠༡༢༣༤༥༦༧༨༩༪༫༬༭༮༯༰༱༲༳༴༵༶༷༸༹༺༻༼༽༾༿ཀཁགགྷངཅཆཇཉཊཋཌཌྷཎཏཐདདྷནཔཕབབྷམཙཚཛཛྷཝཞཟའཡརལཤཥསཧཨཀྵཪཫཬཱཱཱིིུུྲྀཷླྀཹེཻོཽཾཿ྄ཱྀྀྂྃ྅྆྇ྈྉྊྋྌྍྏྐྑྒྒྷྔྕྖྗྙྚྛྜྜྷྞྟྠྡྡྷྣྤྥྦྦྷྨྩྪྫྫྷྭྮྯྰྱྲླྴྵྶྷྸྐྵྺྻྼ྾྿࿀࿁࿂࿃࿄࿅࿆࿇࿈࿉࿊࿋࿌࿎࿏࿐࿑࿒࿓࿔࿕࿖࿗࿘࿙࿚");
 		assertEquals("639ea3cd2385cdcef8a9a36241ca17161d106f3c3f7a38ac8a255673", sha224.computeHash2());
 	}
 
@@ -681,53 +682,53 @@ public class HashFunctionTest2 {
 	// SIGMA FUNCTION SPLITTER (64 bits)
 
 	@Test
-	void testUpperSigma512_0_64bits() {
-		assertEquals("1111001100100011101110010001011001001000010000111000010111001111", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", 0));
-	}
-
-	@Test
 	void testUpperSigma512_1_64bits() {
 		assertEquals("1001100000001101011001100001100010000110110111010010111000000101", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", 1));
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", true));
 	}
 
 	@Test
-	void testLowerSigma512_0_64bits() {
-		assertEquals("1001111010101011001010011010010100111010110101000100000000001100", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", 0));
+	void testUpperSigma512_0_64bits() {
+		assertEquals("1111001100100011101110010001011001001000010000111000010111001111", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", false));
 	}
 
 	@Test
 	void testLowerSigma512_1_64bits() {
 		assertEquals("0011000001011101000000010011001011100000101110000111110101111001", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", 1));
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", true));
+	}
+
+	@Test
+	void testLowerSigma512_0_64bits() {
+		assertEquals("1001111010101011001010011010010100111010110101000100000000001100", sha1.sigmaFunctionSplitter(
+				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", false));
 	}
 
 	// SIGMA FUNCTION SPLITTER (32 BITS)
 
 	@Test
-	void testUpperSigma256_0_32bits() {
-		assertEquals("00010101101101001101100111111000",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", 0));
-	}
-
-	@Test
 	void testUpperSigma256_1_32bits() {
 		assertEquals("11000001001000100101111110000001",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", 1));
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", true));
 	}
 
 	@Test
-	void testLowerSigma256_0_32bits() {
-		assertEquals("10010010111110010000011110001000",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", 0));
+	void testUpperSigma256_0_32bits() {
+		assertEquals("00010101101101001101100111111000",
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", false));
 	}
 
 	@Test
 	void testLowerSigma256_1_32bits() {
 		assertEquals("00101111000101011110100000111010",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", 1));
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", true));
+	}
+
+	@Test
+	void testLowerSigma256_0_32bits() {
+		assertEquals("10010010111110010000011110001000",
+				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", false));
 	}
 
 	// EXCEPTIONS OVER SIGMA FUNCTION
@@ -735,40 +736,16 @@ public class HashFunctionTest2 {
 	@Test
 	void testSigmaFunctionSplitterException() {
 		assertThrows(IllegalArgumentException.class, () -> {
-			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 32, "lower",
-					-1);
+			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 64, "LOWER",
+					false);
 		});
 	}
 
 	@Test
 	void testSigmaFunctionSplitterException2() {
 		assertThrows(IllegalArgumentException.class, () -> {
-			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 32, "upper",
-					-55);
-		});
-	}
-
-	@Test
-	void testSigmaFunctionSplitterException3() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 64, "LOWER",
-					0);
-		});
-	}
-
-	@Test
-	void testSigmaFunctionSplitterException4() {
-		assertThrows(IllegalArgumentException.class, () -> {
-			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 64, "lower",
-					3);
-		});
-	}
-
-	@Test
-	void testSigmaFunctionSplitterException5() {
-		assertThrows(IllegalArgumentException.class, () -> {
 			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 128, "lower",
-					1);
+					true);
 		});
 	}
 
