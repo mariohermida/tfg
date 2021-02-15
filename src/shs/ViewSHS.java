@@ -3,6 +3,11 @@ package shs;
 import java.awt.Color;
 import javax.swing.*;
 
+/**
+ * 
+ * @author Mario Hermida
+ *
+ */
 @SuppressWarnings("serial")
 public class ViewSHS extends JFrame {
 

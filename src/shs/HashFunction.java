@@ -72,7 +72,7 @@ public abstract class HashFunction {
 	/**
 	 * Computes the final hash according to the algorithm chosen
 	 * 
-	 * @return Hexadecimal hash resulted from the original message
+	 * @return hexadecimal hash resulted from the original message
 	 */
 	abstract String computeHash();
 

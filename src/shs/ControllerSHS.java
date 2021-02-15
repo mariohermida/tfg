@@ -3,6 +3,11 @@ package shs;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * 
+ * @author Mario Hermida
+ *
+ */
 public class ControllerSHS implements ActionListener {
 
 	private ViewSHS viewSHS;

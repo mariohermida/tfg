@@ -34,6 +34,10 @@ public class SHA_1 extends HashFunction {
 		this(message, false);
 	}
 
+	/**
+	 * Ordinary SHA-1 hash computation. It uses 32-bit integer values in order to
+	 * produce the 160-bit hash.
+	 */
 	@Override
 	public String computeHash() {
 		String hash = "";
@@ -105,6 +109,92 @@ public class SHA_1 extends HashFunction {
 		return hash;
 	}
 
+	/**
+	 * Alternate method for computing SHA-1 hash. This is efficient from the
+	 * standpoint of memory save. 64 32-bit words of storage are saved, but it is
+	 * likely to lengthen the execution time. By the way, the same hash is resulted.
+	 * 
+	 * @return resulting hash
+	 */
+	public String computeHashAlternateMethod() {
+		String hash = "";
+		System.out.println("Hash is being computed... (alternate method) (integer version)");
+
+		// A copy of the hashes is made in order not to overwrite original values
+		int[] hashValues = new int[initialHashValues.length];
+		for (int j = 0; j < initialHashValues.length; j++) {
+			hashValues[j] = initialHashValues[j];
+		}
+
+		// Iteration through each block
+		int[] w = new int[16];
+		for (int i = 0; i < words.size(); i++) {
+			// Message schedule (w) preparation (16 words)
+			for (int t = 0; t < 16; t++) {
+				w[t] = Integer.parseUnsignedInt(words.get(i).get(t), 2);
+			}
+
+			// Initialize the working variables
+			int a = hashValues[0];
+			int b = hashValues[1];
+			int c = hashValues[2];
+			int d = hashValues[3];
+			int e = hashValues[4];
+
+			int T, index, mask = 0x0000000f, s;
+			for (int t = 0; t < 80; t++) {
+				if (t < 20) {
+					index = 0;
+				} else if (t < 40) {
+					index = 1;
+				} else if (t < 60) {
+					index = 2;
+				} else {
+					index = 3;
+				}
+				// Different kind of addressing
+				s = t & mask;
+				if (t >= 16) {
+					w[s] = Integer.rotateLeft(w[(s + 13) & mask] ^ w[(s + 8) & mask] ^ w[(s + 2) & mask] ^ w[s], 1);
+				}
+				T = Integer.rotateLeft(a, 5) + f(b, c, d, t) + e + CONSTANTS[index] + w[s];
+				e = d;
+				d = c;
+				c = Integer.rotateLeft(b, 30);
+				b = a;
+				a = T;
+			}
+
+			// Compute the intermediate hash value
+			hashValues[0] = a + hashValues[0];
+			hashValues[1] = b + hashValues[1];
+			hashValues[2] = c + hashValues[2];
+			hashValues[3] = d + hashValues[3];
+			hashValues[4] = e + hashValues[4];
+
+		}
+
+		// Concatenate hash values
+		String temp;
+		for (int i = 0; i < hashValues.length; i++) {
+			temp = Integer.toBinaryString(hashValues[i]);
+			// Fill with leading zeros if length is not the desired
+			while (temp.length() < wordSize) {
+				temp = "0" + temp;
+			}
+			hash += binaryToHexadecimal(temp);
+		}
+		return hash;
+	}
+
+	/**
+	 * A 160-bit hash is produced following the same procedure as the ordinary
+	 * function. The difference is the data treatment: strings are used, instead of
+	 * integer numbers. It is not as efficient as the first method, it takes more
+	 * time to compute the hash.
+	 * 
+	 * @return resulting hash
+	 */
 	public String computeHash2() {
 		String hash = "";
 		System.out.println("Hash is being computed... (string version)");
@@ -176,7 +266,7 @@ public class SHA_1 extends HashFunction {
 	}
 
 	/**
-	 * XOR operation of 4 values
+	 * XOR operation of 4 values (using strings)
 	 * 
 	 * @param a
 	 * @param b

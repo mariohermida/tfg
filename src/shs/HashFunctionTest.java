@@ -35,7 +35,8 @@ class HashFunctionTest {
 
 	@Test
 	void testHashComputation_UNICODE2() { // Tibetan characters
-		sha224 = new SHA_224("ༀ༁༂༃༄༅༆༇༈༉༊་༌།༎༏༐༑༒༓༔༕༖༗༘༙༚༛༜༝༞༟༠༡༢༣༤༥༦༧༨༩༪༫༬༭༮༯༰༱༲༳༴༵༶༷༸༹༺༻༼༽༾༿ཀཁགགྷངཅཆཇཉཊཋཌཌྷཎཏཐདདྷནཔཕབབྷམཙཚཛཛྷཝཞཟའཡརལཤཥསཧཨཀྵཪཫཬཱཱཱིིུུྲྀཷླྀཹེཻོཽཾཿ྄ཱྀྀྂྃ྅྆྇ྈྉྊྋྌྍྏྐྑྒྒྷྔྕྖྗྙྚྛྜྜྷྞྟྠྡྡྷྣྤྥྦྦྷྨྩྪྫྫྷྭྮྯྰྱྲླྴྵྶྷྸྐྵྺྻྼ྾྿࿀࿁࿂࿃࿄࿅࿆࿇࿈࿉࿊࿋࿌࿎࿏࿐࿑࿒࿓࿔࿕࿖࿗࿘࿙࿚");
+		sha224 = new SHA_224(
+				"ༀ༁༂༃༄༅༆༇༈༉༊་༌།༎༏༐༑༒༓༔༕༖༗༘༙༚༛༜༝༞༟༠༡༢༣༤༥༦༧༨༩༪༫༬༭༮༯༰༱༲༳༴༵༶༷༸༹༺༻༼༽༾༿ཀཁགགྷངཅཆཇཉཊཋཌཌྷཎཏཐདདྷནཔཕབབྷམཙཚཛཛྷཝཞཟའཡརལཤཥསཧཨཀྵཪཫཬཱཱཱིིུུྲྀཷླྀཹེཻོཽཾཿ྄ཱྀྀྂྃ྅྆྇ྈྉྊྋྌྍྏྐྑྒྒྷྔྕྖྗྙྚྛྜྜྷྞྟྠྡྡྷྣྤྥྦྦྷྨྩྪྫྫྷྭྮྯྰྱྲླྴྵྶྷྸྐྵྺྻྼ྾྿࿀࿁࿂࿃࿄࿅࿆࿇࿈࿉࿊࿋࿌࿎࿏࿐࿑࿒࿓࿔࿕࿖࿗࿘࿙࿚");
 		assertEquals("639ea3cd2385cdcef8a9a36241ca17161d106f3c3f7a38ac8a255673", sha224.computeHash());
 	}
 
@@ -506,6 +507,66 @@ class HashFunctionTest {
 		sha1 = new SHA_1("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
 		assertEquals("84983e441c3bd26ebaae4aa1f95129e5e54670f1", sha1.computeHash());
 	}
+	
+	// SHA-1 ALTERNATE METHOD
+	
+	@Test
+	void testHashComputation_SHA_1AlternateMethod() {
+		sha1 = new SHA_1("a");
+		assertEquals("86f7e437faa5a7fce15d1ddcb9eaeaea377667b8", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation2_SHA_1AlternateMethod() {
+		sha1 = new SHA_1(""); // empty string
+		assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation3_SHA_1AlternateMethod() {
+		sha1 = new SHA_1("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("c1c8bbdc22796e28c0e15163d20899b65621d65a", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation4_SHA_1AlternateMethod() {
+		sha1 = new SHA_1("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		assertEquals("c2db330f6083854c99d4b5bfb6e8f29f201be699", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation5_SHA_1AlternateMethod() {
+		sha1 = new SHA_1(
+				" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+		assertEquals("e4f8188cdca2a68b074005e2ccab5b67842c6fc7", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation6_SHA_1AlternateMethod() {
+		sha1 = new SHA_1(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829");
+		assertEquals("3775e8d97dac1f0a26ac1418d6009698fa6c8631", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation7_SHA_1AlternateMethod() {
+		sha1 = new SHA_1(
+				"jsjsandsnsaocmwakodojnansnkdksdskdsjsdjadsjkdskdsmwmwkwwekwmewmemqkdskdkdsksdksd,wpq82373280bsd782i123;sksks101019282829A");
+		assertEquals("111dd7f517ac9fcc76308b43877df74bf80be10c", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation8_SHA_1AlternateMethod() {
+		sha1 = new SHA_1(
+				"And what is love? It is a doll dressed up For idleness to cosset, nurse, and dandle; A thing of soft misnomers, so divine That silly youth doth think to make itself Divine by loving, and so goes on Yawning and doting a whole summer long, Till Miss's comb is made a perfect tiara, And common Wellingtons turn Romeo boots; Till Cleopatra lives at Number Seven, And Antony resides in Brunswick Square.");
+		assertEquals("1af89fe6c87f9ce56fe768e5598c9876659052e1", sha1.computeHashAlternateMethod());
+	}
+
+	@Test
+	void testHashComputation9_SHA_1AlternateMethod() { // the one proposed by the NIST institution
+		sha1 = new SHA_1("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq");
+		assertEquals("84983e441c3bd26ebaae4aa1f95129e5e54670f1", sha1.computeHashAlternateMethod());
+	}
 
 	// END HASH COMPUTATIONS
 
@@ -761,7 +822,7 @@ class HashFunctionTest {
 		assertEquals("1001100000001101011001100001100010000110110111010010111000000101",
 				Long.toBinaryString(sha1.sigmaFunctionSplitter(l, 64, "upper", true)));
 	}
-	
+
 	@Test
 	void testUpperSigma512_0_64bits() {
 		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
@@ -775,7 +836,7 @@ class HashFunctionTest {
 		assertEquals("11000001011101000000010011001011100000101110000111110101111001",
 				Long.toBinaryString(sha1.sigmaFunctionSplitter(l, 64, "lower", true)));
 	}
-	
+
 	@Test
 	void testLowerSigma512_0_64bits() {
 		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
@@ -791,7 +852,7 @@ class HashFunctionTest {
 		assertEquals("11000001001000100101111110000001",
 				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter(l, 32, "upper", true)));
 	}
-	
+
 	@Test
 	void testUpperSigma256_0_32bits() {
 		Long l = Long.parseLong("01111010111010000100110101000111", 2);
@@ -805,7 +866,7 @@ class HashFunctionTest {
 		assertEquals("101111000101011110100000111010",
 				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter(l, 32, "lower", true)));
 	}
-	
+
 	@Test
 	void testLowerSigma256_0_32bits() {
 		Long l = Long.parseLong("01111010111010000100110101000111", 2);
