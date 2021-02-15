@@ -114,7 +114,7 @@ public class SHA_1 extends HashFunction {
 	 * standpoint of memory save. 64 32-bit words of storage are saved, but it is
 	 * likely to lengthen the execution time. By the way, the same hash is resulted.
 	 * 
-	 * @return resulting hash
+	 * @return Resulting hexadecimal hash
 	 */
 	public String computeHashAlternateMethod() {
 		String hash = "";
@@ -193,7 +193,7 @@ public class SHA_1 extends HashFunction {
 	 * integer numbers. It is not as efficient as the first method, it takes more
 	 * time to compute the hash.
 	 * 
-	 * @return resulting hash
+	 * @return Resulting hexadecimal hash
 	 */
 	public String computeHash2() {
 		String hash = "";

@@ -335,15 +335,14 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Binary addition of 5 values, performed modulo 2^wordsize
+	 * Binary addition of 5 values, performed modulo 2^wordSize
 	 * 
 	 * @param a
 	 * @param b
 	 * @param c
 	 * @param d
 	 * @param e
-	 * @param mod
-	 * @return
+	 * @return a + b + c + d + e (mod 2^wordSize)
 	 */
 	protected String binaryAddition(String a, String b, String c, String d, String e) {
 		if (a.length() > wordSize || b.length() > wordSize || c.length() > wordSize || d.length() > wordSize
@@ -432,7 +431,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * f function. Used at the time of computing only SHA-1 algorithm. Depending on
+	 * f function. Used at the time of computing SHA-1 algorithm only. Depending on
 	 * the value of index it redirects the input to the right function
 	 * 
 	 * @param x
@@ -684,7 +683,8 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Same as above but using int instead of long representation (32 bits instead of 64)
+	 * Same as above but using int instead of long representation (32 bits instead
+	 * of 64)
 	 *
 	 */
 	private long sigmaFunctionOperationInteger(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
