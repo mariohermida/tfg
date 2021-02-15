@@ -138,11 +138,11 @@ public class ViewSHS extends JFrame {
 	}
 	
 	public void showTruncationMustBeAnIntegerNumber() {
-		JOptionPane.showMessageDialog(this, "Truncation input must be an integer value");
+		JOptionPane.showMessageDialog(this, "Truncation input value must be an integer value");
 	}
 	
-	public void showTruncationMustBePositiveAndWithinTheRange(int range) {
-		JOptionPane.showMessageDialog(this, "Truncation input must be a positive integer, within the range (" + range + "), and multiple of 4");
+	public void showTruncationNotValidNumber(int range) {
+		JOptionPane.showMessageDialog(this, "Truncation input value must be a positive integer, within the range (4 - " + range + "), and multiple of 4");
 	}
 
 	public ButtonGroup getButtonGroup() {

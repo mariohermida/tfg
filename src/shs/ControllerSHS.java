@@ -19,18 +19,18 @@ public class ControllerSHS implements ActionListener {
 			} else {
 				HashFunction sh = null;
 				String option = viewSHS.getButtonGroup().getSelection().getActionCommand();
-				String truncation = viewSHS.getTextFieldBits().getText();
-				int index = Integer.MAX_VALUE;
+				String truncationValue = viewSHS.getTextFieldBits().getText();
+				int endIndex = Integer.MAX_VALUE;
 				// Check if truncation is an integer number
-				if (!truncation.equals("")) {
+				if (!truncationValue.equals("")) {
 					try {
-						index = Integer.parseInt(truncation);
+						endIndex = Integer.parseInt(truncationValue);
 					} catch (NumberFormatException exception) {
 						viewSHS.showTruncationMustBeAnIntegerNumber();
-						index = Integer.MIN_VALUE;
+						endIndex = Integer.MIN_VALUE;
 					}
 				}
-				if (index != Integer.MIN_VALUE) {
+				if (endIndex != Integer.MIN_VALUE) {
 					if (option.equals("radioButtonSHA1")) {
 						sh = new SHA_1(viewSHS.getTextAreaTextToBeHashed().getText());
 					} else if (option.equals("radioButtonSHA224")) {
@@ -46,13 +46,13 @@ public class ControllerSHS implements ActionListener {
 					} else if (option.equals("radioButtonSHA512_256")) {
 						sh = new SHA_512_256(viewSHS.getTextAreaTextToBeHashed().getText());
 					}
-					if (index == Integer.MAX_VALUE) {
+					if (endIndex == Integer.MAX_VALUE) {
 						viewSHS.getTextFieldHash().setText(sh.computeHash());
 					} else {
-						if (index % 4 == 0 && index > 0 && index <= sh.messageDigestLength) {
-							viewSHS.getTextFieldHash().setText(sh.computeHash().substring(0, index/4));	
+						if (endIndex % 4 == 0 && endIndex > 0 && endIndex <= sh.messageDigestLength) {
+							viewSHS.getTextFieldHash().setText(sh.computeHash().substring(0, endIndex/4));	
 						} else {
-							viewSHS.showTruncationMustBePositiveAndWithinTheRange(sh.messageDigestLength);
+							viewSHS.showTruncationNotValidNumber(sh.messageDigestLength);
 						}
 					}
 				}
