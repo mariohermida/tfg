@@ -236,8 +236,7 @@ public class SHA_1 extends HashFunction {
 				} else {
 					index = 3;
 				}
-				T = binaryAddition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS2[index]), w[t],
-						wordSize);
+				T = binaryAddition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS2[index]), w[t]);
 				e = d;
 				d = c;
 				c = ROTL(b, 30);
@@ -246,11 +245,11 @@ public class SHA_1 extends HashFunction {
 			}
 
 			// Compute the intermediate hash value
-			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), wordSize);
-			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), wordSize);
-			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), wordSize);
-			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), wordSize);
-			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), wordSize);
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]));
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]));
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]));
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]));
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]));
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {

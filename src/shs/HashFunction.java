@@ -5,6 +5,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
+ * All computations are performed taking into consideration the document
+ * published in the following NIST link:
+ * https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
  * 
  * @author Mario Hermida
  *
@@ -76,6 +79,19 @@ public abstract class HashFunction {
 	 */
 	abstract String computeHash();
 
+	/**
+	 * It performs the hash computation (SHA-2 family) according to different
+	 * parameters. Depending on them the corresponding hash is computed (SHA-224,
+	 * SHA-256, SHA-384, SHA-512, SHA-512/t)
+	 * 
+	 * @param initialHashValues Array containing the initial hash values of each
+	 *                          class
+	 * @param loopIterations    Number of iterations performed in main loop (64 or
+	 *                          80) It depends on the algorithm
+	 * @param oneOrTwo          It identifies the group of constants (depends on the
+	 *                          algorithm)
+	 * @return Hexadecimal hash computed
+	 */
 	protected String computeSHA2Hash(long[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
 		System.out.println("Hash is being computed... (integer version)");
@@ -159,15 +175,9 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * It performs the hash computation (SHA-2 family) according to different
-	 * parameters. Depending on them the corresponding hash is computed (SHA-224,
-	 * SHA-256, SHA-384, SHA-512, SHA-512/t)
+	 * Same as above, but performing hash computation using string representation
+	 * instead of integer values.
 	 * 
-	 * @param hashValues     Array containing the initial hash values of each class
-	 * @param loopIterations Number of iterations performed in main loop (64 or 80)
-	 * @param oneOrTwo       It identifies the group of constants (depends on the
-	 *                       algorithm)
-	 * @return Hexadecimal hash computed
 	 */
 	protected String computeSHA2Hash(String[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
@@ -188,7 +198,7 @@ public abstract class HashFunction {
 					w[t] = words.get(i).get(t);
 				} else {
 					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", true), w[t - 7],
-							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", false), w[t - 16], wordSize);
+							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", false), w[t - 16]);
 				}
 			}
 
@@ -206,31 +216,31 @@ public abstract class HashFunction {
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
 					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", true), Ch(e, f, g),
-							hexadecimalToBinary(CONSTANTS1[t]), w[t], wordSize);
+							hexadecimalToBinary(CONSTANTS1[t]), w[t]);
 				} else {
 					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", true), Ch(e, f, g),
-							hexadecimalToBinary(CONSTANTS2[t]), w[t], wordSize);
+							hexadecimalToBinary(CONSTANTS2[t]), w[t]);
 				}
-				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", false), Maj(a, b, c), wordSize);
+				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", false), Maj(a, b, c));
 				h = g;
 				g = f;
 				f = e;
-				e = binaryAddition(d, T1, wordSize);
+				e = binaryAddition(d, T1);
 				d = c;
 				c = b;
 				b = a;
-				a = binaryAddition(T1, T2, wordSize);
+				a = binaryAddition(T1, T2);
 			}
 
 			// Compute the intermediate hash value
-			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]), wordSize);
-			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]), wordSize);
-			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]), wordSize);
-			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]), wordSize);
-			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]), wordSize);
-			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]), wordSize);
-			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]), wordSize);
-			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]), wordSize);
+			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]));
+			hashValues[1] = binaryAddition(b, hexadecimalToBinary(hashValues[1]));
+			hashValues[2] = binaryAddition(c, hexadecimalToBinary(hashValues[2]));
+			hashValues[3] = binaryAddition(d, hexadecimalToBinary(hashValues[3]));
+			hashValues[4] = binaryAddition(e, hexadecimalToBinary(hashValues[4]));
+			hashValues[5] = binaryAddition(f, hexadecimalToBinary(hashValues[5]));
+			hashValues[6] = binaryAddition(g, hexadecimalToBinary(hashValues[6]));
+			hashValues[7] = binaryAddition(h, hexadecimalToBinary(hashValues[7]));
 
 			// Since hashValues are binary we should translate it into hexadecimal
 			for (int j = 0; j < hashValues.length; j++) {
@@ -251,7 +261,8 @@ public abstract class HashFunction {
 	 * The idea is to have a message whose length is multiple of 512/1024 (block
 	 * size) The binaryMessagePadded is built this way: original binary message + 1
 	 * + as many 0s as needed + length of the original message in binary (reserving
-	 * 64/128 (maximumMessageSize) bits here)
+	 * 64/128 (maximumMessageSize) bits here). Say here that padding is always
+	 * added, even if the message is already the desired length.
 	 * 
 	 * @return The message padded with determined number of zeroes
 	 */
@@ -324,7 +335,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Binary addition of 5 values, performed modulo 2^mod
+	 * Binary addition of 5 values, performed modulo 2^wordsize
 	 * 
 	 * @param a
 	 * @param b
@@ -334,8 +345,9 @@ public abstract class HashFunction {
 	 * @param mod
 	 * @return
 	 */
-	protected String binaryAddition(String a, String b, String c, String d, String e, int mod) {
-		if (a.length() > mod || b.length() > mod || c.length() > mod || d.length() > mod || e.length() > mod) {
+	protected String binaryAddition(String a, String b, String c, String d, String e) {
+		if (a.length() > wordSize || b.length() > wordSize || c.length() > wordSize || d.length() > wordSize
+				|| e.length() > wordSize) {
 			throw new IllegalArgumentException("Binary string length exceeds the maximum allowed.");
 		}
 		BigInteger ba = new BigInteger(a, 2);
@@ -343,20 +355,20 @@ public abstract class HashFunction {
 		BigInteger bc = new BigInteger(c, 2);
 		BigInteger bd = new BigInteger(d, 2);
 		BigInteger be = new BigInteger(e, 2);
-		BigInteger bMod = BigInteger.TWO.pow(mod);
+		BigInteger bMod = BigInteger.TWO.pow(wordSize);
 		String result = ba.add(bb.add(bc.add(bd.add(be)))).mod(bMod).toString(2);
-		while (result.length() < mod) {
+		while (result.length() < wordSize) {
 			result = "0" + result;
 		}
 		return result;
 	}
 
-	protected String binaryAddition(String a, String b, String c, String d, int mod) {
-		return binaryAddition(a, b, c, d, "0", mod);
+	protected String binaryAddition(String a, String b, String c, String d) {
+		return binaryAddition(a, b, c, d, "0");
 	}
 
-	protected String binaryAddition(String a, String b, int mod) {
-		return binaryAddition(a, b, "0", "0", "0", mod);
+	protected String binaryAddition(String a, String b) {
+		return binaryAddition(a, b, "0", "0", "0");
 	}
 
 	/**
@@ -419,6 +431,16 @@ public abstract class HashFunction {
 		return binaryResult;
 	}
 
+	/**
+	 * f function. Used at the time of computing only SHA-1 algorithm. Depending on
+	 * the value of index it redirects the input to the right function
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param index Variable in charge of selecting the right logical function
+	 * @return 32-bit word resulted from the convenient logical function
+	 */
 	protected int f(int x, int y, int z, int index) {
 		if (index >= 0 && index <= 19) {
 			return (int) Ch(x, y, z);
@@ -433,14 +455,9 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * f function, used at the time of computing only SHA-1 algorithm. Depending on
-	 * the value of index it redirects the input to the right function
+	 * Same as above, but instead of using integer values, using string
+	 * representation
 	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param index Variable in charge of selecting the right logical function
-	 * @return 32-bit word resulted from the convenient logical function
 	 */
 	protected String f(String x, String y, String z, int index) {
 		if (index >= 0 && index <= 19) {
@@ -455,10 +472,6 @@ public abstract class HashFunction {
 		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
 	}
 
-	protected long Ch(long x, long y, long z) {
-		return (x & y) ^ (~x & z);
-	}
-
 	/**
 	 * Ch function
 	 * 
@@ -466,6 +479,15 @@ public abstract class HashFunction {
 	 * @param y
 	 * @param z
 	 * @return (x AND y) XOR (~x AND z)
+	 */
+	protected long Ch(long x, long y, long z) {
+		return (x & y) ^ (~x & z);
+	}
+
+	/**
+	 * Same as above, but instead of using integer values, using string
+	 * representation
+	 * 
 	 */
 	protected String Ch(String x, String y, String z) {
 		String result1, result2, finalResult = "";
@@ -487,10 +509,6 @@ public abstract class HashFunction {
 		return finalResult;
 	}
 
-	protected long Parity(long x, long y, long z) {
-		return (x ^ y ^ z);
-	}
-
 	/**
 	 * Parity function
 	 * 
@@ -498,6 +516,15 @@ public abstract class HashFunction {
 	 * @param y
 	 * @param z
 	 * @return x XOR y XOR z
+	 */
+	protected long Parity(long x, long y, long z) {
+		return (x ^ y ^ z);
+	}
+
+	/**
+	 * Same as above, but instead of using integer values, using string
+	 * representation
+	 * 
 	 */
 	protected String Parity(String x, String y, String z) {
 		String result = "", finalResult = "";
@@ -510,10 +537,6 @@ public abstract class HashFunction {
 		return finalResult;
 	}
 
-	protected long Maj(long x, long y, long z) {
-		return (x & y) ^ (x & z) ^ (y & z);
-	}
-
 	/**
 	 * Maj function
 	 * 
@@ -521,6 +544,15 @@ public abstract class HashFunction {
 	 * @param y
 	 * @param z
 	 * @return (x AND y) XOR (x AND z) XOR (y AND z)
+	 */
+	protected long Maj(long x, long y, long z) {
+		return (x & y) ^ (x & z) ^ (y & z);
+	}
+
+	/**
+	 * Same as above, but instead of using integer values, using string
+	 * representation
+	 * 
 	 */
 	protected String Maj(String x, String y, String z) {
 		String result1, result2, result3, result4 = "", finalResult = "";
@@ -549,6 +581,18 @@ public abstract class HashFunction {
 		return finalResult;
 	}
 
+	/**
+	 * It identifies the different sigma operations according to the following
+	 * parameters: wordLength, upperOrLower and zeroOrOne
+	 * 
+	 * @param word         The word (integer number) to be changed
+	 * @param wordLength   Word length (32 or 64) (bits)
+	 * @param upperOrLower Represents the kind of sigma operation (upper or lower)
+	 * @param oneOrZero    Represents the kind of sigma operation (1 (true) or 0
+	 *                     (false))
+	 * @return The word (integer number) modified according to the specific sigma
+	 *         function
+	 */
 	protected long sigmaFunctionSplitter(long word, int wordLength, String upperOrLower, boolean oneOrZero) {
 		switch (wordLength) {
 		case 32:
@@ -570,7 +614,7 @@ public abstract class HashFunction {
 				if (oneOrZero) {
 					return sigmaFunctionOperationLong(word, 14, 18, 41, false);
 				}
-				return sigmaFunctionOperationLong(word, 28, 34, 39, false);				
+				return sigmaFunctionOperationLong(word, 28, 34, 39, false);
 			case "lower":
 				if (oneOrZero) {
 					return sigmaFunctionOperationLong(word, 19, 61, 6, true);
@@ -581,35 +625,10 @@ public abstract class HashFunction {
 		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
 	}
 
-	private long sigmaFunctionOperationLong(long word, int parameter1, int parameter2, int parameter3, boolean SHR) {
-		if (SHR) {
-			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2) ^ (word >>> parameter3);
-		} else {
-			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2)
-					^ Long.rotateRight(word, parameter3);
-		}
-	}
-
-	private long sigmaFunctionOperationInteger(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
-		if (SHR) {
-			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
-					^ (word >>> parameter3);
-		} else {
-			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
-					^ Integer.rotateRight(word, parameter3);
-		}
-	}
-
 	/**
-	 * It identifies the different sigma operations according to the following
-	 * parameters: wordLength, upperOrLower and zeroOrOne
+	 * Same as above, but instead of using integer values, using string
+	 * representation
 	 * 
-	 * @param word         The binary word to be changed
-	 * @param wordLength   Word length (32 or 64) (bits)
-	 * @param upperOrLower Represents the kind of sigma operation (upper or lower)
-	 * @param oneOrZero    Represents the kind of sigma operation (1 (true) or 0
-	 *                     (false))
-	 * @return The binary word modified according to the right sigma function
 	 */
 	protected String sigmaFunctionSplitter(String word, int wordLength, String upperOrLower, boolean oneOrZero) {
 		switch (wordLength) {
@@ -654,6 +673,34 @@ public abstract class HashFunction {
 	 * @param SHR        Represents if SHR is used instead of ROTR
 	 * @return ROTR(parameter1)(word) XOR ROTR(parameter2)(word) XOR
 	 *         (ROTR(parameter3)(word) | SHR(parameter3)(word))
+	 */
+	private long sigmaFunctionOperationLong(long word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+		if (SHR) { // Unsigned bit shift is used
+			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2) ^ (word >>> parameter3);
+		} else {
+			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2)
+					^ Long.rotateRight(word, parameter3);
+		}
+	}
+
+	/**
+	 * Same as above but using int instead of long representation (32 bits instead of 64)
+	 *
+	 */
+	private long sigmaFunctionOperationInteger(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+		if (SHR) { // Unsigned bit shift is used
+			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
+					^ (word >>> parameter3);
+		} else {
+			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
+					^ Integer.rotateRight(word, parameter3);
+		}
+	}
+
+	/**
+	 * Same as above, but instead of using integer values, using string
+	 * representation
+	 * 
 	 */
 	private String sigmaFunctionOperation(String word, int parameter1, int parameter2, int parameter3, boolean SHR) {
 		String result = "", finalResult = "";
