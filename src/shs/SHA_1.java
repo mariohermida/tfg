@@ -21,6 +21,7 @@ public class SHA_1 extends HashFunction {
 		} else {
 			this.binaryMessage = textToBinary(message);
 		}
+		System.out.println(binaryMessage);
 		messageDigestLength = 160;
 		wordSize = 32;
 		maximumMessageLength = 64;
@@ -106,7 +107,7 @@ public class SHA_1 extends HashFunction {
 			}
 			hash += binaryToHexadecimal(temp);
 		}
-		return hash;
+		return hash.substring(0, messageDigestLength / 4);
 	}
 
 	/**
@@ -184,7 +185,7 @@ public class SHA_1 extends HashFunction {
 			}
 			hash += binaryToHexadecimal(temp);
 		}
-		return hash;
+		return hash.substring(0, messageDigestLength / 4);
 	}
 
 	/**
@@ -261,7 +262,7 @@ public class SHA_1 extends HashFunction {
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += hashValues[i];
 		}
-		return hash;
+		return hash.substring(0, messageDigestLength / 4);
 	}
 
 	/**

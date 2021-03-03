@@ -1,5 +1,8 @@
 package shs;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -183,6 +186,15 @@ public abstract class HashFunction {
 		String hash = "";
 		System.out.println("Hash is being computed... (string version)");
 
+		PrintStream o = null;
+		try {
+			o = new PrintStream(new File("file.txt"));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		// Assign o to output stream
+		System.setOut(o);
+
 		// A copy of the hashes is made in order not to overwrite original values
 		String[] hashValues = new String[initialHashValues.length];
 		for (int i = 0; i < initialHashValues.length; i++) {
@@ -212,6 +224,11 @@ public abstract class HashFunction {
 			String g = hexadecimalToBinary(hashValues[6]);
 			String h = hexadecimalToBinary(hashValues[7]);
 
+			System.out.println("Ini:\ta=" + binaryToHexadecimal(a) + "\tb=" + binaryToHexadecimal(b) + "\tc="
+					+ binaryToHexadecimal(c) + "\td=" + binaryToHexadecimal(d));
+			System.out.println("\te=" + binaryToHexadecimal(e) + "\tf=" + binaryToHexadecimal(f) + "\tg="
+					+ binaryToHexadecimal(g) + "\th=" + binaryToHexadecimal(h));
+
 			String T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
@@ -230,6 +247,10 @@ public abstract class HashFunction {
 				c = b;
 				b = a;
 				a = binaryAddition(T1, T2);
+				System.out.println("R" + (t + 1) + ":\ta=" + binaryToHexadecimal(a) + "\tb=" + binaryToHexadecimal(b)
+						+ "\tc=" + binaryToHexadecimal(c) + "\td=" + binaryToHexadecimal(d));
+				System.out.println("\te=" + binaryToHexadecimal(e) + "\tf=" + binaryToHexadecimal(f) + "\tg="
+						+ binaryToHexadecimal(g) + "\th=" + binaryToHexadecimal(h));
 			}
 
 			// Compute the intermediate hash value
