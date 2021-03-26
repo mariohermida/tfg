@@ -1,8 +1,8 @@
 package shs;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+//import java.io.File;
+//import java.io.FileNotFoundException;
+//import java.io.PrintStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -184,16 +184,17 @@ public abstract class HashFunction {
 	 */
 	protected String computeSHA2Hash(String[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
-		System.out.println("Hash is being computed... (string version)");
+//		System.out.println("Hash is being computed... (string version)");
 
-		PrintStream o = null;
+		// Writing file in order to store intermediate hash values
+		/*PrintStream o = null;
 		try {
 			o = new PrintStream(new File("file.txt"));
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		}
 		// Assign o to output stream
-		System.setOut(o);
+		System.setOut(o);*/
 
 		// A copy of the hashes is made in order not to overwrite original values
 		String[] hashValues = new String[initialHashValues.length];
@@ -224,10 +225,11 @@ public abstract class HashFunction {
 			String g = hexadecimalToBinary(hashValues[6]);
 			String h = hexadecimalToBinary(hashValues[7]);
 
-			System.out.println("Ini:\ta=" + binaryToHexadecimal(a) + "\tb=" + binaryToHexadecimal(b) + "\tc="
-					+ binaryToHexadecimal(c) + "\td=" + binaryToHexadecimal(d));
-			System.out.println("\te=" + binaryToHexadecimal(e) + "\tf=" + binaryToHexadecimal(f) + "\tg="
-					+ binaryToHexadecimal(g) + "\th=" + binaryToHexadecimal(h));
+//			System.out.println("Ini: a=" + binaryToHexadecimal(a) + "b=" + binaryToHexadecimal(b) + "c=" + binaryToHexadecimal(c) + "d=" + binaryToHexadecimal(d) + "e=" + binaryToHexadecimal(e) + "f=" + binaryToHexadecimal(f) + "g=" + binaryToHexadecimal(g) + "h=" + binaryToHexadecimal(h));
+			/*System.out.println("\tIni:\tA=" + binaryToHexadecimal(a) + "\t\tB=" + binaryToHexadecimal(b)
+					+ "\t\tC=" + binaryToHexadecimal(c) + "\t\tD=" + binaryToHexadecimal(d));
+			System.out.println("\t\tE=" + binaryToHexadecimal(e) + "\t\tF=" + binaryToHexadecimal(f) + "\t\tG="
+					+ binaryToHexadecimal(g) + "\t\tH=" + binaryToHexadecimal(h));*/
 
 			String T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
@@ -247,11 +249,31 @@ public abstract class HashFunction {
 				c = b;
 				b = a;
 				a = binaryAddition(T1, T2);
-				System.out.println("R" + (t + 1) + ":\ta=" + binaryToHexadecimal(a) + "\tb=" + binaryToHexadecimal(b)
-						+ "\tc=" + binaryToHexadecimal(c) + "\td=" + binaryToHexadecimal(d));
-				System.out.println("\te=" + binaryToHexadecimal(e) + "\tf=" + binaryToHexadecimal(f) + "\tg="
-						+ binaryToHexadecimal(g) + "\th=" + binaryToHexadecimal(h));
+
+				// Output is directed to the file previously defined
+//				System.out.println("R" + (t+1) + ": a=" + binaryToHexadecimal(a) + "b=" + binaryToHexadecimal(b) + "c=" + binaryToHexadecimal(c) + "d=" + binaryToHexadecimal(d) + "e=" + binaryToHexadecimal(e) + "f=" + binaryToHexadecimal(f) + "g=" + binaryToHexadecimal(g) + "h=" + binaryToHexadecimal(h));
+				/*System.out.println("\tR" + (t + 1) + ":\tA=" + binaryToHexadecimal(a) + "\t\tB=" + binaryToHexadecimal(b)
+						+ "\t\tC=" + binaryToHexadecimal(c) + "\t\tD=" + binaryToHexadecimal(d));
+				System.out.println("\t\tE=" + binaryToHexadecimal(e) + "\t\tF=" + binaryToHexadecimal(f) + "\t\tG="
+						+ binaryToHexadecimal(g) + "\t\tH=" + binaryToHexadecimal(h));*/
 			}
+
+			/*System.out.println("\n\tH[0] = " + binaryToHexadecimal(a) + " + " + hashValues[0] + " = "
+					+ binaryToHexadecimal(binaryAddition(a, hexadecimalToBinary(hashValues[0]))));
+			System.out.println("\tH[1] = " + binaryToHexadecimal(b) + " + " + hashValues[1] + " = "
+					+ binaryToHexadecimal(binaryAddition(b, hexadecimalToBinary(hashValues[1]))));
+			System.out.println("\tH[2] = " + binaryToHexadecimal(c) + " + " + hashValues[2] + " = "
+					+ binaryToHexadecimal(binaryAddition(c, hexadecimalToBinary(hashValues[2]))));
+			System.out.println("\tH[3] = " + binaryToHexadecimal(d) + " + " + hashValues[3] + " = "
+					+ binaryToHexadecimal(binaryAddition(d, hexadecimalToBinary(hashValues[3]))));
+			System.out.println("\tH[4] = " + binaryToHexadecimal(e) + " + " + hashValues[4] + " = "
+					+ binaryToHexadecimal(binaryAddition(e, hexadecimalToBinary(hashValues[4]))));
+			System.out.println("\tH[5] = " + binaryToHexadecimal(f) + " + " + hashValues[5] + " = "
+					+ binaryToHexadecimal(binaryAddition(f, hexadecimalToBinary(hashValues[5]))));
+			System.out.println("\tH[6] = " + binaryToHexadecimal(g) + " + " + hashValues[6] + " = "
+					+ binaryToHexadecimal(binaryAddition(g, hexadecimalToBinary(hashValues[6]))));
+			System.out.println("\tH[7] = " + binaryToHexadecimal(h) + " + " + hashValues[7] + " = "
+					+ binaryToHexadecimal(binaryAddition(h, hexadecimalToBinary(hashValues[7]))));*/
 
 			// Compute the intermediate hash value
 			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]));
@@ -267,12 +289,16 @@ public abstract class HashFunction {
 			for (int j = 0; j < hashValues.length; j++) {
 				hashValues[j] = binaryToHexadecimal(hashValues[j]);
 			}
+
 		}
 
 		// Concatenate hash values
 		for (int i = 0; i < hashValues.length; i++) {
 			hash += hashValues[i];
 		}
+
+		/*System.out.println("\n\tResumen:\t" + hash);
+		System.out.println("\tResumen:\t" + hash.substring(0, messageDigestLength / 4));*/
 
 		// Length is represented in hexadecimal (divided by 4)
 		return hash.substring(0, messageDigestLength / 4);
