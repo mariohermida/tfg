@@ -9,17 +9,6 @@ package shs;
 
 public class Main {
 
-	/*
-	 * FUNCTIONALITY I HAVE THOUGHT DROPPING PADMESSAGE AND PARSEMESSAGE FUNCTIONS
-	 * FROM THE CONSTRUCTOR THINK OF WHETHER INCLUDING ALTERNATE COMPUTATION METHOD
-	 * 
-	 * CONTROL OVER CONSTRUCTOR SHA_*(*,TRUE) -> BINARY STRINGS
-	 * 
-	 * SWING INCLUDE SwingUtilities.invokeLater(new Runnable() { FOR STARTING THE
-	 * PROGRAM INCLUDE A RESIZING FACTOR IN ORDER TO EASE THE MOVEMENT OF ELEMENTS
-	 * 
-	 */
-
 	public static void main(String[] args) throws Exception {
 		Main program = new Main();
 		program.start();
@@ -28,11 +17,13 @@ public class Main {
 
 	private void start() {
 		System.out.println("Starting program...\n");
-
+		
 		new ControllerSHS();
 		
-		/*SHA_512 sh = new SHA_512("SHA-512/256");
-//		System.out.println(sh.computeHash2());
+		
+		/* SHA-512/224 AND SHA-512/256 INITIALIZATIONN VECTORS
+		 * 
+		SHA_512 sh = new SHA_512("SHA-512/256");
 		String a[] = new String[8];
 		for (int i = 0; i < 8; i++) {
 			a[i] = sh.hexadecimalToBinary(sh.initialHashValues2[i]);
