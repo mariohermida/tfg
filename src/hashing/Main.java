@@ -25,10 +25,12 @@ public class Main {
 		SHA_3_512 sh4 = new SHA_3_512("Prueba");
 		System.out.println(sh4.computeHash());
 		
+		// Hello from here
+		
 //		new ControllerSHS();
 		
 		
-		/* SHA-512/224 AND SHA-512/256 INITIALIZATIONN VECTORS
+		/* SHA-512/224 AND SHA-512/256 INITIALIZATION VECTORS
 		 * 
 		SHA_512 sh = new SHA_512("SHA-512/256");
 		String a[] = new String[8];
