@@ -1,4 +1,4 @@
-package shs;
+package hashing;
 
 //import java.io.File;
 //import java.io.FileNotFoundException;
@@ -8,9 +8,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
- * All computations are performed taking into consideration the document
- * published in the following NIST link:
- * https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
+ * All computations are performed taking into consideration the documents
+ * published in the following NIST links:
+ * Secure Hash Standard (SHS) (SHA-1 and SHA-2):
+ * 		https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
+ * SHA-3 Standard (SHA-3 and Extendable-Output Functions):
+ * 		https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
  * 
  * @author Mario Hermida
  *
@@ -42,6 +45,7 @@ public abstract class HashFunction {
 			"0a637dc5a2c898a6", "113f9804bef90dae", "1b710b35131c471b", "28db77f523047d84", "32caab7b40c72493",
 			"3c9ebe0a15c9bebc", "431d67c49c100d4c", "4cc5d4becb3e42b6", "597f299cfc657e2a", "5fcb6fab3ad6faec",
 			"6c44198c4a475817" }; // Used for SHA-512, SHA-384 and SHA-512/t
+	
 	static final long[] C1 = { 0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4,
 			0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
 			0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152,
@@ -49,7 +53,7 @@ public abstract class HashFunction {
 			0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b, 0xc24b8b70,
 			0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
 			0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa,
-			0xa4506ceb, 0xbef9a3f7, 0xc67178f2 }; // Used for SHA-256 and SHA-224
+			0xa4506ceb, 0xbef9a3f7, 0xc67178f2 }; // Hexadecimal constants used for SHA-256 and SHA-224
 	static final long[] C2 = { 0x428a2f98d728ae22L, 0x7137449123ef65cdL, 0xb5c0fbcfec4d3b2fL, 0xe9b5dba58189dbbcL,
 			0x3956c25bf348b538L, 0x59f111f1b605d019L, 0x923f82a4af194f9bL, 0xab1c5ed5da6d8118L, 0xd807aa98a3030242L,
 			0x12835b0145706fbeL, 0x243185be4ee4b28cL, 0x550c7dc3d5ffb4e2L, 0x72be5d74f27b896fL, 0x80deb1fe3b1696b1L,
@@ -66,7 +70,8 @@ public abstract class HashFunction {
 			0xca273eceea26619cL, 0xd186b8c721c0c207L, 0xeada7dd6cde0eb1eL, 0xf57d4f7fee6ed178L, 0x06f067aa72176fbaL,
 			0x0a637dc5a2c898a6L, 0x113f9804bef90daeL, 0x1b710b35131c471bL, 0x28db77f523047d84L, 0x32caab7b40c72493L,
 			0x3c9ebe0a15c9bebcL, 0x431d67c49c100d4cL, 0x4cc5d4becb3e42b6L, 0x597f299cfc657e2aL, 0x5fcb6fab3ad6faecL,
-			0x6c44198c4a475817L }; // Used for SHA-512, SHA-384 and SHA-512/t
+			0x6c44198c4a475817L }; // Hexadecimal constants used for SHA-512, SHA-384 and SHA-512/t
+	
 	protected String binaryMessage; // Original binary message
 	protected String binaryMessagePadded; // Binary message (multiple of 512/1024 bits)
 	protected ArrayList<ArrayList<String>> words; // 32/64-bits words extracted from every block
@@ -187,14 +192,11 @@ public abstract class HashFunction {
 //		System.out.println("Hash is being computed... (string version)");
 
 		// Writing file in order to store intermediate hash values
-		/*PrintStream o = null;
-		try {
-			o = new PrintStream(new File("file.txt"));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-		// Assign o to output stream
-		System.setOut(o);*/
+		/*
+		 * PrintStream o = null; try { o = new PrintStream(new File("file.txt")); }
+		 * catch (FileNotFoundException e1) { e1.printStackTrace(); } // Assign o to
+		 * output stream System.setOut(o);
+		 */
 
 		// A copy of the hashes is made in order not to overwrite original values
 		String[] hashValues = new String[initialHashValues.length];
@@ -226,10 +228,13 @@ public abstract class HashFunction {
 			String h = hexadecimalToBinary(hashValues[7]);
 
 //			System.out.println("Ini: a=" + binaryToHexadecimal(a) + "b=" + binaryToHexadecimal(b) + "c=" + binaryToHexadecimal(c) + "d=" + binaryToHexadecimal(d) + "e=" + binaryToHexadecimal(e) + "f=" + binaryToHexadecimal(f) + "g=" + binaryToHexadecimal(g) + "h=" + binaryToHexadecimal(h));
-			/*System.out.println("\tIni:\tA=" + binaryToHexadecimal(a) + "\t\tB=" + binaryToHexadecimal(b)
-					+ "\t\tC=" + binaryToHexadecimal(c) + "\t\tD=" + binaryToHexadecimal(d));
-			System.out.println("\t\tE=" + binaryToHexadecimal(e) + "\t\tF=" + binaryToHexadecimal(f) + "\t\tG="
-					+ binaryToHexadecimal(g) + "\t\tH=" + binaryToHexadecimal(h));*/
+			/*
+			 * System.out.println("\tIni:\tA=" + binaryToHexadecimal(a) + "\t\tB=" +
+			 * binaryToHexadecimal(b) + "\t\tC=" + binaryToHexadecimal(c) + "\t\tD=" +
+			 * binaryToHexadecimal(d)); System.out.println("\t\tE=" + binaryToHexadecimal(e)
+			 * + "\t\tF=" + binaryToHexadecimal(f) + "\t\tG=" + binaryToHexadecimal(g) +
+			 * "\t\tH=" + binaryToHexadecimal(h));
+			 */
 
 			String T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
@@ -252,28 +257,37 @@ public abstract class HashFunction {
 
 				// Output is directed to the file previously defined
 //				System.out.println("R" + (t+1) + ": a=" + binaryToHexadecimal(a) + "b=" + binaryToHexadecimal(b) + "c=" + binaryToHexadecimal(c) + "d=" + binaryToHexadecimal(d) + "e=" + binaryToHexadecimal(e) + "f=" + binaryToHexadecimal(f) + "g=" + binaryToHexadecimal(g) + "h=" + binaryToHexadecimal(h));
-				/*System.out.println("\tR" + (t + 1) + ":\tA=" + binaryToHexadecimal(a) + "\t\tB=" + binaryToHexadecimal(b)
-						+ "\t\tC=" + binaryToHexadecimal(c) + "\t\tD=" + binaryToHexadecimal(d));
-				System.out.println("\t\tE=" + binaryToHexadecimal(e) + "\t\tF=" + binaryToHexadecimal(f) + "\t\tG="
-						+ binaryToHexadecimal(g) + "\t\tH=" + binaryToHexadecimal(h));*/
+				/*
+				 * System.out.println("\tR" + (t + 1) + ":\tA=" + binaryToHexadecimal(a) +
+				 * "\t\tB=" + binaryToHexadecimal(b) + "\t\tC=" + binaryToHexadecimal(c) +
+				 * "\t\tD=" + binaryToHexadecimal(d)); System.out.println("\t\tE=" +
+				 * binaryToHexadecimal(e) + "\t\tF=" + binaryToHexadecimal(f) + "\t\tG=" +
+				 * binaryToHexadecimal(g) + "\t\tH=" + binaryToHexadecimal(h));
+				 */
 			}
 
-			/*System.out.println("\n\tH[0] = " + binaryToHexadecimal(a) + " + " + hashValues[0] + " = "
-					+ binaryToHexadecimal(binaryAddition(a, hexadecimalToBinary(hashValues[0]))));
-			System.out.println("\tH[1] = " + binaryToHexadecimal(b) + " + " + hashValues[1] + " = "
-					+ binaryToHexadecimal(binaryAddition(b, hexadecimalToBinary(hashValues[1]))));
-			System.out.println("\tH[2] = " + binaryToHexadecimal(c) + " + " + hashValues[2] + " = "
-					+ binaryToHexadecimal(binaryAddition(c, hexadecimalToBinary(hashValues[2]))));
-			System.out.println("\tH[3] = " + binaryToHexadecimal(d) + " + " + hashValues[3] + " = "
-					+ binaryToHexadecimal(binaryAddition(d, hexadecimalToBinary(hashValues[3]))));
-			System.out.println("\tH[4] = " + binaryToHexadecimal(e) + " + " + hashValues[4] + " = "
-					+ binaryToHexadecimal(binaryAddition(e, hexadecimalToBinary(hashValues[4]))));
-			System.out.println("\tH[5] = " + binaryToHexadecimal(f) + " + " + hashValues[5] + " = "
-					+ binaryToHexadecimal(binaryAddition(f, hexadecimalToBinary(hashValues[5]))));
-			System.out.println("\tH[6] = " + binaryToHexadecimal(g) + " + " + hashValues[6] + " = "
-					+ binaryToHexadecimal(binaryAddition(g, hexadecimalToBinary(hashValues[6]))));
-			System.out.println("\tH[7] = " + binaryToHexadecimal(h) + " + " + hashValues[7] + " = "
-					+ binaryToHexadecimal(binaryAddition(h, hexadecimalToBinary(hashValues[7]))));*/
+			/*
+			 * System.out.println("\n\tH[0] = " + binaryToHexadecimal(a) + " + " +
+			 * hashValues[0] + " = " + binaryToHexadecimal(binaryAddition(a,
+			 * hexadecimalToBinary(hashValues[0])))); System.out.println("\tH[1] = " +
+			 * binaryToHexadecimal(b) + " + " + hashValues[1] + " = " +
+			 * binaryToHexadecimal(binaryAddition(b, hexadecimalToBinary(hashValues[1]))));
+			 * System.out.println("\tH[2] = " + binaryToHexadecimal(c) + " + " +
+			 * hashValues[2] + " = " + binaryToHexadecimal(binaryAddition(c,
+			 * hexadecimalToBinary(hashValues[2])))); System.out.println("\tH[3] = " +
+			 * binaryToHexadecimal(d) + " + " + hashValues[3] + " = " +
+			 * binaryToHexadecimal(binaryAddition(d, hexadecimalToBinary(hashValues[3]))));
+			 * System.out.println("\tH[4] = " + binaryToHexadecimal(e) + " + " +
+			 * hashValues[4] + " = " + binaryToHexadecimal(binaryAddition(e,
+			 * hexadecimalToBinary(hashValues[4])))); System.out.println("\tH[5] = " +
+			 * binaryToHexadecimal(f) + " + " + hashValues[5] + " = " +
+			 * binaryToHexadecimal(binaryAddition(f, hexadecimalToBinary(hashValues[5]))));
+			 * System.out.println("\tH[6] = " + binaryToHexadecimal(g) + " + " +
+			 * hashValues[6] + " = " + binaryToHexadecimal(binaryAddition(g,
+			 * hexadecimalToBinary(hashValues[6])))); System.out.println("\tH[7] = " +
+			 * binaryToHexadecimal(h) + " + " + hashValues[7] + " = " +
+			 * binaryToHexadecimal(binaryAddition(h, hexadecimalToBinary(hashValues[7]))));
+			 */
 
 			// Compute the intermediate hash value
 			hashValues[0] = binaryAddition(a, hexadecimalToBinary(hashValues[0]));
@@ -297,8 +311,11 @@ public abstract class HashFunction {
 			hash += hashValues[i];
 		}
 
-		/*System.out.println("\n\tResumen:\t" + hash);
-		System.out.println("\tResumen:\t" + hash.substring(0, messageDigestLength / 4));*/
+		/*
+		 * System.out.println("\n\tResumen:\t" + hash);
+		 * System.out.println("\tResumen:\t" + hash.substring(0, messageDigestLength /
+		 * 4));
+		 */
 
 		// Length is represented in hexadecimal (divided by 4)
 		return hash.substring(0, messageDigestLength / 4);
@@ -313,7 +330,7 @@ public abstract class HashFunction {
 	 * 
 	 * @return The message padded with determined number of zeroes
 	 */
-	protected void padMessage() {
+	protected void padMessageSHS() {
 		binaryMessagePadded = binaryMessage;
 		int auxLength = binaryMessage.length();
 		boolean isPaddingInTwoBlocks = false;
@@ -326,7 +343,8 @@ public abstract class HashFunction {
 		// Detect if there is going to be padding in two blocks
 		while (auxLength > blockSize) {
 			auxLength -= blockSize;
-		} // auxLength value here is equal or less than blockSize
+		}
+		// auxLength value here is equal or less than blockSize
 		if (auxLength >= blockSize - maximumMessageLength) {
 			isPaddingInTwoBlocks = true;
 		}
@@ -337,7 +355,7 @@ public abstract class HashFunction {
 			bitsToAdd += maximumMessageLength; // Add bits for padding the second last block
 			bitsToAdd += blockSize - maximumMessageLength; // Add bits for wholly padding the last block
 		}
-		binaryMessagePadded = addPadding(binaryMessagePadded, bitsToAdd);
+		binaryMessagePadded = addSimplePadding(binaryMessagePadded, bitsToAdd);
 
 		// Binary length representation of the original message (64/128 bits)
 		String binaryMessageLength = Integer.toBinaryString(binaryMessage.length());
@@ -354,7 +372,7 @@ public abstract class HashFunction {
 	 * @param numberOfBitsToAdd
 	 * @return Message padded
 	 */
-	private String addPadding(String message, int numberOfBitsToAdd) {
+	private String addSimplePadding(String message, int numberOfBitsToAdd) {
 		message += "1";
 		numberOfBitsToAdd--;
 		while (numberOfBitsToAdd > 0) {

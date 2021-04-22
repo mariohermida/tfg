@@ -1,4 +1,4 @@
-package shs;
+package hashing;
 
 import java.awt.Color;
 import javax.swing.*;

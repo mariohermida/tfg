@@ -1,4 +1,4 @@
-package shs;
+package hashing;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class SHA_512 extends HashFunction {
 		maximumMessageLength = 128;
 		blockSize = 1024;
 		words = new ArrayList<>();
-		padMessage();
+		padMessageSHS();
 		parseMessage();
 	}
 

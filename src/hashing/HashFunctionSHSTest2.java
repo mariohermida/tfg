@@ -1,4 +1,4 @@
-package shs;
+package hashing;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
  * @author Mario Hermida
  *
  */
-public class HashFunctionTest2 {
+public class HashFunctionSHSTest2 {
 
 	private SHA_1 sha1 = new SHA_1("");
 	private SHA_224 sha224;

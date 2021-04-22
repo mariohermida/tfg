@@ -1,4 +1,4 @@
-package shs;
+package hashing;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ public class SHA_1 extends HashFunction {
 		maximumMessageLength = 64;
 		blockSize = 512;
 		words = new ArrayList<>();
-		padMessage();
+		padMessageSHS();
 		parseMessage();
 	}
 
@@ -35,10 +35,6 @@ public class SHA_1 extends HashFunction {
 		this(message, false);
 	}
 
-	/**
-	 * Ordinary SHA-1 hash computation. It uses 32-bit integer values in order to
-	 * produce the 160-bit hash.
-	 */
 	@Override
 	public String computeHash() {
 		String hash = "";

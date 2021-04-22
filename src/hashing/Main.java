@@ -1,5 +1,4 @@
-package shs;
-
+package hashing;
 
 /**
  * 
@@ -12,13 +11,15 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		Main program = new Main();
 		program.start();
-//		new ViewSHS2(null);
 	}
 
 	private void start() {
 		System.out.println("Starting program...\n");
 		
-		new ControllerSHS();
+		SHA_3_224 sh = new SHA_3_224("Prueba");
+		System.out.println(sh.computeHash());
+		
+//		new ControllerSHS();
 		
 		
 		/* SHA-512/224 AND SHA-512/256 INITIALIZATIONN VECTORS
