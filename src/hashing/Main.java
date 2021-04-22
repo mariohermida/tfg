@@ -18,6 +18,12 @@ public class Main {
 		
 		SHA_3_224 sh = new SHA_3_224("Prueba");
 		System.out.println(sh.computeHash());
+		SHA_3_256 sh2 = new SHA_3_256("Prueba");
+		System.out.println(sh2.computeHash());
+		SHA_3_384 sh3 = new SHA_3_384("Prueba");
+		System.out.println(sh3.computeHash());
+		SHA_3_512 sh4 = new SHA_3_512("Prueba");
+		System.out.println(sh4.computeHash());
 		
 //		new ControllerSHS();
 		

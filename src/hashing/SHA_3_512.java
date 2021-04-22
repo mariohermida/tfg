@@ -15,6 +15,9 @@ public class SHA_3_512 extends HashFunction {
 			this.binaryMessage = textToBinary(message);
 		}
 		System.out.println(binaryMessage);
+		messageDigestLength = 512;
+		wordSize = 1600 - messageDigestLength*2;
+		System.out.println(wordSize);
 		//pad message
 	}
 	
