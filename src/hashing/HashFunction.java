@@ -9,11 +9,10 @@ import java.util.ArrayList;
 
 /**
  * All computations are performed taking into consideration the documents
- * published in the following NIST links:
- * Secure Hash Standard (SHS) (SHA-1 and SHA-2):
- * 		https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
- * SHA-3 Standard (SHA-3 and Extendable-Output Functions):
- * 		https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
+ * published in the following NIST links: Secure Hash Standard (SHS) (SHA-1 and
+ * SHA-2): https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf SHA-3
+ * Standard (SHA-3 and Extendable-Output Functions):
+ * https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
  * 
  * @author Mario Hermida
  *
@@ -45,7 +44,7 @@ public abstract class HashFunction {
 			"0a637dc5a2c898a6", "113f9804bef90dae", "1b710b35131c471b", "28db77f523047d84", "32caab7b40c72493",
 			"3c9ebe0a15c9bebc", "431d67c49c100d4c", "4cc5d4becb3e42b6", "597f299cfc657e2a", "5fcb6fab3ad6faec",
 			"6c44198c4a475817" }; // Used for SHA-512, SHA-384 and SHA-512/t
-	
+
 	static final long[] C1 = { 0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4,
 			0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
 			0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152,
@@ -71,14 +70,22 @@ public abstract class HashFunction {
 			0x0a637dc5a2c898a6L, 0x113f9804bef90daeL, 0x1b710b35131c471bL, 0x28db77f523047d84L, 0x32caab7b40c72493L,
 			0x3c9ebe0a15c9bebcL, 0x431d67c49c100d4cL, 0x4cc5d4becb3e42b6L, 0x597f299cfc657e2aL, 0x5fcb6fab3ad6faecL,
 			0x6c44198c4a475817L }; // Hexadecimal constants used for SHA-512, SHA-384 and SHA-512/t
-	
+
 	protected String binaryMessage; // Original binary message
-	protected String binaryMessagePadded; // Binary message (multiple of 512/1024 bits)
-	protected ArrayList<ArrayList<String>> words; // 32/64-bits words extracted from every block
+	protected String binaryMessagePadded; // Binary message plus the padding (multiple of blockSize for SHS and
+											// multiple of rate for SHA-3)
 	protected int messageDigestLength; // Number of bits resulted from hash computation
-	protected int wordSize;
+
+	// Variables used for SHS computation
 	protected int blockSize;
+	protected ArrayList<ArrayList<String>> words; // 32/64-bits words extracted from every block
+	protected int wordSize;
 	protected int maximumMessageLength; // Maximum amount of bits for representing message length
+
+	// Variables used for SHA-3 computation
+	protected int rate;
+	protected int capacity;
+	protected int width;
 
 	/**
 	 * Computes the final hash according to the algorithm chosen
@@ -872,6 +879,66 @@ public abstract class HashFunction {
 			n--;
 		}
 		return sequence.substring(0, sequence.length() - end);
+	}
+
+	// From here on, only methods used in SHA-3 computation
+
+	// KECCAK SPONGE FUNCTION
+	protected String KECCAK() {
+		// Message must be padded in order to have a multiple of r-bit length
+		padMessageSHA3();
+		if (binaryMessagePadded.length() % rate != 0) {
+			throw new NumberFormatException("Padding was not appropiately computed");
+		}
+		
+		// Calculate the number of r-bit blocks within binaryMessagePadded
+		int n = binaryMessagePadded.length() / rate;
+		System.out.println("Number of blocks = " + n);
+
+		// Absorbing phase (absorbs the bits from the input from r in r)
+		String S = zeroString(width);
+		int index = 0;
+		// As many times as blocks
+		for (int i = 0; i < n; i++) {
+			// XOR AND O^c MUST BE ADDED
+			S = Keccak_p(S);
+		}
+
+		// Squeezing phase
+
+		return "";
+	}
+
+	private String Keccak_p(String vector) {
+		// Theta permutation
+
+		//
+		return "";
+	}
+
+	private void padMessageSHA3() {
+		binaryMessagePadded = binaryMessage;
+		// j = -binaryMessage.length() - 2 mod rate
+		int j = -binaryMessage.length() - 2;
+		while (j < 0) {
+			j += rate;
+		}
+		binaryMessagePadded = binaryMessagePadded + addMultiRatePadding(j);
+	}
+
+	private String addMultiRatePadding(int j) {
+		String P = "1";
+		zeroString(j);
+		P += "1";
+		return P;
+	}
+
+	private String zeroString(int length) {
+		String zeroString = "";
+		for (int i = 0; i < length; i++) {
+			zeroString += "0";
+		}
+		return zeroString;
 	}
 
 }

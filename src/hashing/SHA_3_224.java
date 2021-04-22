@@ -14,11 +14,14 @@ public class SHA_3_224 extends HashFunction {
 		} else {
 			this.binaryMessage = textToBinary(message);
 		}
-		System.out.println(binaryMessage);
+		// Add bits that indicate domain separation
+		binaryMessage += "01";
 		messageDigestLength = 224;
-		wordSize = 1600 - messageDigestLength*2;
-		System.out.println(wordSize);
-		//pad message
+		width = 1600;
+		capacity = messageDigestLength*2;
+		rate = width - capacity;
+		KECCAK();
+		System.out.println(binaryMessagePadded);
 	}
 	
 	public SHA_3_224(String message) {
@@ -27,7 +30,7 @@ public class SHA_3_224 extends HashFunction {
 
 	@Override
 	String computeHash() {
-		return "Hexadecimal hash";
+		return binaryMessagePadded;
 	}
 
 }
