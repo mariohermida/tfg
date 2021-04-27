@@ -912,7 +912,14 @@ public abstract class HashFunction {
 	private String Keccak_p(String vector) {
 		// Theta permutation
 
-		//
+		// Rho permutation
+		
+		// Pi permutation
+		
+		// Chi permutation
+		
+		// Iota permutation
+		
 		return "";
 	}
 
@@ -928,7 +935,7 @@ public abstract class HashFunction {
 
 	private String addMultiRatePadding(int j) {
 		String P = "1";
-		zeroString(j);
+		P += zeroString(j);
 		P += "1";
 		return P;
 	}
