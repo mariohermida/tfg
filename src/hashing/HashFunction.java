@@ -901,6 +901,7 @@ public abstract class HashFunction {
 		// As many times as blocks
 		for (int i = 0; i < n; i++) {
 			// XOR AND O^c MUST BE ADDED
+			S = S.substring(index, index+=rate);
 			S = Keccak_p(S);
 		}
 
