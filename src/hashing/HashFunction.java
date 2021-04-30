@@ -893,7 +893,6 @@ public abstract class HashFunction {
 		if (binaryMessagePadded.length() % rate != 0) {
 			throw new NumberFormatException("Padding was not appropriately computed");
 		}
-		System.out.println(binaryMessagePadded);
 
 		// Calculate the number of r-bit blocks within binaryMessagePadded
 		int n = binaryMessagePadded.length() / rate;
@@ -902,12 +901,13 @@ public abstract class HashFunction {
 		// Absorbing phase (absorbs the bits from the input from r into r)
 		String S = zeroString(width);
 		String zeroC = zeroString(capacity);
-		int index = 0;
+		// Bit reordering: within a byte, the MSb is the one on the right
+		binaryMessagePadded = invertBits(binaryMessagePadded);
 		// As many times as blocks
 		for (int i = 0; i < n; i++) {
-			System.out.println(S);
-			S = Keccak_p(XOR(S, binaryMessagePadded.substring(index, index += rate).concat(zeroC)));
-			System.out.println(S);
+			System.out.println("Block " + (i + 1));
+			S = Keccak_p(XOR(S, binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroC)));
+			System.out.println("After =\t" + S);
 		}
 
 		// Squeezing phase (squeezes bits from r into r)
@@ -918,7 +918,7 @@ public abstract class HashFunction {
 			Z = Z.concat(S.substring(0, rate));
 		}
 
-		return binaryToHexadecimal(invertBits(Z.substring(0, messageDigestLength)));
+		return binaryToHexadecimal(Z.substring(0, messageDigestLength));
 	}
 
 	private String invertBits(String input) {
@@ -940,17 +940,71 @@ public abstract class HashFunction {
 	}
 
 	private String Keccak_p(String state) {
-		for (int i = 0; i < 24; i++) {
-		// Theta permutation
+		System.out.println("State =\t" + state);
+		// State array is converted into 25 64-bit lanes
+		String[][] lanes = stateToLanes(state);
+		// Bytes are reversed due to little-endian representation
+		lanes = reverseBytesLanes(lanes);
+		for (int i = 0; i < 1; i++) {
+			// Step mappings
+			// Theta permutation
+			for (int j = 0; j < 5; j++) {
+				for (int k = 0; k < 5; k++) {
+					for (int l = 0; l < 64; l++) {
+						// Each bit from the state array (5*5*64) is XORed this way
+						String XORedBit = XOR(Character.toString(lanes[k][j].charAt(i)), "1");
+						lanes[k][j] = lanes[k][j].substring(0, l) + XORedBit + lanes[k][j].substring(l + 1);
+					}
+				}
+			}
 
-		// Rho permutation
+			// Rho permutation
 
-		// Pi permutation
+			// Pi permutation
 
-		// Chi permutation
+			// Chi permutation
 
-		// Iota permutation
-			
+			// Iota permutation
+
+		}
+		lanes = reverseBytesLanes(lanes);
+		state = lanesToState(lanes);
+		System.out.println(state);
+		return state;
+	}
+
+	private String[][] reverseBytesLanes(String[][] lanes) {
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				lanes[j][i] = reverseBytes64BitWord(lanes[j][i]);
+			}
+		}
+		return lanes;
+	}
+
+	private String reverseBytes64BitWord(String word) {
+		word = word.substring(56, 64) + word.substring(48, 56) + word.substring(40, 48) + word.substring(32, 40)
+				+ word.substring(24, 32) + word.substring(16, 24) + word.substring(8, 16) + word.substring(0, 8);
+		return word;
+	}
+
+	private String[][] stateToLanes(String state) {
+		int index = 0;
+		String[][] lanes = new String[5][5];
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				lanes[j][i] = state.substring(index, index += 64);
+			}
+		}
+		return lanes;
+	}
+
+	private String lanesToState(String[][] lanes) {
+		String state = "";
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				state += lanes[j][i];
+			}
 		}
 		return state;
 	}

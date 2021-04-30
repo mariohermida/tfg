@@ -15,11 +15,11 @@ public class Main {
 
 	private void start() {
 		System.out.println("Starting program...\n");
-
-		SHA_3_224 sh = new SHA_3_224(
-				"110010100001101011011110100110",
-				true);
-		System.out.println(sh.computeHash());
+		
+//		SHA_3_224 sh = new SHA_3_224(
+//				"110010100001101011011110100110",
+//				true);
+//		System.out.println(sh.computeHash());
 //		System.out.println(sh.computeHash());
 //		SHA_3_256 sh2 = new SHA_3_256("Prueba");
 //		System.out.println(sh2.computeHash());
