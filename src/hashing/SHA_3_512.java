@@ -14,11 +14,11 @@ public class SHA_3_512 extends HashFunction {
 		} else {
 			this.binaryMessage = textToBinary(message);
 		}
-		System.out.println(binaryMessage);
+		binaryMessage += "01";
 		messageDigestLength = 512;
-		wordSize = 1600 - messageDigestLength*2;
-		System.out.println(wordSize);
-		//pad message
+		width = 1600;
+		capacity = messageDigestLength * 2;
+		rate = width - capacity;
 	}
 	
 	public SHA_3_512(String message) {
@@ -27,7 +27,7 @@ public class SHA_3_512 extends HashFunction {
 
 	@Override
 	String computeHash() {
-		return "Hexadecimal hash";
+		return KECCAK();
 	}
 
 }

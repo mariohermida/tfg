@@ -26,7 +26,8 @@ public abstract class HashFunction {
 			"2e1b2138", "4d2c6dfc", "53380d13", "650a7354", "766a0abb", "81c2c92e", "92722c85", "a2bfe8a1", "a81a664b",
 			"c24b8b70", "c76c51a3", "d192e819", "d6990624", "f40e3585", "106aa070", "19a4c116", "1e376c08", "2748774c",
 			"34b0bcb5", "391c0cb3", "4ed8aa4a", "5b9cca4f", "682e6ff3", "748f82ee", "78a5636f", "84c87814", "8cc70208",
-			"90befffa", "a4506ceb", "bef9a3f7", "c67178f2" }; // Hexadecimal string constants used for SHA-256 and SHA-224
+			"90befffa", "a4506ceb", "bef9a3f7", "c67178f2" }; // Hexadecimal string constants used for SHA-256 and
+																// SHA-224
 	static final String[] CONSTANTS2 = { "428a2f98d728ae22", "7137449123ef65cd", "b5c0fbcfec4d3b2f", "e9b5dba58189dbbc",
 			"3956c25bf348b538", "59f111f1b605d019", "923f82a4af194f9b", "ab1c5ed5da6d8118", "d807aa98a3030242",
 			"12835b0145706fbe", "243185be4ee4b28c", "550c7dc3d5ffb4e2", "72be5d74f27b896f", "80deb1fe3b1696b1",
@@ -70,6 +71,8 @@ public abstract class HashFunction {
 			0x0a637dc5a2c898a6L, 0x113f9804bef90daeL, 0x1b710b35131c471bL, 0x28db77f523047d84L, 0x32caab7b40c72493L,
 			0x3c9ebe0a15c9bebcL, 0x431d67c49c100d4cL, 0x4cc5d4becb3e42b6L, 0x597f299cfc657e2aL, 0x5fcb6fab3ad6faecL,
 			0x6c44198c4a475817L }; // Hexadecimal integer constants used for SHA-512, SHA-384 and SHA-512/t
+
+	static final long[] RC = {};
 
 	protected String binaryMessage; // Original binary message
 	protected String binaryMessagePadded; // Binary message plus the padding (multiple of blockSize for SHS and
@@ -888,42 +891,68 @@ public abstract class HashFunction {
 		// Message must be padded in order to have a multiple of r-bit length
 		padMessageSHA3();
 		if (binaryMessagePadded.length() % rate != 0) {
-			throw new NumberFormatException("Padding was not appropiately computed");
+			throw new NumberFormatException("Padding was not appropriately computed");
 		}
-		
+		System.out.println(binaryMessagePadded);
+
 		// Calculate the number of r-bit blocks within binaryMessagePadded
 		int n = binaryMessagePadded.length() / rate;
 		System.out.println("Number of blocks = " + n);
 
-		// Absorbing phase (absorbs the bits from the input from r in r)
+		// Absorbing phase (absorbs the bits from the input from r into r)
 		String S = zeroString(width);
-		long[] lanes = new long[25]; // 64 bit-values that represent the words
+		String zeroC = zeroString(capacity);
 		int index = 0;
 		// As many times as blocks
 		for (int i = 0; i < n; i++) {
-			// XOR AND O^c MUST BE ADDED
-			S = S.substring(index, index+=rate);
-//			S = Keccak_p(S);
+			System.out.println(S);
+			S = Keccak_p(XOR(S, binaryMessagePadded.substring(index, index += rate).concat(zeroC)));
+			System.out.println(S);
 		}
 
-		// Squeezing phase
+		// Squeezing phase (squeezes bits from r into r)
+		String Z = "";
+		Z = Z.concat(S.substring(0, rate));
+		while (Z.length() < messageDigestLength) {
+			S = Keccak_p(S);
+			Z = Z.concat(S.substring(0, rate));
+		}
 
-		return "";
+		return binaryToHexadecimal(invertBits(Z.substring(0, messageDigestLength)));
 	}
 
-	private long[] Keccak_p(long[] lanes) {
-		lanes[0] = lanes[1] + 16;
+	private String invertBits(String input) {
+		String res = "";
+		StringBuffer sb;
+		for (int i = 0; i < input.length(); i += 8) {
+			sb = new StringBuffer(input.substring(i, i + 8));
+			res += sb.reverse().toString();
+		}
+		return res;
+	}
+
+	private String XOR(String a, String b) {
+		String res = "";
+		for (int i = 0; i < a.length(); i++) {
+			res += a.charAt(i) ^ b.charAt(i);
+		}
+		return res;
+	}
+
+	private String Keccak_p(String state) {
+		for (int i = 0; i < 24; i++) {
 		// Theta permutation
 
 		// Rho permutation
-		
+
 		// Pi permutation
-		
+
 		// Chi permutation
-		
+
 		// Iota permutation
-		
-		return lanes;
+			
+		}
+		return state;
 	}
 
 	private void padMessageSHA3() {
