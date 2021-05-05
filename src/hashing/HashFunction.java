@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public abstract class HashFunction {
 
+	// Hexadecimal string constants used for SHA-256 and SHA-224
 	static final String[] CONSTANTS1 = { "428a2f98", "71374491", "b5c0fbcf", "e9b5dba5", "3956c25b", "59f111f1",
 			"923f82a4", "ab1c5ed5", "d807aa98", "12835b01", "243185be", "550c7dc3", "72be5d74", "80deb1fe", "9bdc06a7",
 			"c19bf174", "e49b69c1", "efbe4786", "0fc19dc6", "240ca1cc", "2de92c6f", "4a7484aa", "5cb0a9dc", "76f988da",
@@ -26,8 +27,9 @@ public abstract class HashFunction {
 			"2e1b2138", "4d2c6dfc", "53380d13", "650a7354", "766a0abb", "81c2c92e", "92722c85", "a2bfe8a1", "a81a664b",
 			"c24b8b70", "c76c51a3", "d192e819", "d6990624", "f40e3585", "106aa070", "19a4c116", "1e376c08", "2748774c",
 			"34b0bcb5", "391c0cb3", "4ed8aa4a", "5b9cca4f", "682e6ff3", "748f82ee", "78a5636f", "84c87814", "8cc70208",
-			"90befffa", "a4506ceb", "bef9a3f7", "c67178f2" }; // Hexadecimal string constants used for SHA-256 and
-																// SHA-224
+			"90befffa", "a4506ceb", "bef9a3f7", "c67178f2" };
+
+	// Hexadecimal string constants used for SHA-512, SHA-384 and SHA-512/t
 	static final String[] CONSTANTS2 = { "428a2f98d728ae22", "7137449123ef65cd", "b5c0fbcfec4d3b2f", "e9b5dba58189dbbc",
 			"3956c25bf348b538", "59f111f1b605d019", "923f82a4af194f9b", "ab1c5ed5da6d8118", "d807aa98a3030242",
 			"12835b0145706fbe", "243185be4ee4b28c", "550c7dc3d5ffb4e2", "72be5d74f27b896f", "80deb1fe3b1696b1",
@@ -44,8 +46,9 @@ public abstract class HashFunction {
 			"ca273eceea26619c", "d186b8c721c0c207", "eada7dd6cde0eb1e", "f57d4f7fee6ed178", "06f067aa72176fba",
 			"0a637dc5a2c898a6", "113f9804bef90dae", "1b710b35131c471b", "28db77f523047d84", "32caab7b40c72493",
 			"3c9ebe0a15c9bebc", "431d67c49c100d4c", "4cc5d4becb3e42b6", "597f299cfc657e2a", "5fcb6fab3ad6faec",
-			"6c44198c4a475817" }; // Hexadecimal string constants used for SHA-512, SHA-384 and SHA-512/t
+			"6c44198c4a475817" };
 
+	// Hexadecimal integer constants used for SHA-256 and SHA-224
 	static final long[] C1 = { 0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4,
 			0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
 			0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 0x983e5152,
@@ -53,7 +56,9 @@ public abstract class HashFunction {
 			0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 0xa2bfe8a1, 0xa81a664b, 0xc24b8b70,
 			0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
 			0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa,
-			0xa4506ceb, 0xbef9a3f7, 0xc67178f2 }; // Hexadecimal integer constants used for SHA-256 and SHA-224
+			0xa4506ceb, 0xbef9a3f7, 0xc67178f2 };
+
+	// Hexadecimal integer constants used for SHA-512, SHA-384 and SHA-512/t
 	static final long[] C2 = { 0x428a2f98d728ae22L, 0x7137449123ef65cdL, 0xb5c0fbcfec4d3b2fL, 0xe9b5dba58189dbbcL,
 			0x3956c25bf348b538L, 0x59f111f1b605d019L, 0x923f82a4af194f9bL, 0xab1c5ed5da6d8118L, 0xd807aa98a3030242L,
 			0x12835b0145706fbeL, 0x243185be4ee4b28cL, 0x550c7dc3d5ffb4e2L, 0x72be5d74f27b896fL, 0x80deb1fe3b1696b1L,
@@ -70,9 +75,14 @@ public abstract class HashFunction {
 			0xca273eceea26619cL, 0xd186b8c721c0c207L, 0xeada7dd6cde0eb1eL, 0xf57d4f7fee6ed178L, 0x06f067aa72176fbaL,
 			0x0a637dc5a2c898a6L, 0x113f9804bef90daeL, 0x1b710b35131c471bL, 0x28db77f523047d84L, 0x32caab7b40c72493L,
 			0x3c9ebe0a15c9bebcL, 0x431d67c49c100d4cL, 0x4cc5d4becb3e42b6L, 0x597f299cfc657e2aL, 0x5fcb6fab3ad6faecL,
-			0x6c44198c4a475817L }; // Hexadecimal integer constants used for SHA-512, SHA-384 and SHA-512/t
+			0x6c44198c4a475817L };
 
+	// Round constants for Iota permutation in Keccak_p function
 	static final long[] RC = {};
+
+	// Offset needed for permuting lanes in Rho permutation in Keccak_p function
+	static final int[][] offset = { { 0, 36, 3, 41, 18 }, { 1, 44, 10, 45, 2 }, { 62, 6, 43, 15, 61 },
+			{ 28, 55, 25, 21, 56 }, { 27, 20, 39, 8, 14 } };
 
 	protected String binaryMessage; // Original binary message
 	protected String binaryMessagePadded; // Binary message plus the padding (multiple of blockSize for SHS and
@@ -899,27 +909,30 @@ public abstract class HashFunction {
 		System.out.println("Number of blocks = " + n);
 
 		// Absorbing phase (absorbs the bits from the input from r in r)
-		String S = zeroString(width);
+		String S = zeroString(width); // Start state
 		String zeroC = zeroString(capacity);
 		// Bit reordering: within a byte, the MSb is the one on the right
 		binaryMessagePadded = invertBits(binaryMessagePadded);
 		// As many times as blocks
 		for (int i = 0; i < n; i++) {
 			System.out.println("Block " + (i + 1));
+			showLanes(stateToLanes(binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroC)));
 			S = Keccak_p(XOR(S, binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroC)));
 		}
 
 		// Squeezing phase (squeezes bits from r in r)
 		String Z = "";
 		Z = S;
-//		Z = Z.concat(S.substring(0, rate));
+		Z = Z.concat(S.substring(0, rate));
+		// Until the output length is not the desired take r bits from string Z and
+		// recompute Keccak_p once per each squeezing
 		while (Z.length() < messageDigestLength) {
 			S = Keccak_p(S);
 			Z = Z.concat(S.substring(0, rate));
 		}
 
-//		return binaryToHexadecimal(Z.substring(0, messageDigestLength));
-		return binaryToHexadecimal(Z);
+		// Hexadecimal digest
+		return binaryToHexadecimal(Z.substring(0, messageDigestLength));
 	}
 
 	private String invertBits(String input) {
@@ -943,15 +956,15 @@ public abstract class HashFunction {
 	private String Keccak_p(String state) {
 		// State array is converted into 25 64-bit lanes
 		String[][] lanes = stateToLanes(state);
-		showLanes(lanes);
 		// Bytes are reversed due to little-endian representation
-		lanes = reverseBytesLanes(lanes);
+		reverseBytesLanes(lanes);
 
 		// 5 Step mappings
 		for (int i = 0; i < 1; i++) {
 			// Theta substitution
-			String[][] C = new String[5][64];
+			String[][] C = new String[5][64]; // It contains the parity (XOR) of every column
 			String bit1, bit2, bit3, bit4, bit5;
+			// XOR operation for every bit in the same column
 			for (int k = 0; k < 5; k++) {
 				for (int l = 0; l < 64; l++) {
 					bit1 = Character.toString(lanes[k][0].charAt(l));
@@ -962,9 +975,12 @@ public abstract class HashFunction {
 					C[k][l] = XOR(XOR(XOR(XOR(bit1, bit2), bit3), bit4), bit5);
 				}
 			}
-			String[][] D = new String[5][64];
+			String[][] D = new String[5][64]; // It contains the parity from two certain columns
 			for (int k = 0; k < 5; k++) {
 				for (int l = 0; l < 64; l++) {
+					// (k + 4) % 5 represents the column before
+					// (k + 1) % 5 represents the column after
+					// (l + 1) % 64 represents one position forward
 					// As bytes are stored little-endian, l position is +1 instead of -1
 					D[k][l] = XOR(C[(k + 4) % 5][l], C[(k + 1) % 5][(l + 1) % 64]);
 				}
@@ -979,9 +995,25 @@ public abstract class HashFunction {
 					}
 				}
 			}
+			
+			System.out.println("\nAfter Theta");
+			showLanes(reverseBytesLanes(lanes));
+			reverseBytesLanes(lanes);
 
 			// Rho permutation
-
+			for (int j = 0; j < 5; j++) {
+				for (int k = 0; k < 5; k++) {
+					// lanes[0][0] stays the same
+					if (!(j == 0 && k == 0)) {
+						lanes[k][j] = ROTL(lanes[k][j], offset[k][j]);
+					}
+				}
+			}
+			
+			System.out.println("\nAfter Rho");
+			showLanes(reverseBytesLanes(lanes));
+			reverseBytesLanes(lanes);
+			
 			// Pi permutation
 
 			// Chi substitution
@@ -989,10 +1021,9 @@ public abstract class HashFunction {
 			// Iota substitution
 
 		}
-		lanes = reverseBytesLanes(lanes);
+
+		reverseBytesLanes(lanes);
 		state = lanesToState(lanes);
-		System.out.println("After Theta");
-		showLanes(lanes);
 		return state;
 	}
 
