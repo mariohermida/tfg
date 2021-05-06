@@ -1000,30 +1000,19 @@ public abstract class HashFunction {
 			showLanes(reverseBytesLanes(lanes));
 			reverseBytesLanes(lanes);
 
-			// Rho permutation
+			// Rho and Pi permutations
+			String aux[][] = new String[5][5];
+			
 			for (int y = 0; y < 5; y++) {
 				for (int x = 0; x < 5; x++) {
 					// lanes[0][0] stays the same
-					if (!(x == 0 && y == 0)) {
-						lanes[x][y] = ROTL(lanes[x][y], offset[x][y]);
-					}
+					aux[y][(2 * x + 3 * y) % 5] = ROTL(lanes[x][y], offset[x][y]);
 				}
 			}
 
-			System.out.println("\nAfter Rho");
-			showLanes(reverseBytesLanes(lanes));
-			reverseBytesLanes(lanes);
-
-			/*// Pi permutation
-			for (int y = 0; y < 5; y++) {
-				for (int x = 0; x < 5; x++) {
-					lanes[(2*x+3*y)%5][x] = lanes[x][y];
-				}
-			}
-
-			System.out.println("\nAfter Pi");
-			showLanes(reverseBytesLanes(lanes));
-			reverseBytesLanes(lanes);*/
+			System.out.println("\nAfter Pi and Rho");
+			showLanes(reverseBytesLanes(aux));
+			reverseBytesLanes(aux);
 
 			// Chi substitution
 
