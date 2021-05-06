@@ -965,56 +965,65 @@ public abstract class HashFunction {
 			String[][] C = new String[5][64]; // It contains the parity (XOR) of every column
 			String bit1, bit2, bit3, bit4, bit5;
 			// XOR operation for every bit in the same column
-			for (int k = 0; k < 5; k++) {
+			for (int x = 0; x < 5; x++) {
 				for (int l = 0; l < 64; l++) {
-					bit1 = Character.toString(lanes[k][0].charAt(l));
-					bit2 = Character.toString(lanes[k][1].charAt(l));
-					bit3 = Character.toString(lanes[k][2].charAt(l));
-					bit4 = Character.toString(lanes[k][3].charAt(l));
-					bit5 = Character.toString(lanes[k][4].charAt(l));
-					C[k][l] = XOR(XOR(XOR(XOR(bit1, bit2), bit3), bit4), bit5);
+					bit1 = Character.toString(lanes[x][0].charAt(l));
+					bit2 = Character.toString(lanes[x][1].charAt(l));
+					bit3 = Character.toString(lanes[x][2].charAt(l));
+					bit4 = Character.toString(lanes[x][3].charAt(l));
+					bit5 = Character.toString(lanes[x][4].charAt(l));
+					C[x][l] = XOR(XOR(XOR(XOR(bit1, bit2), bit3), bit4), bit5);
 				}
 			}
 			String[][] D = new String[5][64]; // It contains the parity from two certain columns
-			for (int k = 0; k < 5; k++) {
+			for (int x = 0; x < 5; x++) {
 				for (int l = 0; l < 64; l++) {
-					// (k + 4) % 5 represents the column before
-					// (k + 1) % 5 represents the column after
+					// (x + 4) % 5 represents the column before
+					// (x + 1) % 5 represents the column after
 					// (l + 1) % 64 represents one position forward
 					// As bytes are stored little-endian, l position is +1 instead of -1
-					D[k][l] = XOR(C[(k + 4) % 5][l], C[(k + 1) % 5][(l + 1) % 64]);
+					D[x][l] = XOR(C[(x + 4) % 5][l], C[(x + 1) % 5][(l + 1) % 64]);
 				}
 			}
 			String originalBit;
-			for (int j = 0; j < 5; j++) {
-				for (int k = 0; k < 5; k++) {
+			for (int y = 0; y < 5; y++) {
+				for (int x = 0; x < 5; x++) {
 					for (int l = 0; l < 64; l++) {
-						originalBit = Character.toString(lanes[k][j].charAt(l));
-						lanes[k][j] = lanes[k][j].substring(0, l) + XOR(originalBit, D[k][l])
-								+ lanes[k][j].substring(l + 1);
+						originalBit = Character.toString(lanes[x][y].charAt(l));
+						lanes[x][y] = lanes[x][y].substring(0, l) + XOR(originalBit, D[x][l])
+								+ lanes[x][y].substring(l + 1);
 					}
 				}
 			}
-			
+
 			System.out.println("\nAfter Theta");
 			showLanes(reverseBytesLanes(lanes));
 			reverseBytesLanes(lanes);
 
 			// Rho permutation
-			for (int j = 0; j < 5; j++) {
-				for (int k = 0; k < 5; k++) {
+			for (int y = 0; y < 5; y++) {
+				for (int x = 0; x < 5; x++) {
 					// lanes[0][0] stays the same
-					if (!(j == 0 && k == 0)) {
-						lanes[k][j] = ROTL(lanes[k][j], offset[k][j]);
+					if (!(x == 0 && y == 0)) {
+						lanes[x][y] = ROTL(lanes[x][y], offset[x][y]);
 					}
 				}
 			}
-			
+
 			System.out.println("\nAfter Rho");
 			showLanes(reverseBytesLanes(lanes));
 			reverseBytesLanes(lanes);
-			
-			// Pi permutation
+
+			/*// Pi permutation
+			for (int y = 0; y < 5; y++) {
+				for (int x = 0; x < 5; x++) {
+					lanes[(2*x+3*y)%5][x] = lanes[x][y];
+				}
+			}
+
+			System.out.println("\nAfter Pi");
+			showLanes(reverseBytesLanes(lanes));
+			reverseBytesLanes(lanes);*/
 
 			// Chi substitution
 
@@ -1028,19 +1037,19 @@ public abstract class HashFunction {
 	}
 
 	private void showLanes(String[][] lanes) {
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-//				System.out.println("[" + j + "," + i + "]" + binaryToHexadecimal(lanes[j][i]));
-				System.out.println(binaryToHexadecimal(lanes[j][i]));
-//				System.out.println("[" + j + "," + i + "]" + lanes[j][i]);
+		for (int y = 0; y < 5; y++) {
+			for (int x = 0; x < 5; x++) {
+//				System.out.println("[" + x + "," + y + "]" + binaryToHexadecimal(lanes[x][y]));
+				System.out.println(binaryToHexadecimal(lanes[x][y]));
+//				System.out.println("[" + x + "," + y + "]" + lanes[x][y]);
 			}
 		}
 	}
 
 	private String[][] reverseBytesLanes(String[][] lanes) {
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				lanes[j][i] = reverseBytes64BitWord(lanes[j][i]);
+		for (int y = 0; y < 5; y++) {
+			for (int x = 0; x < 5; x++) {
+				lanes[x][y] = reverseBytes64BitWord(lanes[x][y]);
 			}
 		}
 		return lanes;
@@ -1055,9 +1064,9 @@ public abstract class HashFunction {
 	private String[][] stateToLanes(String state) {
 		int index = 0;
 		String[][] lanes = new String[5][5];
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				lanes[j][i] = state.substring(index, index += 64);
+		for (int y = 0; y < 5; y++) {
+			for (int x = 0; x < 5; x++) {
+				lanes[x][y] = state.substring(index, index += 64);
 			}
 		}
 		return lanes;
@@ -1065,9 +1074,9 @@ public abstract class HashFunction {
 
 	private String lanesToState(String[][] lanes) {
 		String state = "";
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				state += lanes[j][i];
+		for (int y = 0; y < 5; y++) {
+			for (int x = 0; x < 5; x++) {
+				state += lanes[x][y];
 			}
 		}
 		return state;
