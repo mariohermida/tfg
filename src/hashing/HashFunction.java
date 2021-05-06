@@ -945,6 +945,14 @@ public abstract class HashFunction {
 		return res;
 	}
 
+	private String AND(String a, String b) {
+		if (a.equals("1") && b.equals("1")) {
+			return "1";
+		} else {
+			return "0";
+		}
+	}
+
 	private String XOR(String a, String b) {
 		String res = "";
 		for (int i = 0; i < a.length(); i++) {
@@ -1001,20 +1009,37 @@ public abstract class HashFunction {
 			reverseBytesLanes(lanes);
 
 			// Rho and Pi permutations
-			String aux[][] = new String[5][5];
-			
+			String auxLanes[][] = new String[5][5];
+
 			for (int y = 0; y < 5; y++) {
 				for (int x = 0; x < 5; x++) {
 					// lanes[0][0] stays the same
-					aux[y][(2 * x + 3 * y) % 5] = ROTL(lanes[x][y], offset[x][y]);
+					auxLanes[y][(2 * x + 3 * y) % 5] = ROTL(lanes[x][y], offset[x][y]);
 				}
 			}
 
 			System.out.println("\nAfter Pi and Rho");
-			showLanes(reverseBytesLanes(aux));
-			reverseBytesLanes(aux);
+			showLanes(reverseBytesLanes(auxLanes));
+			reverseBytesLanes(auxLanes);
 
 			// Chi substitution
+			String nextBit, nextNextBit;
+			for (int y = 0; y < 5; y++) {
+				for (int x = 0; x < 5; x++) {
+					for (int l = 0; l < 64; l++) {
+						originalBit = Character.toString(auxLanes[x][y].charAt(l));
+						nextBit = Character.toString(auxLanes[(x + 1) % 5][y].charAt(l));
+						nextNextBit = Character.toString(auxLanes[(x + 2) % 5][y].charAt(l));
+						lanes[x][y] = lanes[x][y].substring(0, l)
+								+ XOR(originalBit, AND(XOR(nextBit, "1"), nextNextBit))
+								+ lanes[x][y].substring(l + 1);
+					}
+				}
+			}
+
+			System.out.println("\nAfter Chi");
+			showLanes(reverseBytesLanes(lanes));
+			reverseBytesLanes(lanes);
 
 			// Iota substitution
 
