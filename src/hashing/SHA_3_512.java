@@ -12,8 +12,9 @@ public class SHA_3_512 extends HashFunction {
 		if (isBinary) {
 			this.binaryMessage = message;
 		} else {
-			this.binaryMessage = textToBinary(message);
+			this.binaryMessage = invertBits(textToBinary(message));
 		}
+		// Domain separation
 		binaryMessage += "01";
 		messageDigestLength = 512;
 		width = 1600;

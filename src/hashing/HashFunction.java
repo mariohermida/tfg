@@ -941,7 +941,7 @@ public abstract class HashFunction {
 		return binaryToHexadecimal(Z.substring(0, messageDigestLength));
 	}
 
-	private String invertBits(String input) {
+	protected String invertBits(String input) {
 		String res = "";
 		StringBuffer sb;
 		for (int i = 0; i < input.length(); i += 8) {

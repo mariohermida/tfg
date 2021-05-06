@@ -12,7 +12,7 @@ public class SHA_3_256 extends HashFunction {
 		if (isBinary) {
 			this.binaryMessage = message;
 		} else {
-			this.binaryMessage = textToBinary(message);
+			this.binaryMessage = invertBits(textToBinary(message));
 		}
 		// Domain separation
 		binaryMessage += "01";

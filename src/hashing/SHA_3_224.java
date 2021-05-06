@@ -12,8 +12,9 @@ public class SHA_3_224 extends HashFunction {
 		if (isBinary) {
 			this.binaryMessage = message;
 		} else {
-			this.binaryMessage = textToBinary(message);
+			this.binaryMessage = invertBits(textToBinary(message));
 		}
+		System.out.println(binaryMessage);
 		// Domain separation
 		binaryMessage += "01";
 		messageDigestLength = 224;
