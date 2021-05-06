@@ -77,10 +77,15 @@ public abstract class HashFunction {
 			0x3c9ebe0a15c9bebcL, 0x431d67c49c100d4cL, 0x4cc5d4becb3e42b6L, 0x597f299cfc657e2aL, 0x5fcb6fab3ad6faecL,
 			0x6c44198c4a475817L };
 
-	// Round constants for Iota permutation in Keccak_p function
-	static final long[] RC = {};
+	// Round constants for Iota permutation in Keccak_p function (SHA-3)
+	static final long[] RC = { 0x0000000000000001L, 0x0000000000008082L, 0x800000000000808AL, 0x8000000080008000L,
+			0x000000000000808BL, 0x0000000080000001L, 0x8000000080008081L, 0x8000000000008009L, 0x000000000000008AL,
+			0x0000000000000088L, 0x0000000080008009L, 0x000000008000000AL, 0x000000008000808BL, 0x800000000000008BL,
+			0x8000000000008089L, 0x8000000000008003L, 0x8000000000008002L, 0x8000000000000080L, 0x000000000000800AL,
+			0x800000008000000AL, 0x8000000080008081L, 0x8000000000008080L, 0x0000000080000001L, 0x8000000080008008L };
 
 	// Offset needed for permuting lanes in Rho permutation in Keccak_p function
+	// (SHA-3)
 	static final int[][] offset = { { 0, 36, 3, 41, 18 }, { 1, 44, 10, 45, 2 }, { 62, 6, 43, 15, 61 },
 			{ 28, 55, 25, 21, 56 }, { 27, 20, 39, 8, 14 } };
 
@@ -903,6 +908,7 @@ public abstract class HashFunction {
 		if (binaryMessagePadded.length() % rate != 0) {
 			throw new NumberFormatException("Padding was not appropriately computed");
 		}
+		System.out.println(binaryMessagePadded);
 
 		// Calculate the number of r-bit blocks within binaryMessagePadded
 		int n = binaryMessagePadded.length() / rate;
@@ -967,8 +973,8 @@ public abstract class HashFunction {
 		// Bytes are reversed due to little-endian representation
 		reverseBytesLanes(lanes);
 
-		// 5 Step mappings
-		for (int i = 0; i < 1; i++) {
+		// 5 Step mappings during 24 rounds
+		for (int i = 0; i < 24; i++) {
 			// Theta substitution
 			String[][] C = new String[5][64]; // It contains the parity (XOR) of every column
 			String bit1, bit2, bit3, bit4, bit5;
@@ -1031,8 +1037,7 @@ public abstract class HashFunction {
 						nextBit = Character.toString(auxLanes[(x + 1) % 5][y].charAt(l));
 						nextNextBit = Character.toString(auxLanes[(x + 2) % 5][y].charAt(l));
 						lanes[x][y] = lanes[x][y].substring(0, l)
-								+ XOR(originalBit, AND(XOR(nextBit, "1"), nextNextBit))
-								+ lanes[x][y].substring(l + 1);
+								+ XOR(originalBit, AND(XOR(nextBit, "1"), nextNextBit)) + lanes[x][y].substring(l + 1);
 					}
 				}
 			}
@@ -1042,7 +1047,16 @@ public abstract class HashFunction {
 			reverseBytesLanes(lanes);
 
 			// Iota substitution
+			String rc = Long.toBinaryString(RC[i]);
+			// String constants must be 64 bits long
+			while (rc.length() < 64) {
+				rc = "0" + rc;
+			}
+			lanes[0][0] = XOR(lanes[0][0], rc);
 
+			System.out.println("\nAfter Iota");
+			showLanes(reverseBytesLanes(lanes));
+			reverseBytesLanes(lanes);
 		}
 
 		reverseBytesLanes(lanes);
