@@ -885,7 +885,6 @@ public abstract class HashFunction {
 	 * @param sequence Binary sequence to be modified
 	 * @param n        Number of zeroes padded
 	 * @return right-shift binary sequence
-	 * @throws Exception
 	 */
 	protected String rightShiftOperation(String sequence, int n) {
 		int end = n;
@@ -901,37 +900,41 @@ public abstract class HashFunction {
 
 	// From here on, only methods used in SHA-3 computation
 
-	// KECCAK SPONGE FUNCTION
+	/**
+	 * KECCAK family of sponge functions. It is only applicable to the algorithms
+	 * used in SHA-3 computation, it is, only meets the requirements for
+	 * Keccak-f[1600] family of permutations
+	 * 
+	 * @return Hexadecimal digest computed
+	 */
 	protected String KECCAK() {
-		// Message must be padded in order to have a multiple of r-bit length
+		// Message must be padded in order to have a multiple of rate-bit length
 		padMessageSHA3();
 		if (binaryMessagePadded.length() % rate != 0) {
 			throw new NumberFormatException("Padding was not appropriately computed");
 		}
 		System.out.println(binaryMessagePadded);
 
-		// Calculate the number of r-bit blocks within binaryMessagePadded
+		// Calculate the number of rate-bit blocks within binaryMessagePadded
 		int n = binaryMessagePadded.length() / rate;
 		System.out.println("Number of blocks = " + n);
 
-		// Absorbing phase (absorbs the bits from the input from r in r)
-		String S = zeroString(width); // Start state
-		String zeroC = zeroString(capacity);
+		// Absorbing phase (absorbs the bits from the input from rate in rate)
+		String S = zeroString(width); // State array
 		// Bit reordering: within a byte, the MSb is the one on the right
 		binaryMessagePadded = invertBits(binaryMessagePadded);
 		// As many times as blocks
 		for (int i = 0; i < n; i++) {
 			System.out.println("Block " + (i + 1));
-			showLanes(stateToLanes(binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroC)));
-			S = Keccak_p(XOR(S, binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroC)));
+			showLanes(stateToLanes(
+					binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroString(capacity))));
+			S = Keccak_p(XOR(S, binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroString(capacity))));
 		}
 
-		// Squeezing phase (squeezes bits from r in r)
-		String Z = "";
-		Z = S;
-		Z = Z.concat(S.substring(0, rate));
-		// Until the output length is not the desired take r bits from string Z and
-		// recompute Keccak_p once per each squeezing
+		// Squeezing phase (squeezes bits from rate in rate)
+		String Z = S.substring(0, rate);
+		// Until the output length is not the desired take rate number of bits from
+		// string Z and recompute Keccak_p
 		while (Z.length() < messageDigestLength) {
 			S = Keccak_p(S);
 			Z = Z.concat(S.substring(0, rate));
@@ -941,6 +944,13 @@ public abstract class HashFunction {
 		return binaryToHexadecimal(Z.substring(0, messageDigestLength));
 	}
 
+	/**
+	 * Inverts the input string so that every 8 bits from the string are read the
+	 * other way around. Input string length must be multiple of 8 (a byte).
+	 * 
+	 * @param input Binary string to be inverted
+	 * @return inverted string, it is, with its bits reordered
+	 */
 	protected String invertBits(String input) {
 		String res = "";
 		StringBuffer sb;
@@ -951,14 +961,32 @@ public abstract class HashFunction {
 		return res;
 	}
 
+	/**
+	 * AND logical operation with data type String
+	 * 
+	 * @param a
+	 * @param b
+	 * @return a AND b
+	 */
 	private String AND(String a, String b) {
-		if (a.equals("1") && b.equals("1")) {
-			return "1";
-		} else {
-			return "0";
+		String res = "";
+		for (int i = 0; i < a.length(); i++) {
+			if (a.charAt(i) == '1' && b.charAt(i) == '1') {
+				res += "1";
+			} else {
+				res += "0";
+			}
 		}
+		return res;
 	}
 
+	/**
+	 * XOR logical operation with data type String
+	 * 
+	 * @param a
+	 * @param b
+	 * @return a XOR b
+	 */
 	private String XOR(String a, String b) {
 		String res = "";
 		for (int i = 0; i < a.length(); i++) {
@@ -967,13 +995,20 @@ public abstract class HashFunction {
 		return res;
 	}
 
+	/**
+	 * The 5 step mappings (theta, rho, pi, chi and iota) are applied 24 times to
+	 * the input state array. Keccak-p family of permutations. Keccak-f[1600].
+	 * 
+	 * @param state One-dimensional state array to be modified
+	 * @return One-dimensional state array after applying Keccak_p permutations
+	 */
 	private String Keccak_p(String state) {
-		// State array is converted into 25 64-bit lanes
+		// State array is converted into 25 64-bit lanes (1600 bits)
 		String[][] lanes = stateToLanes(state);
 		// Bytes are reversed due to little-endian representation
 		reverseBytesLanes(lanes);
 
-		// 5 Step mappings during 24 rounds
+		// 5 Step mappings during 24 rounds Keccak-f[1600]
 		for (int i = 0; i < 24; i++) {
 			// Theta substitution
 			String[][] C = new String[5][64]; // It contains the parity (XOR) of every column
@@ -1015,8 +1050,7 @@ public abstract class HashFunction {
 			reverseBytesLanes(lanes);
 
 			// Rho and Pi permutations
-			String auxLanes[][] = new String[5][5];
-
+			String auxLanes[][] = new String[5][5]; // Auxiliary 3D array
 			for (int y = 0; y < 5; y++) {
 				for (int x = 0; x < 5; x++) {
 					// lanes[0][0] stays the same
@@ -1074,6 +1108,12 @@ public abstract class HashFunction {
 		}
 	}
 
+	/**
+	 * Little-endian - Big-endian byte translator for 3D state arrays
+	 * 
+	 * @param lanes 3D state array
+	 * @return 3D array whose bytes are stored reversed
+	 */
 	private String[][] reverseBytesLanes(String[][] lanes) {
 		for (int y = 0; y < 5; y++) {
 			for (int x = 0; x < 5; x++) {
@@ -1083,12 +1123,24 @@ public abstract class HashFunction {
 		return lanes;
 	}
 
+	/**
+	 * Little-endian - Big-endian byte translator for 64 bit words
+	 * 
+	 * @param word 64-bit word whose bytes are to be reversed
+	 * @return 64-bit word with bytes reversed
+	 */
 	private String reverseBytes64BitWord(String word) {
 		word = word.substring(56, 64) + word.substring(48, 56) + word.substring(40, 48) + word.substring(32, 40)
 				+ word.substring(24, 32) + word.substring(16, 24) + word.substring(8, 16) + word.substring(0, 8);
 		return word;
 	}
 
+	/**
+	 * 1D to 3D state array converter
+	 * 
+	 * @param state 1D state array
+	 * @return 3D state array
+	 */
 	private String[][] stateToLanes(String state) {
 		int index = 0;
 		String[][] lanes = new String[5][5];
@@ -1100,6 +1152,12 @@ public abstract class HashFunction {
 		return lanes;
 	}
 
+	/**
+	 * 3D to 1D state array converter
+	 * 
+	 * @param lanes 3D state array
+	 * @return 1D state array
+	 */
 	private String lanesToState(String[][] lanes) {
 		String state = "";
 		for (int y = 0; y < 5; y++) {
@@ -1110,6 +1168,10 @@ public abstract class HashFunction {
 		return state;
 	}
 
+	/**
+	 * Appends the padding to the binary original message. Multi-rate padding scheme
+	 * used. binaryMessage||padding
+	 */
 	private void padMessageSHA3() {
 		binaryMessagePadded = binaryMessage;
 		int j = -binaryMessage.length() - 2;
@@ -1120,6 +1182,12 @@ public abstract class HashFunction {
 		binaryMessagePadded = binaryMessagePadded + addMultiRatePadding(j);
 	}
 
+	/**
+	 * Multi-rate padding rule whose pattern is 10*1
+	 * 
+	 * @param j
+	 * @return string 10^j1
+	 */
 	private String addMultiRatePadding(int j) {
 		String P = "1";
 		P += zeroString(j);
@@ -1127,6 +1195,11 @@ public abstract class HashFunction {
 		return P;
 	}
 
+	/**
+	 * 
+	 * @param length Zero-bit string length
+	 * @return string composed of length zero-bits
+	 */
 	private String zeroString(int length) {
 		String zeroString = "";
 		for (int i = 0; i < length; i++) {
