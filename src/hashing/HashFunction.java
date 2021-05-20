@@ -127,7 +127,7 @@ public abstract class HashFunction {
 	 */
 	protected String computeSHA2Hash(long[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
-		System.out.println("Hash is being computed... (integer version)");
+//		System.out.println("Hash is being computed... (integer version)");
 
 		// A copy of the hashes is made in order not to overwrite original values
 		long[] hashValues = new long[initialHashValues.length];
@@ -1098,15 +1098,15 @@ public abstract class HashFunction {
 		return state;
 	}
 
-	private void showLanes(String[][] lanes) {
-		for (int y = 0; y < 5; y++) {
-			for (int x = 0; x < 5; x++) {
+//	private void showLanes(String[][] lanes) {
+//		for (int y = 0; y < 5; y++) {
+//			for (int x = 0; x < 5; x++) {
 //				System.out.println("[" + x + "," + y + "]" + binaryToHexadecimal(lanes[x][y]));
-				System.out.println(binaryToHexadecimal(lanes[x][y]));
+//				System.out.println(binaryToHexadecimal(lanes[x][y]));
 //				System.out.println("[" + x + "," + y + "]" + lanes[x][y]);
-			}
-		}
-	}
+//			}
+//		}
+//	}
 
 	/**
 	 * Little-endian - Big-endian byte translator for 3D state arrays

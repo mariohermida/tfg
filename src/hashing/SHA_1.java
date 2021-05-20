@@ -21,7 +21,6 @@ public class SHA_1 extends HashFunction {
 		} else {
 			this.binaryMessage = textToBinary(message);
 		}
-		System.out.println(binaryMessage);
 		messageDigestLength = 160;
 		wordSize = 32;
 		maximumMessageLength = 64;
@@ -38,7 +37,7 @@ public class SHA_1 extends HashFunction {
 	@Override
 	public String computeHash() {
 		String hash = "";
-		System.out.println("Hash is being computed... (integer version)");
+//		System.out.println("Hash is being computed... (integer version)");
 
 		// A copy of the hashes is made in order not to overwrite original values
 		int[] hashValues = new int[initialHashValues.length];
@@ -115,7 +114,7 @@ public class SHA_1 extends HashFunction {
 	 */
 	public String computeHashAlternateMethod() {
 		String hash = "";
-		System.out.println("Hash is being computed... (alternate method) (integer version)");
+//		System.out.println("Hash is being computed... (alternate method) (integer version)");
 
 		// A copy of the hashes is made in order not to overwrite original values
 		int[] hashValues = new int[initialHashValues.length];
@@ -194,7 +193,7 @@ public class SHA_1 extends HashFunction {
 	 */
 	public String computeHash2() {
 		String hash = "";
-		System.out.println("Hash is being computed... (string version)");
+//		System.out.println("Hash is being computed... (string version)");
 
 		// A copy of the hashes is made in order not to overwrite original values
 		String[] hashValues = new String[initialHashValues2.length];
