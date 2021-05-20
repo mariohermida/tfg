@@ -21,7 +21,7 @@ public class SHA_3_384 extends HashFunction {
 		capacity = messageDigestLength * 2;
 		rate = width - capacity;
 	}
-	
+
 	public SHA_3_384(String message) {
 		this(message, false);
 	}

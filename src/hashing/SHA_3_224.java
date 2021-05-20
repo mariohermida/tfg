@@ -14,15 +14,14 @@ public class SHA_3_224 extends HashFunction {
 		} else {
 			this.binaryMessage = invertBits(textToBinary(message));
 		}
-		System.out.println(binaryMessage);
 		// Domain separation
 		binaryMessage += "01";
 		messageDigestLength = 224;
 		width = 1600;
-		capacity = messageDigestLength*2;
+		capacity = messageDigestLength * 2;
 		rate = width - capacity;
 	}
-	
+
 	public SHA_3_224(String message) {
 		this(message, false);
 	}

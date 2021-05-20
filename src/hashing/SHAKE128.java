@@ -7,8 +7,8 @@ package hashing;
  */
 public class SHAKE128 extends HashFunction {
 
-	public SHAKE128(String message, int outputLength ,boolean isBinary) {
-		System.out.println("\tSHA3-224 ALGORITHM");
+	public SHAKE128(String message, int outputLength, boolean isBinary) {
+		System.out.println("\tSHAKE128 ALGORITHM");
 		if (isBinary) {
 			this.binaryMessage = invertBits(message);
 		} else {
@@ -22,7 +22,7 @@ public class SHAKE128 extends HashFunction {
 		capacity = 256;
 		rate = width - capacity;
 	}
-	
+
 	public SHAKE128(String message, int outputLength) {
 		this(message, outputLength, false);
 	}
