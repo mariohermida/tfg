@@ -1,8 +1,10 @@
 package hashing;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
@@ -13,16 +15,15 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Controller {
-	
+
 	private File file;
-	private List<String> fileExtensions;
 
 	@FXML
 	private TextArea nameField;
-	
+
 	@FXML
 	private TextField digestField;
-	
+
 	@FXML
 	private TextField truncationField;
 
@@ -65,13 +66,13 @@ public class Controller {
 			} else if (option.getText().equals("SHA-512/256")) {
 				sh = new SHA_512_256(nameField.getText());
 			} else if (option.getText().equals("SHA3-224")) {
-				// Still to be implemented
+				sh = new SHA_3_224(nameField.getText());
 			} else if (option.getText().equals("SHA3-256")) {
-				// Still to be implemented
+				sh = new SHA_3_256(nameField.getText());
 			} else if (option.getText().equals("SHA3-384")) {
-				// Still to be implemented
+				sh = new SHA_3_384(nameField.getText());
 			} else if (option.getText().equals("SHA3-512")) {
-				// Still to be implemented
+				sh = new SHA_3_512(nameField.getText());
 			}
 
 			if (endIndex == Integer.MAX_VALUE) {
@@ -85,23 +86,35 @@ public class Controller {
 			}
 		}
 	}
-	
+
 	@FXML
 	void fileChooser(ActionEvent event) {
-		addFileExtensions();
+		// Open fileChooser
 		FileChooser fc = new FileChooser();
-		fc.getExtensionFilters().add(new ExtensionFilter("Files", fileExtensions));
+		fc.getExtensionFilters().add(new ExtensionFilter("Files", "*.*"));
 		file = fc.showOpenDialog(null);
-		digestField.setText(file.getAbsolutePath());
-		// Label with the absolute path
-	}
-	
-	private void addFileExtensions() {
-		fileExtensions = new ArrayList<>();
-		fileExtensions.add("*.pdf");
-		fileExtensions.add("*.txt");
-		fileExtensions.add("*.doc");
-		fileExtensions.add("*.docx");
+
+		// Obtain the bytes from the file read
+		byte[] bytes;
+		try {
+			bytes = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
+		} catch (IOException e) {
+			bytes = null;
+			e.printStackTrace();
+		}
+
+		// Convert the bytes to binary
+		HashFunction sh;
+		String binaryCharacter, binaryMessage = "";
+		for (byte b : bytes) {
+			// First 24 bits are ignored, due to 8 bit string is wanted
+			binaryCharacter = Integer.toBinaryString((b & 0xFF) + 0x100).substring(1);
+			binaryMessage += binaryCharacter;
+		}
+		
+		// Compute and show the hash
+		sh = new SHA_3_256(binaryMessage, true);
+		digestField.setText(sh.computeHash());
 	}
 
 }

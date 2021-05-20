@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.shape.*?>
@@ -12,18 +13,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="762.0" style="-fx-background-color: orange;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hashing.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="762.0" style="-fx-background-color: orange;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hashing.Controller">
    <children>
-      <Button layoutX="437.0" layoutY="513.0" mnemonicParsing="false" onAction="#generateDigest" prefHeight="67.0" prefWidth="237.0" text="Generate Digest">
-         <font>
-            <Font name="MS Reference Sans Serif" size="16.0" />
-         </font></Button>
-      <TextArea fx:id="nameField" layoutX="38.0" layoutY="218.0" prefHeight="123.0" prefWidth="538.0" promptText="Enter the text you want to hash or select a file">
+      <Label layoutX="151.0" layoutY="28.0" prefHeight="26.0" prefWidth="34.0" text="SHS" textAlignment="CENTER" textFill="#112e85">
+         <effect>
+            <Blend />
+         </effect>
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
-         </font></TextArea>
-      <TextField fx:id="digestField" editable="false" layoutX="38.0" layoutY="376.0" prefHeight="113.0" prefWidth="678.0" />
-      <RadioButton layoutX="54.0" layoutY="42.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="SHA-1">
+         </font>
+      </Label>
+      <RadioButton layoutX="57.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="SHA-1">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
@@ -31,32 +31,17 @@
             <ToggleGroup fx:id="SHS" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="224.0" layoutY="42.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHA-224" toggleGroup="$SHS">
+      <RadioButton layoutX="198.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="SHA-224" toggleGroup="$SHS">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="413.0" layoutY="42.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHA-256" toggleGroup="$SHS">
+      <RadioButton layoutX="57.0" layoutY="113.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="SHA-256" toggleGroup="$SHS">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="113.0" layoutY="96.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHA-512" toggleGroup="$SHS">
-         <font>
-            <Font name="MS Reference Sans Serif" size="14.0" />
-         </font>
-      </RadioButton>
-      <RadioButton layoutX="502.0" layoutY="96.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="139.0" text="SHA-512/256" toggleGroup="$SHS">
-         <font>
-            <Font name="MS Reference Sans Serif" size="14.0" />
-         </font>
-      </RadioButton>
-      <RadioButton layoutX="299.0" layoutY="96.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="139.0" text="SHA-512/224" toggleGroup="$SHS">
-         <font>
-            <Font name="MS Reference Sans Serif" size="14.0" />
-         </font>
-      </RadioButton>
-      <RadioButton layoutX="601.0" layoutY="42.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="SHA-384" toggleGroup="$SHS">
+      <RadioButton layoutX="198.0" layoutY="113.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="SHA-384" toggleGroup="$SHS">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
@@ -64,36 +49,23 @@
             <Cursor fx:constant="TEXT" />
          </cursor>
       </RadioButton>
-      <RadioButton layoutX="54.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="121.0" text="SHA3-224" toggleGroup="$SHS">
+      <RadioButton layoutX="57.0" layoutY="162.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="SHA-512" toggleGroup="$SHS">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="224.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHA3-256" toggleGroup="$SHS">
+      <RadioButton layoutX="108.0" layoutY="206.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="121.0" text="SHA-512/256" toggleGroup="$SHS">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="413.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="SHA3-384" toggleGroup="$SHS">
+      <RadioButton layoutX="198.0" layoutY="162.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="121.0" text="SHA-512/224" toggleGroup="$SHS">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="601.0" layoutY="149.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHA3-512" toggleGroup="$SHS">
-         <font>
-            <Font name="MS Reference Sans Serif" size="14.0" />
-         </font>
-      </RadioButton>
-      <TextField fx:id="truncationField" layoutX="145.0" layoutY="546.0" />
-      <Label layoutX="60.0" layoutY="520.0" prefHeight="18.0" prefWidth="318.0" text="Bit truncation (if empty, length by default):">
-         <font>
-            <Font name="MS Reference Sans Serif" size="14.0" />
-         </font>
-         <effect>
-            <Blend />
-         </effect>
-      </Label>
-      <Label layoutX="38.0" layoutY="352.0" prefHeight="18.0" prefWidth="195.0" text="Resulting message digest:">
+      <Separator layoutX="376.0" layoutY="31.0" orientation="VERTICAL" prefHeight="216.0" prefWidth="6.0" />
+      <Label layoutX="562.0" layoutY="27.0" prefHeight="26.0" prefWidth="49.0" text="SHA-3" textFill="#112e85">
          <effect>
             <Blend />
          </effect>
@@ -101,10 +73,58 @@
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
       </Label>
-      <Button layoutX="616.0" layoutY="218.0" mnemonicParsing="false" onAction="#fileChooser" prefHeight="123.0" prefWidth="100.0" text="Select&#10;File" textAlignment="CENTER">
+      <RadioButton layoutX="424.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="121.0" text="SHA3-224" toggleGroup="$SHS">
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="600.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHA3-256" toggleGroup="$SHS">
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="424.0" layoutY="113.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="SHA3-384" toggleGroup="$SHS">
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="600.0" layoutY="113.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHA3-512" toggleGroup="$SHS">
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="424.0" layoutY="162.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="121.0" text="SHAKE128" toggleGroup="$SHS">
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton layoutX="600.0" layoutY="162.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="107.0" text="SHAKE256" toggleGroup="$SHS">
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </RadioButton>
+      <TextField fx:id="truncationField" layoutX="457.0" layoutY="207.0" prefHeight="25.0" prefWidth="206.0" promptText="Output length in bits (only for XOFs)" />
+      <TextArea fx:id="nameField" layoutX="38.0" layoutY="289.0" prefHeight="123.0" prefWidth="538.0" promptText="Enter the text you want to hash or select a file">
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font></TextArea>
+      <Button layoutX="593.0" layoutY="289.0" mnemonicParsing="false" onAction="#fileChooser" prefHeight="123.0" prefWidth="121.0" text="Select&#10;File" textAlignment="CENTER">
          <font>
             <Font name="MS Reference Sans Serif" size="16.0" />
          </font>
       </Button>
+      <Label layoutX="38.0" layoutY="433.0" prefHeight="18.0" prefWidth="195.0" text="Resulting message digest:">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="digestField" editable="false" layoutX="38.0" layoutY="457.0" prefHeight="113.0" prefWidth="677.0" />
+      <Button layoutX="264.0" layoutY="594.0" mnemonicParsing="false" onAction="#generateDigest" prefHeight="67.0" prefWidth="237.0" text="Generate Digest">
+         <font>
+            <Font name="MS Reference Sans Serif" size="16.0" />
+         </font></Button>
    </children>
 </Pane>

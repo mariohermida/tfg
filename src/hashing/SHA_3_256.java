@@ -10,7 +10,7 @@ public class SHA_3_256 extends HashFunction {
 	public SHA_3_256(String message, boolean isBinary) {
 		System.out.println("\tSHA3-256 ALGORITHM");
 		if (isBinary) {
-			this.binaryMessage = message;
+			this.binaryMessage = invertBits(message);
 		} else {
 			this.binaryMessage = invertBits(textToBinary(message));
 		}

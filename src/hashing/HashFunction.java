@@ -913,11 +913,11 @@ public abstract class HashFunction {
 		if (binaryMessagePadded.length() % rate != 0) {
 			throw new NumberFormatException("Padding was not appropriately computed");
 		}
-		System.out.println(binaryMessagePadded);
+//		System.out.println(binaryMessagePadded);
 
 		// Calculate the number of rate-bit blocks within binaryMessagePadded
 		int n = binaryMessagePadded.length() / rate;
-		System.out.println("Number of blocks = " + n);
+//		System.out.println("Number of blocks = " + n);
 
 		// Absorbing phase (absorbs the bits from the input from rate in rate)
 		String S = zeroString(width); // State array
@@ -925,9 +925,9 @@ public abstract class HashFunction {
 		binaryMessagePadded = invertBits(binaryMessagePadded);
 		// As many times as blocks
 		for (int i = 0; i < n; i++) {
-			System.out.println("Block " + (i + 1));
-			showLanes(stateToLanes(
-					binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroString(capacity))));
+//			System.out.println("Block " + (i + 1));
+//			showLanes(stateToLanes(
+//					binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroString(capacity))));
 			S = Keccak_p(XOR(S, binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroString(capacity))));
 		}
 
@@ -1045,9 +1045,9 @@ public abstract class HashFunction {
 				}
 			}
 
-			System.out.println("\nAfter Theta");
-			showLanes(reverseBytesLanes(lanes));
-			reverseBytesLanes(lanes);
+//			System.out.println("\nAfter Theta");
+//			showLanes(reverseBytesLanes(lanes));
+//			reverseBytesLanes(lanes);
 
 			// Rho and Pi permutations
 			String auxLanes[][] = new String[5][5]; // Auxiliary 3D array
@@ -1058,9 +1058,9 @@ public abstract class HashFunction {
 				}
 			}
 
-			System.out.println("\nAfter Pi and Rho");
-			showLanes(reverseBytesLanes(auxLanes));
-			reverseBytesLanes(auxLanes);
+//			System.out.println("\nAfter Pi and Rho");
+//			showLanes(reverseBytesLanes(auxLanes));
+//			reverseBytesLanes(auxLanes);
 
 			// Chi substitution
 			String nextBit, nextNextBit;
@@ -1076,9 +1076,9 @@ public abstract class HashFunction {
 				}
 			}
 
-			System.out.println("\nAfter Chi");
-			showLanes(reverseBytesLanes(lanes));
-			reverseBytesLanes(lanes);
+//			System.out.println("\nAfter Chi");
+//			showLanes(reverseBytesLanes(lanes));
+//			reverseBytesLanes(lanes);
 
 			// Iota substitution
 			String rc = Long.toBinaryString(RC[i]);
@@ -1088,9 +1088,9 @@ public abstract class HashFunction {
 			}
 			lanes[0][0] = XOR(lanes[0][0], rc);
 
-			System.out.println("\nAfter Iota");
-			showLanes(reverseBytesLanes(lanes));
-			reverseBytesLanes(lanes);
+//			System.out.println("\nAfter Iota");
+//			showLanes(reverseBytesLanes(lanes));
+//			reverseBytesLanes(lanes);
 		}
 
 		reverseBytesLanes(lanes);

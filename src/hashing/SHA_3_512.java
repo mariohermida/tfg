@@ -10,7 +10,7 @@ public class SHA_3_512 extends HashFunction {
 	public SHA_3_512(String message, boolean isBinary) {
 		System.out.println("\tSHA3-512 ALGORITHM");
 		if (isBinary) {
-			this.binaryMessage = message;
+			this.binaryMessage = invertBits(message);
 		} else {
 			this.binaryMessage = invertBits(textToBinary(message));
 		}
