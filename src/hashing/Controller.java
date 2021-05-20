@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -25,7 +27,7 @@ public class Controller {
 	private TextField digestField;
 
 	@FXML
-	private TextField truncationField;
+	private TextField outputField;
 
 	@FXML
 	private ToggleGroup SHS;
@@ -33,23 +35,10 @@ public class Controller {
 	@FXML
 	void generateDigest(ActionEvent event) {
 		if (SHS.getSelectedToggle() == null) {
-			digestField.setText("Error. No algorithm chosen!");
-			// Report error: No algorithm chosen
+			showAlert("No algorithm chosen!");
 		} else {
 			HashFunction sh = null;
 			RadioButton option = (RadioButton) SHS.getSelectedToggle();
-
-			String truncationValue = truncationField.getText();
-			int endIndex = Integer.MAX_VALUE;
-			// Check if truncation is an integer number
-			if (!truncationValue.equals("")) {
-				try {
-					endIndex = Integer.parseInt(truncationValue);
-				} catch (NumberFormatException exception) {
-					// Report error: Bit truncation must be an integer value
-					endIndex = Integer.MIN_VALUE;
-				}
-			}
 
 			if (option.getText().equals("SHA-1")) {
 				sh = new SHA_1(nameField.getText());
@@ -73,17 +62,43 @@ public class Controller {
 				sh = new SHA_3_384(nameField.getText());
 			} else if (option.getText().equals("SHA3-512")) {
 				sh = new SHA_3_512(nameField.getText());
-			}
-
-			if (endIndex == Integer.MAX_VALUE) {
-				digestField.setText(sh.computeHash());
 			} else {
-				if (endIndex % 4 == 0 && endIndex > 0 && endIndex <= sh.messageDigestLength) {
-					digestField.setText(sh.computeHash().substring(0, endIndex / 4));
+				if (isOutputLengthAnInteger() && isOutputLengthAValidInteger()) {
+					int outputLength = Integer.parseInt(outputField.getText());
+					// XOF functions
+					if (option.getText().equals("SHAKE128")) {
+						sh = new SHAKE128(nameField.getText(), outputLength);
+					} else {
+						sh = new SHAKE256(nameField.getText(), outputLength);
+					}
 				} else {
-					// Report error: Bit truncation must be %4 == 0 and within the range
+					// Output value is not an integer or the output field is empty
+					sh = null;
+					showAlert("Output length must be an integer number, greater than zero and multiple of 4.");
 				}
 			}
+
+			if (sh != null) {
+				digestField.setText(sh.computeHash());
+			}
+		}
+	}
+
+	private boolean isOutputLengthAnInteger() {
+		try {
+			Integer.parseInt(outputField.getText());
+			return true;
+		} catch (NumberFormatException exception) {
+			return false;
+		}
+	}
+
+	private boolean isOutputLengthAValidInteger() {
+		int output = Integer.parseInt(outputField.getText());
+		if (output % 4 == 0 && output > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -111,10 +126,15 @@ public class Controller {
 			binaryCharacter = Integer.toBinaryString((b & 0xFF) + 0x100).substring(1);
 			binaryMessage += binaryCharacter;
 		}
-		
+
 		// Compute and show the hash
 		sh = new SHA_3_256(binaryMessage, true);
 		digestField.setText(sh.computeHash());
+	}
+
+	private void showAlert(String message) {
+		Alert alert = new Alert(AlertType.ERROR, message);
+		alert.showAndWait();
 	}
 
 }

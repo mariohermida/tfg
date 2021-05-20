@@ -103,7 +103,7 @@
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
       </RadioButton>
-      <TextField fx:id="truncationField" layoutX="457.0" layoutY="207.0" prefHeight="25.0" prefWidth="206.0" promptText="Output length in bits (only for XOFs)" />
+      <TextField fx:id="outputField" layoutX="457.0" layoutY="207.0" prefHeight="25.0" prefWidth="206.0" promptText="Output length in bits (only for XOFs)" />
       <TextArea fx:id="nameField" layoutX="38.0" layoutY="289.0" prefHeight="123.0" prefWidth="538.0" promptText="Enter the text you want to hash or select a file">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />

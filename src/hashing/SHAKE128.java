@@ -14,7 +14,6 @@ public class SHAKE128 extends HashFunction {
 		} else {
 			this.binaryMessage = invertBits(textToBinary(message));
 		}
-		System.out.println(binaryMessage);
 		// Domain separation
 		binaryMessage += "1111";
 		messageDigestLength = outputLength;
