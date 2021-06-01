@@ -820,28 +820,28 @@ class HashFunctionSHSTest {
 	void testUpperSigma512_1_64bits() {
 		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
 		assertEquals("1001100000001101011001100001100010000110110111010010111000000101",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter(l, 64, "upper", true)));
+				Long.toBinaryString(sha1.sigmaSplitter(l, 64, "upper", true)));
 	}
 
 	@Test
 	void testUpperSigma512_0_64bits() {
 		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
 		assertEquals("1111001100100011101110010001011001001000010000111000010111001111",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter(l, 64, "upper", false)));
+				Long.toBinaryString(sha1.sigmaSplitter(l, 64, "upper", false)));
 	}
 
 	@Test
 	void testLowerSigma512_1_64bits() {
 		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
 		assertEquals("11000001011101000000010011001011100000101110000111110101111001",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter(l, 64, "lower", true)));
+				Long.toBinaryString(sha1.sigmaSplitter(l, 64, "lower", true)));
 	}
 
 	@Test
 	void testLowerSigma512_0_64bits() {
 		Long l = Long.parseUnsignedLong("1001000000110110111001010001010000001101100001011001110101010111", 2);
 		assertEquals("1001111010101011001010011010010100111010110101000100000000001100",
-				Long.toBinaryString(sha1.sigmaFunctionSplitter(l, 64, "lower", false)));
+				Long.toBinaryString(sha1.sigmaSplitter(l, 64, "lower", false)));
 	}
 
 	// SIGMA FUNCTION SPLITTER (32 bits)
@@ -850,28 +850,28 @@ class HashFunctionSHSTest {
 	void testUpperSigma256_1_32bits() {
 		Long l = Long.parseLong("01111010111010000100110101000111", 2);
 		assertEquals("11000001001000100101111110000001",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter(l, 32, "upper", true)));
+				Integer.toBinaryString((int) sha1.sigmaSplitter(l, 32, "upper", true)));
 	}
 
 	@Test
 	void testUpperSigma256_0_32bits() {
 		Long l = Long.parseLong("01111010111010000100110101000111", 2);
 		assertEquals("10101101101001101100111111000",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter(l, 32, "upper", false)));
+				Integer.toBinaryString((int) sha1.sigmaSplitter(l, 32, "upper", false)));
 	}
 
 	@Test
 	void testLowerSigma256_1_32bits() {
 		Long l = Long.parseLong("01111010111010000100110101000111", 2);
 		assertEquals("101111000101011110100000111010",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter(l, 32, "lower", true)));
+				Integer.toBinaryString((int) sha1.sigmaSplitter(l, 32, "lower", true)));
 	}
 
 	@Test
 	void testLowerSigma256_0_32bits() {
 		Long l = Long.parseLong("01111010111010000100110101000111", 2);
 		assertEquals("10010010111110010000011110001000",
-				Integer.toBinaryString((int) sha1.sigmaFunctionSplitter(l, 32, "lower", false)));
+				Integer.toBinaryString((int) sha1.sigmaSplitter(l, 32, "lower", false)));
 	}
 
 	// LEFT ROTATION

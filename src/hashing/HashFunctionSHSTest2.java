@@ -530,9 +530,8 @@ public class HashFunctionSHSTest2 {
 
 	@Test
 	void testBinaryAddition4_32bits() {
-		assertEquals("00111001010000100011011001001110",
-				sha1.binaryAddition("11111000100100111", "110001110110011000011001011100", "1000011",
-						"10101111000101110011", "111010110111100110100010101"));
+		assertEquals("00111001010000100011011001001110", sha1.binaryAddition("11111000100100111",
+				"110001110110011000011001011100", "1000011", "10101111000101110011", "111010110111100110100010101"));
 	}
 
 	@Test
@@ -683,26 +682,26 @@ public class HashFunctionSHSTest2 {
 
 	@Test
 	void testUpperSigma512_1_64bits() {
-		assertEquals("1001100000001101011001100001100010000110110111010010111000000101", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", true));
+		assertEquals("1001100000001101011001100001100010000110110111010010111000000101", sha1
+				.sigmaSplitter("1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", true));
 	}
 
 	@Test
 	void testUpperSigma512_0_64bits() {
-		assertEquals("1111001100100011101110010001011001001000010000111000010111001111", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", false));
+		assertEquals("1111001100100011101110010001011001001000010000111000010111001111", sha1
+				.sigmaSplitter("1001000000110110111001010001010000001101100001011001110101010111", 64, "upper", false));
 	}
 
 	@Test
 	void testLowerSigma512_1_64bits() {
-		assertEquals("0011000001011101000000010011001011100000101110000111110101111001", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", true));
+		assertEquals("0011000001011101000000010011001011100000101110000111110101111001", sha1
+				.sigmaSplitter("1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", true));
 	}
 
 	@Test
 	void testLowerSigma512_0_64bits() {
-		assertEquals("1001111010101011001010011010010100111010110101000100000000001100", sha1.sigmaFunctionSplitter(
-				"1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", false));
+		assertEquals("1001111010101011001010011010010100111010110101000100000000001100", sha1
+				.sigmaSplitter("1001000000110110111001010001010000001101100001011001110101010111", 64, "lower", false));
 	}
 
 	// SIGMA FUNCTION SPLITTER (32 BITS)
@@ -710,25 +709,25 @@ public class HashFunctionSHSTest2 {
 	@Test
 	void testUpperSigma256_1_32bits() {
 		assertEquals("11000001001000100101111110000001",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", true));
+				sha1.sigmaSplitter("01111010111010000100110101000111", 32, "upper", true));
 	}
 
 	@Test
 	void testUpperSigma256_0_32bits() {
 		assertEquals("00010101101101001101100111111000",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "upper", false));
+				sha1.sigmaSplitter("01111010111010000100110101000111", 32, "upper", false));
 	}
 
 	@Test
 	void testLowerSigma256_1_32bits() {
 		assertEquals("00101111000101011110100000111010",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", true));
+				sha1.sigmaSplitter("01111010111010000100110101000111", 32, "lower", true));
 	}
 
 	@Test
 	void testLowerSigma256_0_32bits() {
 		assertEquals("10010010111110010000011110001000",
-				sha1.sigmaFunctionSplitter("01111010111010000100110101000111", 32, "lower", false));
+				sha1.sigmaSplitter("01111010111010000100110101000111", 32, "lower", false));
 	}
 
 	// EXCEPTIONS OVER SIGMA FUNCTION
@@ -736,16 +735,14 @@ public class HashFunctionSHSTest2 {
 	@Test
 	void testSigmaFunctionSplitterException() {
 		assertThrows(IllegalArgumentException.class, () -> {
-			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 64, "LOWER",
-					false);
+			sha1.sigmaSplitter("1100101001010010100101001001001010101001110100101010101010110100", 64, "LOWER", false);
 		});
 	}
 
 	@Test
 	void testSigmaFunctionSplitterException2() {
 		assertThrows(IllegalArgumentException.class, () -> {
-			sha1.sigmaFunctionSplitter("1100101001010010100101001001001010101001110100101010101010110100", 128, "lower",
-					true);
+			sha1.sigmaSplitter("1100101001010010100101001001001010101001110100101010101010110100", 128, "lower", true);
 		});
 	}
 
@@ -910,52 +907,50 @@ public class HashFunctionSHSTest2 {
 
 	@Test
 	void testLeftShiftOperation() {
-		assertEquals("111010", sha1.leftShiftOperation("111010", 0));
+		assertEquals("111010", sha1.leftShift("111010", 0));
 	}
 
 	@Test
 	void testLeftShiftOperation2() {
-		assertEquals("110110", sha1.leftShiftOperation("111011", 1));
+		assertEquals("110110", sha1.leftShift("111011", 1));
 	}
 
 	@Test
 	void testLeftShiftOperation3() {
-		assertEquals("100000", sha1.leftShiftOperation("111011", 5));
+		assertEquals("100000", sha1.leftShift("111011", 5));
 	}
 
 	@Test
 	void testLeftShiftOperation4() {
-		assertEquals("000000", sha1.leftShiftOperation("111011", 15));
+		assertEquals("000000", sha1.leftShift("111011", 15));
 	}
 
 	@Test
 	void testLeftShiftOperation5() {
-		assertEquals("10100010110001010010100101010100",
-				sha1.leftShiftOperation("11101000101100010100101001010101", 2));
+		assertEquals("10100010110001010010100101010100", sha1.leftShift("11101000101100010100101001010101", 2));
 	}
 
 	@Test
 	void testLeftShiftOperation6() {
-		assertEquals("10010100101010100000000000000000",
-				sha1.leftShiftOperation("11101000101100010100101001010101", 17));
+		assertEquals("10010100101010100000000000000000", sha1.leftShift("11101000101100010100101001010101", 17));
 	}
 
 	@Test
 	void testLeftShiftOperation7() {
 		assertEquals("1001010010010010101010011101001010101010101101001100101000000000",
-				sha1.leftShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 8));
+				sha1.leftShift("0101001010010100100100101010100111010010101010101011010011001010", 8));
 	}
 
 	@Test
 	void testLeftShiftOperation8() {
 		assertEquals("0101000000000000000000000000000000000000000000000000000000000000",
-				sha1.leftShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 59));
+				sha1.leftShift("0101001010010100100100101010100111010010101010101011010011001010", 59));
 	}
 
 	@Test
 	void testLeftShiftOperationException() {
 		assertThrows(NumberFormatException.class, () -> {
-			sha1.leftShiftOperation("111010", -1);
+			sha1.leftShift("111010", -1);
 		});
 	}
 
@@ -963,52 +958,50 @@ public class HashFunctionSHSTest2 {
 
 	@Test
 	void testRightShiftOperation() {
-		assertEquals("111010", sha1.rightShiftOperation("111010", 0));
+		assertEquals("111010", sha1.rightShift("111010", 0));
 	}
 
 	@Test
 	void testRightShiftOperation2() {
-		assertEquals("011101", sha1.rightShiftOperation("111010", 1));
+		assertEquals("011101", sha1.rightShift("111010", 1));
 	}
 
 	@Test
 	void testRightShiftOperation3() {
-		assertEquals("000001", sha1.rightShiftOperation("111010", 5));
+		assertEquals("000001", sha1.rightShift("111010", 5));
 	}
 
 	@Test
 	void testRightShiftOperation4() {
-		assertEquals("000000", sha1.rightShiftOperation("111010", 15));
+		assertEquals("000000", sha1.rightShift("111010", 15));
 	}
 
 	@Test
 	void testRightShiftOperation5() {
-		assertEquals("00111010001011000101001010010101",
-				sha1.rightShiftOperation("11101000101100010100101001010101", 2));
+		assertEquals("00111010001011000101001010010101", sha1.rightShift("11101000101100010100101001010101", 2));
 	}
 
 	@Test
 	void testRightShiftOperation6() {
-		assertEquals("00000000000000000111010001011000",
-				sha1.rightShiftOperation("11101000101100010100101001010101", 17));
+		assertEquals("00000000000000000111010001011000", sha1.rightShift("11101000101100010100101001010101", 17));
 	}
 
 	@Test
 	void testRightShiftOperation7() {
 		assertEquals("0000000001010010100101001001001010101001110100101010101010110100",
-				sha1.rightShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 8));
+				sha1.rightShift("0101001010010100100100101010100111010010101010101011010011001010", 8));
 	}
 
 	@Test
 	void testRightShiftOperation8() {
 		assertEquals("0000000000000000000000000000000000000000000000000000000000001010",
-				sha1.rightShiftOperation("0101001010010100100100101010100111010010101010101011010011001010", 59));
+				sha1.rightShift("0101001010010100100100101010100111010010101010101011010011001010", 59));
 	}
 
 	@Test
 	void testRightShiftOperationException() {
 		assertThrows(NumberFormatException.class, () -> {
-			sha1.rightShiftOperation("111010", -9);
+			sha1.rightShift("111010", -9);
 		});
 	}
 

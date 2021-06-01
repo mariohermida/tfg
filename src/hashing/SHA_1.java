@@ -64,16 +64,10 @@ public class SHA_1 extends HashFunction {
 			int d = hashValues[3];
 			int e = hashValues[4];
 
-			int T, index;
+			int T, index = -1;
 			for (int t = 0; t < 80; t++) {
-				if (t < 20) {
-					index = 0;
-				} else if (t < 40) {
-					index = 1;
-				} else if (t < 60) {
-					index = 2;
-				} else {
-					index = 3;
+				if (t % 20 == 0) {
+					index++;
 				}
 				T = Integer.rotateLeft(a, 5) + f(b, c, d, t) + e + CONSTANTS[index] + w[t];
 				e = d;
@@ -137,16 +131,10 @@ public class SHA_1 extends HashFunction {
 			int d = hashValues[3];
 			int e = hashValues[4];
 
-			int T, index, mask = 0x0000000f, s;
+			int T, index = -1, mask = 0x0000000f, s;
 			for (int t = 0; t < 80; t++) {
-				if (t < 20) {
-					index = 0;
-				} else if (t < 40) {
-					index = 1;
-				} else if (t < 60) {
-					index = 2;
-				} else {
-					index = 3;
+				if (t % 20 == 0) {
+					index++;
 				}
 				// Different kind of addressing
 				s = t & mask;
@@ -221,16 +209,10 @@ public class SHA_1 extends HashFunction {
 			String e = hexadecimalToBinary(hashValues[4]);
 
 			String T;
-			int index;
+			int index = -1;
 			for (int t = 0; t < 80; t++) {
-				if (t < 20) {
-					index = 0;
-				} else if (t < 40) {
-					index = 1;
-				} else if (t < 60) {
-					index = 2;
-				} else {
-					index = 3;
+				if (t % 20 == 0) {
+					index++;
 				}
 				T = binaryAddition(ROTL(a, 5), f(b, c, d, t), e, hexadecimalToBinary(CONSTANTS2[index]), w[t]);
 				e = d;
