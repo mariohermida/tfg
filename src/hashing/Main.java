@@ -21,7 +21,7 @@ public class Main extends Application {
 
 	private void showMainView() {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("Sample.fxml"));
+		loader.setLocation(Main.class.getResource("GUI.fxml"));
 		try {
 			mainLayout = loader.load();
 		} catch (IOException e) {

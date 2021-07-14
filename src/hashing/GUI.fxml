@@ -13,17 +13,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="762.0" style="-fx-background-color: orange;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hashing.Controller">
+<Pane id="Pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="762.0" styleClass="image" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hashing.Controller">
    <children>
-      <Label layoutX="151.0" layoutY="28.0" prefHeight="26.0" prefWidth="34.0" text="SHS" textAlignment="CENTER" textFill="#112e85">
-         <effect>
-            <Blend />
-         </effect>
-         <font>
-            <Font name="MS Reference Sans Serif" size="14.0" />
-         </font>
-      </Label>
-      <RadioButton layoutX="57.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="82.0" text="SHA-1">
+      <RadioButton layoutX="57.0" layoutY="66.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="74.0" text="SHA-1">
          <font>
             <Font name="MS Reference Sans Serif" size="14.0" />
          </font>
@@ -65,7 +57,15 @@
          </font>
       </RadioButton>
       <Separator layoutX="376.0" layoutY="31.0" orientation="VERTICAL" prefHeight="216.0" prefWidth="6.0" />
-      <Label layoutX="562.0" layoutY="27.0" prefHeight="26.0" prefWidth="49.0" text="SHA-3" textFill="#112e85">
+      <Label layoutX="536.0" layoutY="26.0" prefHeight="26.0" prefWidth="49.0" text="SHA-3" textAlignment="CENTER">
+         <effect>
+            <Blend />
+         </effect>
+         <font>
+            <Font name="MS Reference Sans Serif" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="154.0" layoutY="26.0" prefHeight="26.0" prefWidth="30.0" text="SHS" textAlignment="RIGHT">
          <effect>
             <Blend />
          </effect>
@@ -122,7 +122,7 @@
          </font>
       </Label>
       <TextField fx:id="digestField" editable="false" layoutX="38.0" layoutY="457.0" prefHeight="113.0" prefWidth="677.0" />
-      <Button layoutX="264.0" layoutY="594.0" mnemonicParsing="false" onAction="#generateDigest" prefHeight="67.0" prefWidth="237.0" text="Generate Digest">
+      <Button layoutX="264.0" layoutY="590.0" mnemonicParsing="false" onAction="#generateDigest" prefHeight="67.0" prefWidth="237.0" text="Generate Digest">
          <font>
             <Font name="MS Reference Sans Serif" size="16.0" />
          </font></Button>
