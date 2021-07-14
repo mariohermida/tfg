@@ -243,7 +243,7 @@ public class SHA_1 extends HashFunction {
 	}
 
 	/**
-	 * XOR operation of 4 values (using strings)
+	 * XOR operation of 4 values (using strings).
 	 * 
 	 * @param a
 	 * @param b

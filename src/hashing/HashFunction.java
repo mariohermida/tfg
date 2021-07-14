@@ -1,8 +1,8 @@
 package hashing;
 
-//import java.io.File;
-//import java.io.FileNotFoundException;
-//import java.io.PrintStream;
+/*import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;*/
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -106,7 +106,7 @@ public abstract class HashFunction {
 	protected int width;
 
 	/**
-	 * Computes the final hash according to the algorithm chosen
+	 * Computes the final hash according to the algorithm chosen.
 	 * 
 	 * @return hexadecimal hash resulted from the original message
 	 */
@@ -115,7 +115,7 @@ public abstract class HashFunction {
 	/**
 	 * It performs the hash computation (SHA-2 family) according to different
 	 * parameters. Depending on them the corresponding hash is computed (SHA-224,
-	 * SHA-256, SHA-384, SHA-512, SHA-512/t)
+	 * SHA-256, SHA-384, SHA-512, SHA-512/t).
 	 * 
 	 * @param initialHashValues Array containing the initial hash values of each
 	 *                          class
@@ -127,7 +127,6 @@ public abstract class HashFunction {
 	 */
 	protected String computeSHA2Hash(long[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
-//		System.out.println("Hash is being computed... (integer version)");
 
 		// A copy of the hashes is made in order not to overwrite original values
 		long[] hashValues = new long[initialHashValues.length];
@@ -143,8 +142,8 @@ public abstract class HashFunction {
 				if (t < 16) {
 					w[t] = Long.parseUnsignedLong(words.get(i).get(t), 2);
 				} else {
-					w[t] = sigmaFunctionSplitter(w[t - 2], wordSize, "lower", true) + w[t - 7]
-							+ sigmaFunctionSplitter(w[t - 15], wordSize, "lower", false) + w[t - 16];
+					w[t] = sigmaSplitter(w[t - 2], wordSize, "lower", true) + w[t - 7]
+							+ sigmaSplitter(w[t - 15], wordSize, "lower", false) + w[t - 16];
 				}
 			}
 
@@ -161,11 +160,11 @@ public abstract class HashFunction {
 			long T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
-					T1 = h + sigmaFunctionSplitter(e, wordSize, "upper", true) + Ch(e, f, g) + C1[t] + w[t];
+					T1 = h + sigmaSplitter(e, wordSize, "upper", true) + Ch(e, f, g) + C1[t] + w[t];
 				} else {
-					T1 = h + sigmaFunctionSplitter(e, wordSize, "upper", true) + Ch(e, f, g) + C2[t] + w[t];
+					T1 = h + sigmaSplitter(e, wordSize, "upper", true) + Ch(e, f, g) + C2[t] + w[t];
 				}
-				T2 = sigmaFunctionSplitter(a, wordSize, "upper", false) + Maj(a, b, c);
+				T2 = sigmaSplitter(a, wordSize, "upper", false) + Maj(a, b, c);
 				h = g;
 				g = f;
 				f = e;
@@ -210,7 +209,6 @@ public abstract class HashFunction {
 	/**
 	 * Same as above, but performing hash computation using string representation
 	 * instead of integer values.
-	 * 
 	 */
 	protected String computeSHA2Hash(String[] initialHashValues, int loopIterations, int oneOrTwo) {
 		String hash = "";
@@ -237,8 +235,8 @@ public abstract class HashFunction {
 				if (t < 16) {
 					w[t] = words.get(i).get(t);
 				} else {
-					w[t] = binaryAddition(sigmaFunctionSplitter(w[t - 2], wordSize, "lower", true), w[t - 7],
-							sigmaFunctionSplitter(w[t - 15], wordSize, "lower", false), w[t - 16]);
+					w[t] = binaryAddition(sigmaSplitter(w[t - 2], wordSize, "lower", true), w[t - 7],
+							sigmaSplitter(w[t - 15], wordSize, "lower", false), w[t - 16]);
 				}
 			}
 
@@ -264,13 +262,13 @@ public abstract class HashFunction {
 			String T1, T2;
 			for (int t = 0; t < loopIterations; t++) {
 				if (oneOrTwo == 1) {
-					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", true), Ch(e, f, g),
+					T1 = binaryAddition(h, sigmaSplitter(e, wordSize, "upper", true), Ch(e, f, g),
 							hexadecimalToBinary(CONSTANTS1[t]), w[t]);
 				} else {
-					T1 = binaryAddition(h, sigmaFunctionSplitter(e, wordSize, "upper", true), Ch(e, f, g),
+					T1 = binaryAddition(h, sigmaSplitter(e, wordSize, "upper", true), Ch(e, f, g),
 							hexadecimalToBinary(CONSTANTS2[t]), w[t]);
 				}
-				T2 = binaryAddition(sigmaFunctionSplitter(a, wordSize, "upper", false), Maj(a, b, c));
+				T2 = binaryAddition(sigmaSplitter(a, wordSize, "upper", false), Maj(a, b, c));
 				h = g;
 				g = f;
 				f = e;
@@ -351,9 +349,7 @@ public abstract class HashFunction {
 	 * size) The binaryMessagePadded is built this way: original binary message + 1
 	 * + as many 0s as needed + length of the original message in binary (reserving
 	 * 64/128 (maximumMessageSize) bits here). Say here that padding is always
-	 * added, even if the message is already the desired length.
-	 * 
-	 * @return The message padded with determined number of zeroes
+	 * padded, even if the message is already the desired length.
 	 */
 	protected void padMessageSHS() {
 		binaryMessagePadded = binaryMessage;
@@ -362,7 +358,7 @@ public abstract class HashFunction {
 
 		// Message length control
 		if (binaryMessage.length() > Math.pow(2, maximumMessageLength)) {
-			throw new IllegalArgumentException("Input message exceeds maximum length allowed");
+			throw new IllegalArgumentException("Input message exceeds maximum");
 		}
 
 		// Detect if there is going to be padding in two blocks
@@ -377,8 +373,10 @@ public abstract class HashFunction {
 		// Deal with padding
 		int bitsToAdd = (blockSize - maximumMessageLength) - auxLength;
 		if (isPaddingInTwoBlocks) {
-			bitsToAdd += maximumMessageLength; // Add bits for padding the second last block
-			bitsToAdd += blockSize - maximumMessageLength; // Add bits for wholly padding the last block
+			// Add bits for padding the second last block
+			bitsToAdd += maximumMessageLength;
+			// Add bits for wholly padding the last block
+			bitsToAdd += blockSize - maximumMessageLength;
 		}
 		binaryMessagePadded = addSimplePadding(binaryMessagePadded, bitsToAdd);
 
@@ -391,7 +389,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * It pads the message with a 1 and as many 0s as needed
+	 * It pads the message with a 1 and as many 0s as needed.
 	 * 
 	 * @param message
 	 * @param numberOfBitsToAdd
@@ -409,9 +407,7 @@ public abstract class HashFunction {
 
 	/**
 	 * The goal here is to have 16 binary words (32/64 bits long) according to the
-	 * word size of the algorithm chosen
-	 * 
-	 * @return A list composed of the 16 binary words
+	 * word size of the algorithm chosen.
 	 */
 	protected void parseMessage() {
 		ArrayList<String> temp = null;
@@ -425,7 +421,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Binary addition of 5 values, performed modulo 2^wordSize
+	 * Binary addition of 5 values, performed modulo 2^wordSize.
 	 * 
 	 * @param a
 	 * @param b
@@ -462,7 +458,7 @@ public abstract class HashFunction {
 
 	/**
 	 * It converts the whole text to a multiple of 8 bit string (using UNICODE
-	 * encoding)
+	 * encoding).
 	 * 
 	 * @param text Whole text to be converted
 	 * @return The binary string multiple of 8 bits
@@ -479,7 +475,6 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * 
 	 * @param binary Binary string to be converted
 	 * @return Hexadecimal value from binary string
 	 */
@@ -502,7 +497,6 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * 
 	 * @param hexadecimal Hexadecimal value to be converted
 	 * @return Binary value from hexadecimal value
 	 */
@@ -522,7 +516,7 @@ public abstract class HashFunction {
 
 	/**
 	 * f function. Used at the time of computing SHA-1 algorithm only. Depending on
-	 * the value of index it redirects the input to the right function
+	 * the value of index it redirects the input to the right function.
 	 * 
 	 * @param x
 	 * @param y
@@ -540,13 +534,12 @@ public abstract class HashFunction {
 		} else if (index >= 60 && index <= 79) {
 			return (int) Parity(x, y, z);
 		}
-		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
+		throw new IllegalArgumentException("Invalid parameters (f function: SHA-1)");
 	}
 
 	/**
 	 * Same as above, but instead of using integer values, using string
-	 * representation
-	 * 
+	 * representation.
 	 */
 	protected String f(String x, String y, String z, int index) {
 		if (index >= 0 && index <= 19) {
@@ -558,11 +551,11 @@ public abstract class HashFunction {
 		} else if (index >= 60 && index <= 79) {
 			return Parity(x, y, z);
 		}
-		throw new IllegalArgumentException("Invalid parameters introduced in f function (SHA-1)");
+		throw new IllegalArgumentException("Invalid parameters (f function: SHA-1)");
 	}
 
 	/**
-	 * Ch function
+	 * Ch function.
 	 * 
 	 * @param x
 	 * @param y
@@ -575,8 +568,7 @@ public abstract class HashFunction {
 
 	/**
 	 * Same as above, but instead of using integer values, using string
-	 * representation
-	 * 
+	 * representation.
 	 */
 	protected String Ch(String x, String y, String z) {
 		String result1, result2, finalResult = "";
@@ -599,7 +591,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Parity function
+	 * Parity function.
 	 * 
 	 * @param x
 	 * @param y
@@ -612,8 +604,7 @@ public abstract class HashFunction {
 
 	/**
 	 * Same as above, but instead of using integer values, using string
-	 * representation
-	 * 
+	 * representation.
 	 */
 	protected String Parity(String x, String y, String z) {
 		String result = "", finalResult = "";
@@ -627,7 +618,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Maj function
+	 * Maj function.
 	 * 
 	 * @param x
 	 * @param y
@@ -640,8 +631,7 @@ public abstract class HashFunction {
 
 	/**
 	 * Same as above, but instead of using integer values, using string
-	 * representation
-	 * 
+	 * representation. 
 	 */
 	protected String Maj(String x, String y, String z) {
 		String result1, result2, result3, result4 = "", finalResult = "";
@@ -682,123 +672,118 @@ public abstract class HashFunction {
 	 * @return The word (integer number) modified according to the specific sigma
 	 *         function
 	 */
-	protected long sigmaFunctionSplitter(long word, int wordLength, String upperOrLower, boolean oneOrZero) {
+	protected long sigmaSplitter(long word, int wordLength, String upperOrLower, boolean oneOrZero) {
 		switch (wordLength) {
 		case 32:
 			switch (upperOrLower) {
 			case "upper":
 				if (oneOrZero) {
-					return sigmaFunctionOperationInteger((int) word, 6, 11, 25, false);
+					return sigma((int) word, 6, 11, 25, false);
 				}
-				return sigmaFunctionOperationInteger((int) word, 2, 13, 22, false);
+				return sigma((int) word, 2, 13, 22, false);
 			case "lower":
 				if (oneOrZero) {
-					return sigmaFunctionOperationInteger((int) word, 17, 19, 10, true);
+					return sigma((int) word, 17, 19, 10, true);
 				}
-				return sigmaFunctionOperationInteger((int) word, 7, 18, 3, true);
+				return sigma((int) word, 7, 18, 3, true);
 			}
 		case 64:
 			switch (upperOrLower) {
 			case "upper":
 				if (oneOrZero) {
-					return sigmaFunctionOperationLong(word, 14, 18, 41, false);
+					return sigma(word, 14, 18, 41, false);
 				}
-				return sigmaFunctionOperationLong(word, 28, 34, 39, false);
+				return sigma(word, 28, 34, 39, false);
 			case "lower":
 				if (oneOrZero) {
-					return sigmaFunctionOperationLong(word, 19, 61, 6, true);
+					return sigma(word, 19, 61, 6, true);
 				}
-				return sigmaFunctionOperationLong(word, 1, 8, 7, true);
+				return sigma(word, 1, 8, 7, true);
 			}
 		}
-		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
+		throw new IllegalArgumentException("Invalid parameters introduced in sigma function");
 	}
 
 	/**
 	 * Same as above, but instead of using integer values, using string
-	 * representation
-	 * 
+	 * representation. 
 	 */
-	protected String sigmaFunctionSplitter(String word, int wordLength, String upperOrLower, boolean oneOrZero) {
+	protected String sigmaSplitter(String word, int wordLength, String upperOrLower, boolean oneOrZero) {
 		switch (wordLength) {
 		case 32:
 			switch (upperOrLower) {
 			case "upper":
 				if (oneOrZero) {
-					return sigmaFunctionOperation(word, 6, 11, 25, false);
+					return sigma(word, 6, 11, 25, false);
 				}
-				return sigmaFunctionOperation(word, 2, 13, 22, false);
+				return sigma(word, 2, 13, 22, false);
 			case "lower":
 				if (oneOrZero) {
-					return sigmaFunctionOperation(word, 17, 19, 10, true);
+					return sigma(word, 17, 19, 10, true);
 				}
-				return sigmaFunctionOperation(word, 7, 18, 3, true);
+				return sigma(word, 7, 18, 3, true);
 			}
 		case 64:
 			switch (upperOrLower) {
 			case "upper":
 				if (oneOrZero) {
-					return sigmaFunctionOperation(word, 14, 18, 41, false);
+					return sigma(word, 14, 18, 41, false);
 				}
-				return sigmaFunctionOperation(word, 28, 34, 39, false);
+				return sigma(word, 28, 34, 39, false);
 			case "lower":
 				if (oneOrZero) {
-					return sigmaFunctionOperation(word, 19, 61, 6, true);
+					return sigma(word, 19, 61, 6, true);
 				}
-				return sigmaFunctionOperation(word, 1, 8, 7, true);
+				return sigma(word, 1, 8, 7, true);
 			}
 		}
-		throw new IllegalArgumentException("Invalid parameters introduced in Sigma function");
+		throw new IllegalArgumentException("Invalid parameters introduced in sigma function");
 	}
 
 	/**
 	 * Performs the sigma operation taking into account the different explicit
-	 * values within the parameters
+	 * values within the parameters.
 	 * 
-	 * @param word       Binary word to be changed
-	 * @param parameter1 Number of rotations
-	 * @param parameter2 Number of rotations
-	 * @param parameter3 Number of rotations
-	 * @param SHR        Represents if SHR is used instead of ROTR
-	 * @return ROTR(parameter1)(word) XOR ROTR(parameter2)(word) XOR
-	 *         (ROTR(parameter3)(word) | SHR(parameter3)(word))
+	 * @param word   Binary word to be changed
+	 * @param param1 Number of rotations
+	 * @param param2 Number of rotations
+	 * @param param3 Number of rotations
+	 * @param SHR    Represents if SHR is used instead of ROTR
+	 * @return ROTR(param1)(word) XOR ROTR(param2)(word) XOR (ROTR(param3)(word) |
+	 *         SHR(param3)(word))
 	 */
-	private long sigmaFunctionOperationLong(long word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+	private long sigma(long word, int param1, int param2, int param3, boolean SHR) {
 		if (SHR) { // Unsigned bit shift is used
-			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2) ^ (word >>> parameter3);
+			return Long.rotateRight(word, param1) ^ Long.rotateRight(word, param2) ^ (word >>> param3);
 		} else {
-			return Long.rotateRight(word, parameter1) ^ Long.rotateRight(word, parameter2)
-					^ Long.rotateRight(word, parameter3);
+			return Long.rotateRight(word, param1) ^ Long.rotateRight(word, param2) ^ Long.rotateRight(word, param3);
 		}
 	}
 
 	/**
-	 * Same as above but using int instead of long representation (32 bits instead
-	 * of 64)
-	 *
+	 * Same as above, but using int instead of long representation (32 bits instead
+	 * of 64).
 	 */
-	private long sigmaFunctionOperationInteger(int word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+	private long sigma(int word, int param1, int param2, int param3, boolean SHR) {
 		if (SHR) { // Unsigned bit shift is used
-			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
-					^ (word >>> parameter3);
+			return Integer.rotateRight(word, param1) ^ Integer.rotateRight(word, param2) ^ (word >>> param3);
 		} else {
-			return Integer.rotateRight(word, parameter1) ^ Integer.rotateRight(word, parameter2)
-					^ Integer.rotateRight(word, parameter3);
+			return Integer.rotateRight(word, param1) ^ Integer.rotateRight(word, param2)
+					^ Integer.rotateRight(word, param3);
 		}
 	}
 
 	/**
 	 * Same as above, but instead of using integer values, using string
-	 * representation
-	 * 
+	 * representation.
 	 */
-	private String sigmaFunctionOperation(String word, int parameter1, int parameter2, int parameter3, boolean SHR) {
+	private String sigma(String word, int param1, int param2, int param3, boolean SHR) {
 		String result = "", finalResult = "";
-		String rotation1 = ROTR(word, parameter1), rotation2 = ROTR(word, parameter2), rotation3;
+		String rotation1 = ROTR(word, param1), rotation2 = ROTR(word, param2), rotation3;
 		if (SHR) {
-			rotation3 = SHR(word, parameter3);
+			rotation3 = SHR(word, param3);
 		} else {
-			rotation3 = ROTR(word, parameter3);
+			rotation3 = ROTR(word, param3);
 		}
 		for (int i = 0; i < word.length(); i++) {
 			result += rotation1.charAt(i) ^ rotation2.charAt(i);
@@ -811,7 +796,7 @@ public abstract class HashFunction {
 
 	/**
 	 * When a left circular rotation takes place, the idea is that the bits that are
-	 * discarded from the left are appended from the right
+	 * discarded from the left are appended from the right.
 	 * 
 	 * @param sequence Binary sequence to be rotated
 	 * @param n        Times the sequence is rotated
@@ -819,8 +804,8 @@ public abstract class HashFunction {
 	 */
 	protected String ROTL(String sequence, int n) {
 		String result;
-		BigInteger b1 = new BigInteger(leftShiftOperation(sequence, n), 2);
-		BigInteger b2 = new BigInteger(rightShiftOperation(sequence, sequence.length() - n), 2);
+		BigInteger b1 = new BigInteger(leftShift(sequence, n), 2);
+		BigInteger b2 = new BigInteger(rightShift(sequence, sequence.length() - n), 2);
 		result = b1.or(b2).toString(2);
 		while (result.length() < sequence.length()) {
 			result = "0" + result;
@@ -830,7 +815,7 @@ public abstract class HashFunction {
 
 	/**
 	 * When a right circular rotation takes place, the idea is that the bits that
-	 * are discarded from the right are appended from the left
+	 * are discarded from the right are appended from the left.
 	 * 
 	 * @param sequence Binary sequence to be rotated
 	 * @param n        Times the sequence is rotated
@@ -838,8 +823,8 @@ public abstract class HashFunction {
 	 */
 	protected String ROTR(String sequence, int n) {
 		String result;
-		BigInteger b1 = new BigInteger(rightShiftOperation(sequence, n), 2);
-		BigInteger b2 = new BigInteger(leftShiftOperation(sequence, sequence.length() - n), 2);
+		BigInteger b1 = new BigInteger(rightShift(sequence, n), 2);
+		BigInteger b2 = new BigInteger(leftShift(sequence, sequence.length() - n), 2);
 		result = b1.or(b2).toString(2);
 		while (result.length() < sequence.length()) {
 			result = "0" + result;
@@ -848,25 +833,25 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Same operation as right shift
+	 * Same operation as right shift.
 	 * 
 	 * @param sequence
 	 * @param n
 	 * @return
 	 */
 	protected String SHR(String sequence, int n) {
-		return rightShiftOperation(sequence, n);
+		return rightShift(sequence, n);
 	}
 
 	/**
 	 * The left-most n bits are discarded, padding the result with n zeroes on the
-	 * right
+	 * right.
 	 * 
 	 * @param sequence Binary sequence to be modified
 	 * @param n        Number of zeroes padded
 	 * @return left-shift binary sequence
 	 */
-	protected String leftShiftOperation(String sequence, int n) {
+	protected String leftShift(String sequence, int n) {
 		int start = n;
 		if (n < 0) {
 			throw new NumberFormatException("Cannot left shift bits a negative number of times.");
@@ -880,13 +865,13 @@ public abstract class HashFunction {
 
 	/**
 	 * The right-most n bits are discarded, padding the result with n zeroes on the
-	 * left
+	 * left.
 	 * 
 	 * @param sequence Binary sequence to be modified
 	 * @param n        Number of zeroes padded
 	 * @return right-shift binary sequence
 	 */
-	protected String rightShiftOperation(String sequence, int n) {
+	protected String rightShift(String sequence, int n) {
 		int end = n;
 		if (n < 0) {
 			throw new NumberFormatException("Cannot right shift bits a negative number of times.");
@@ -898,12 +883,16 @@ public abstract class HashFunction {
 		return sequence.substring(0, sequence.length() - end);
 	}
 
+	//-----------------------------------------------------
+	//
 	// From here on, only methods used in SHA-3 computation
-
+	//
+	//-----------------------------------------------------
+	
 	/**
 	 * KECCAK family of sponge functions. It is only applicable to the algorithms
 	 * used in SHA-3 computation, it is, only meets the requirements for
-	 * Keccak-f[1600] family of permutations
+	 * Keccak-f[1600] family of permutations.
 	 * 
 	 * @return Hexadecimal digest computed
 	 */
@@ -913,11 +902,9 @@ public abstract class HashFunction {
 		if (binaryMessagePadded.length() % rate != 0) {
 			throw new NumberFormatException("Padding was not appropriately computed");
 		}
-//		System.out.println(binaryMessagePadded);
 
 		// Calculate the number of rate-bit blocks within binaryMessagePadded
 		int n = binaryMessagePadded.length() / rate;
-//		System.out.println("Number of blocks = " + n);
 
 		// Absorbing phase (absorbs the bits from the input from rate in rate)
 		String S = zeroString(width); // State array
@@ -925,9 +912,6 @@ public abstract class HashFunction {
 		binaryMessagePadded = invertBits(binaryMessagePadded);
 		// As many times as blocks
 		for (int i = 0; i < n; i++) {
-//			System.out.println("Block " + (i + 1));
-//			showLanes(stateToLanes(
-//					binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroString(capacity))));
 			S = Keccak_p(XOR(S, binaryMessagePadded.substring(i * rate, i * rate + rate).concat(zeroString(capacity))));
 		}
 
@@ -962,7 +946,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * AND logical operation with data type String
+	 * AND logical operation with data type String.
 	 * 
 	 * @param a
 	 * @param b
@@ -981,7 +965,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * XOR logical operation with data type String
+	 * XOR logical operation with data type String.
 	 * 
 	 * @param a
 	 * @param b
@@ -1024,7 +1008,7 @@ public abstract class HashFunction {
 					C[x][l] = XOR(XOR(XOR(XOR(bit1, bit2), bit3), bit4), bit5);
 				}
 			}
-			String[][] D = new String[5][64]; // It contains the parity from two certain columns
+			String[][] D = new String[5][64]; // Parity of two certain columns
 			for (int x = 0; x < 5; x++) {
 				for (int l = 0; l < 64; l++) {
 					// (x + 4) % 5 represents the column before
@@ -1045,9 +1029,9 @@ public abstract class HashFunction {
 				}
 			}
 
-//			System.out.println("\nAfter Theta");
-//			showLanes(reverseBytesLanes(lanes));
-//			reverseBytesLanes(lanes);
+//				System.out.println("\nAfter Theta");
+//				showLanes(reverseBytesLanes(lanes));
+//				reverseBytesLanes(lanes);
 
 			// Rho and Pi permutations
 			String auxLanes[][] = new String[5][5]; // Auxiliary 3D array
@@ -1058,9 +1042,9 @@ public abstract class HashFunction {
 				}
 			}
 
-//			System.out.println("\nAfter Pi and Rho");
-//			showLanes(reverseBytesLanes(auxLanes));
-//			reverseBytesLanes(auxLanes);
+//				System.out.println("\nAfter Pi and Rho");
+//				showLanes(reverseBytesLanes(auxLanes));
+//				reverseBytesLanes(auxLanes);
 
 			// Chi substitution
 			String nextBit, nextNextBit;
@@ -1076,9 +1060,9 @@ public abstract class HashFunction {
 				}
 			}
 
-//			System.out.println("\nAfter Chi");
-//			showLanes(reverseBytesLanes(lanes));
-//			reverseBytesLanes(lanes);
+//				System.out.println("\nAfter Chi");
+//				showLanes(reverseBytesLanes(lanes));
+//				reverseBytesLanes(lanes);
 
 			// Iota substitution
 			String rc = Long.toBinaryString(RC[i]);
@@ -1088,9 +1072,9 @@ public abstract class HashFunction {
 			}
 			lanes[0][0] = XOR(lanes[0][0], rc);
 
-//			System.out.println("\nAfter Iota");
-//			showLanes(reverseBytesLanes(lanes));
-//			reverseBytesLanes(lanes);
+//				System.out.println("\nAfter Iota");
+//				showLanes(reverseBytesLanes(lanes));
+//				reverseBytesLanes(lanes);
 		}
 
 		reverseBytesLanes(lanes);
@@ -1098,18 +1082,15 @@ public abstract class HashFunction {
 		return state;
 	}
 
-//	private void showLanes(String[][] lanes) {
-//		for (int y = 0; y < 5; y++) {
-//			for (int x = 0; x < 5; x++) {
-//				System.out.println("[" + x + "," + y + "]" + binaryToHexadecimal(lanes[x][y]));
-//				System.out.println(binaryToHexadecimal(lanes[x][y]));
-//				System.out.println("[" + x + "," + y + "]" + lanes[x][y]);
-//			}
-//		}
-//	}
+	/*
+	 * private void showLanes(String[][] lanes) { for (int y = 0; y < 5; y++) { for
+	 * (int x = 0; x < 5; x++) { System.out.print("[" + x + "," + y + "]" +
+	 * binaryToHexadecimal(lanes[x][y]) + " "); if (x == 2 || x == 4) {
+	 * System.out.println(); } } System.out.println(); } }
+	 */
 
 	/**
-	 * Little-endian - Big-endian byte translator for 3D state arrays
+	 * Little-endian - Big-endian byte translator for 3D state arrays.
 	 * 
 	 * @param lanes 3D state array
 	 * @return 3D array whose bytes are stored reversed
@@ -1124,7 +1105,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * Little-endian - Big-endian byte translator for 64 bit words
+	 * Little-endian - Big-endian byte translator for 64 bit words.
 	 * 
 	 * @param word 64-bit word whose bytes are to be reversed
 	 * @return 64-bit word with bytes reversed
@@ -1136,7 +1117,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * 1D to 3D state array converter
+	 * 1D to 3D state array converter.
 	 * 
 	 * @param state 1D state array
 	 * @return 3D state array
@@ -1153,7 +1134,7 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * 3D to 1D state array converter
+	 * 3D to 1D state array converter.
 	 * 
 	 * @param lanes 3D state array
 	 * @return 1D state array
@@ -1170,12 +1151,12 @@ public abstract class HashFunction {
 
 	/**
 	 * Appends the padding to the binary original message. Multi-rate padding scheme
-	 * used. binaryMessage||padding
+	 * used. binaryMessage||padding.
 	 */
 	private void padMessageSHA3() {
 		binaryMessagePadded = binaryMessage;
 		int j = -binaryMessage.length() - 2;
-		// j = mod rate
+		// j must be within mod rate
 		while (j < 0) {
 			j += rate;
 		}
@@ -1196,7 +1177,6 @@ public abstract class HashFunction {
 	}
 
 	/**
-	 * 
 	 * @param length Zero-bit string length
 	 * @return string composed of length zero-bits
 	 */
